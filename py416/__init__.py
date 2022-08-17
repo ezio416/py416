@@ -1,9 +1,9 @@
 '''
 Name:    py416
 Author:  Ezio416
-Created: 2022
+Created: 2022-08-15
 Updated: 2022-08-16
-Version: 9.0
+Version: 0.1
 
 A collection of my custom-built functions
 '''
