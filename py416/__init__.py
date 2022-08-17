@@ -23,10 +23,10 @@ def month2num(month_word:str) -> str:
               'april', 'may', 'june',
               'july', 'august', 'september',
               'october', 'november', 'december']
-    dict = {}
+    mydict = {}
     for i, month in enumerate(months, 1):
-        dict[month] = str(i).zfill(2)
+        mydict[month] = str(i).zfill(2)
     try:
-        return dict[month_word.lower()]
+        return mydict[month_word.lower()]
     except KeyError:
         return ''
