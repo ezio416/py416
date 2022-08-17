@@ -5,7 +5,8 @@ env*/
 
 # Extensions
 *.log
-*.tdms
 
 # Files
+
+# General
 test_*
