@@ -3,7 +3,6 @@ Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
 Updated: 2022-08-16
-Version: 1.0
 
 Methods for file system manipulation
 '''
