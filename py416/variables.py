@@ -1,5 +1,5 @@
 '''
-Name:    py416.vars
+Name:    py416.variables
 Author:  Ezio416
 Created: 2022-08-06
 Updated: 2022-08-16
