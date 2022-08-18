@@ -7,10 +7,9 @@ Updated: 2022-08-18
 Methods for file system manipulation
 '''
 import os
-import shutil as sh
 import sys
 
-import general as g
+from .general import get_iterable_items, get_type
 
 def cd(dir:str='..') -> bool:
     '''
@@ -23,7 +22,7 @@ def cd(dir:str='..') -> bool:
         - `True`: success
         - `False`: error
     '''
-    if g.get_type(dir) != 'str':
+    if get_type(dir) != 'str':
         raise TypeError('Input must be a string')
     try:
         os.chdir(dir)
@@ -65,7 +64,7 @@ def listdir(dir_parent:str='', dirs:bool=True, files:bool=True) -> list[str]:
     - Return:
         - `list` of `str` with paths separated by `/`
     '''
-    if g.get_type(dir_parent) != 'str':
+    if get_type(dir_parent) != 'str':
         raise TypeError('Input must be a string')
     result = []
     if not dir_parent:
@@ -89,10 +88,10 @@ def makedirs(*dirs) -> list[str]:
     - Return:
         - `list` of `str` of created directories separated by `/`
     '''
-    if g.get_type(dirs) not in ['list', 'str', 'tuple']:
+    if get_type(dirs) not in ['list', 'str', 'tuple']:
         raise TypeError('Input must be a string, list, or tuple')
     created = []
-    for dir in g.get_iterable_items(dirs):
+    for dir in get_iterable_items(dirs):
         dir = forslash(dir)
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -110,7 +109,7 @@ def parent(path:str='') -> str:
             - Directory containing `path`
             - Directory containing file that called `parent()`
     '''
-    if g.get_type(path) != 'str':
+    if get_type(path) != 'str':
         raise TypeError('Input must be a string')
     dirname = lambda path_: forslash(os.path.dirname(path_))
     if path:

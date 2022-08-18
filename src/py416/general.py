@@ -7,8 +7,6 @@ Updated: 2022-08-18
 Methods for various things
 '''
 from datetime import datetime as dt
-import os
-import sys
 
 def get_iterable_items(iterable) -> list:
     '''
