@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-08-17
+Updated: 2022-08-18
 
 Methods for file system manipulation
 '''
@@ -10,7 +10,7 @@ import os
 import shutil as sh
 import sys
 
-import __init__ as p4
+import general as g
 
 def cd(dir:str='..') -> bool:
     '''
@@ -23,7 +23,7 @@ def cd(dir:str='..') -> bool:
         - `True`: success
         - `False`: error
     '''
-    if p4.get_type(dir) != 'str':
+    if g.get_type(dir) != 'str':
         raise TypeError('Input must be a string')
     try:
         os.chdir(dir)
@@ -65,7 +65,7 @@ def listdir(dir_parent:str='', dirs:bool=True, files:bool=True) -> list[str]:
     - Return:
         - `list` of `str` with paths separated by `/`
     '''
-    if p4.get_type(dir_parent) != 'str':
+    if g.get_type(dir_parent) != 'str':
         raise TypeError('Input must be a string')
     result = []
     if not dir_parent:
@@ -89,10 +89,10 @@ def makedirs(*dirs) -> list[str]:
     - Return:
         - `list` of `str` of created directories separated by `/`
     '''
-    if p4.get_type(dirs) not in ['list', 'str', 'tuple']:
+    if g.get_type(dirs) not in ['list', 'str', 'tuple']:
         raise TypeError('Input must be a string, list, or tuple')
     created = []
-    for dir in p4.get_iterable_items(dirs):
+    for dir in g.get_iterable_items(dirs):
         dir = forslash(dir)
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -110,7 +110,7 @@ def parent(path:str='') -> str:
             - Directory containing `path`
             - Directory containing file that called `parent()`
     '''
-    if p4.get_type(path) is not 'str':
+    if g.get_type(path) != 'str':
         raise TypeError('Input must be a string')
     dirname = lambda path_: forslash(os.path.dirname(path_))
     if path:
