@@ -2,27 +2,26 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-08-18
+Updated: 2022-08-19
 
 Methods for file system manipulation
 '''
 import os
 import sys
 
-from .general import get_iterable_items, get_type
+from .general import gettype, timestamp, unpack
 
 def cd(dir:str='..') -> bool:
     '''
-    - Wrapper for `os.chdir`
+    - Wrapper for `os.chdir()`
     - Changes current working directory
-    - Input:
-        - `dir`: `str` with path
-            - Default: up a directory
+    - Input: `dir` (`str`): directory path
+        - Default: up a directory
     - Return:
         - `True`: success
         - `False`: error
     '''
-    if get_type(dir) != 'str':
+    if gettype(dir) != 'str':
         raise TypeError('Input must be a string')
     try:
         os.chdir(dir)
@@ -34,82 +33,94 @@ def forslash(path:str) -> str:
     '''
     - Replaces `\\` in paths with `/`
     - Used to unify path formatting between OS types
-    - Input:
-        - `path`: `str` with path
-    - Return:
-        - `str` with path separated by `/`
+    - Input: `path` (`str`): path
+    - Return: `str` with path separated by `/`
     '''
     return path.replace('\\', '/')
 
 def getcwd() -> str:
     '''
-    - Wrapper for `os.getcwd`
+    - Wrapper for `os.getcwd()`
     - Gets the current working directory
-    - Return:
-        - `str` with path separated by `/`
+    - Return: `str` with path separated by `/`
     '''
     return(forslash(os.getcwd()))
 
-def listdir(dir_parent:str='', dirs:bool=True, files:bool=True) -> list[str]:
+def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     '''
-    - Wrapper for `os.listdir`
+    - Wrapper for `os.listdir()`
     - Lists directories/files within a directory
     - Input:
-        - `dir_parent`: `str` with path of directory to search in
+        - `path` (`str`): directory path to search in
             - Default: current working directory
-        - `dirs`: set `True` to list directories
+        - `dirs` (`bool`): whether to list directories
             - Default: `True`
-        - `files`: set `True` to list files
+        - `files` (`bool`): whether to list files
             - Default: `True`
-    - Return:
-        - `list` of `str` with paths separated by `/`
+    - Return: `list` of `str` with paths separated by `/`
     '''
-    if get_type(dir_parent) != 'str':
+    if gettype(path) != 'str':
         raise TypeError('Input must be a string')
+    dirs = bool(dirs)
+    files = bool(files)
     result = []
-    if not dir_parent:
-        dir_parent = getcwd()
-    for child in os.listdir(dir_parent):
-        child = f'{dir_parent}/{child}'
+    path = forslash(path) if path else getcwd()
+    for child in os.listdir(path):
+        child = f'{path}/{child}'
         if all(dirs, os.path.isdir(child)):
             result.append(child)
         if all(files, not os.path.isdir(child)):
             result.append(child)
     return result
 
-def makedirs(*dirs) -> list[str]:
+def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
     '''
-    - Wrapper for `os.makedirs`
-    - Creates directories if nonexistent
+    - Logs to file with current timestamp
+    - Creates file and its parent directory if nonexistent
     - Input:
-        - `dirs`:
-            - `str` directory path
-            - Nestings of `list`/`tuple` objects with `str` directory path base elements
-    - Return:
-        - `list` of `str` of created directories separated by `/`
+        - `path` (`str`): path to desired log file
+        - `msg` (`str`): message to log
+        - `ts` (`bool`): whether to include timestamp
+            - Default: `True`
+        - `ts_args` (`list`/`tuple`): arguments to pass to `py416.timestamp()`
+            - Default example: [2022-08-19 13:24:54 -06:00]
     '''
-    if get_type(dirs) not in ['list', 'str', 'tuple']:
+    if any(gettype(path) != 'str', gettype(msg) != 'str'):
+        raise ValueError('Input must be a string')
+    if gettype(ts_args) not in ['list', 'tuple']:
+        raise ValueError('Input must be a list/tuple')
+    makedirs(parent(path))
+    now = timestamp(*ts_args) + '  ' if ts else ''
+    orig_stdout = sys.stdout
+    with open(path, 'a') as file:
+        sys.stdout = file
+        print(f'{now}{msg}')
+        sys.stdout = orig_stdout
+
+def makedirs(*dirs) -> None:
+    '''
+    - Wrapper for `os.makedirs()`
+    - Creates directories if nonexistent
+    - Input: `dirs`:
+        - `str` directory path
+        - Nestings of `list`/`tuple` objects with `str` directory path base elements
+    '''
+    if gettype(dirs) not in ['list', 'str', 'tuple']:
         raise TypeError('Input must be a string, list, or tuple')
-    created = []
-    for dir in get_iterable_items(dirs):
-        dir = forslash(dir)
+    for dir in unpack(dirs):
         if not os.path.exists(dir):
             os.makedirs(dir)
-            created.append(dir)
-    return created
 
 def parent(path:str='') -> str:
     '''
     - Gets the directory containing something
-    - Input:
-        - `path`: `str` with path
-            - Default: file that called `parent()`
-    - Return:
-        - `str` with path separated by `/`
-            - Directory containing `path`
-            - Directory containing file that called `parent()`
+    - Input: `path` (`str`): path to find the parent of
+        - Default: file that called `parent()`
+    - Return: `str` with path separated by `/`
+        - Directory containing `path`
+        - Directory containing file that called `parent()`
     '''
-    if get_type(path) != 'str':
+    if gettype(path) != 'str':
         raise TypeError('Input must be a string')
     dirname = lambda path_: forslash(os.path.dirname(path_))
     if path:
@@ -123,22 +134,23 @@ def parent(path:str='') -> str:
 
 def realpath(filedir:str) -> str:
     '''
-    - Wrapper for `os.path.realpath`
+    - Wrapper for `os.path.realpath()`
     - Gets the path of something
-    - Input:
-        - `filedir`: `str` with file or directory
+    - Input: `filedir` (`str`): file or directory
     - Return:
         - `str` with path separated by `/`
     '''
+    if gettype(filedir) != 'str':
+        raise TypeError('Input must be a string')
     return(forslash(os.path.realpath(filedir)))
 
 def splitpath(path:str) -> list:
     '''
     - Splits a path string
-    - Input:
-        - `path`: `str` with path
-    - Return:
-        - `list` of directories/file
+    - Input: `path` (`str`): path
+    - Return: `list` of directories/file
     '''
+    if gettype(path) != 'str':
+        raise TypeError('Input must be a string')
     return forslash(path).split('/')
 
