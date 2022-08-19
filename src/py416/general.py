@@ -2,39 +2,17 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-08-18
+Updated: 2022-08-19
 
 Methods for various things
 '''
 from datetime import datetime as dt
 
-def get_iterable_items(iterable) -> list:
-    '''
-    - Recursively retrieves items from nested `list` and `tuple` types
-    - Input:
-        - `iterable`: `list`/`tuple`
-    - Return:
-        - `list` of all retrieved items
-        - `iterable` itself if not a `list` or `tuple`
-    '''
-    iterable_list = ['list', 'tuple']
-    if get_type(iterable) not in iterable_list:
-        return iterable
-    else:
-        values = []
-        for item in iterable:
-            if get_type(item) not in iterable_list:
-                values.append(item)
-            else:
-                values += get_iterable_items(item)
-    return values
-
-def get_type(thing) -> str:
+def gettype(thing) -> str:
     '''
     - Wrapper for `type`
     - Gets the type of an object
-    - Input:
-        - `thing`: object of any type
+    - Input: `thing`: object of any type
     - Return:
         - `str` with type
     '''
@@ -43,13 +21,12 @@ def get_type(thing) -> str:
 def month2num(month_word:str) -> str:
     '''
     - Converts month names to their 2-digit number
-    - Input:
-        - `month_word`: `str` with a month
+    - Input: `month_word`: `str` with a month
     - Return:
         - `str` with 2-digit number
         - Empty `str` if input is not a month
     '''
-    if get_type(month_word) != 'str':
+    if gettype(month_word) != 'str':
         raise TypeError('Input must be a string')
     months = ['january', 'february', 'march',
               'april', 'may', 'june',
@@ -69,7 +46,7 @@ def sec_mod(seconds:float, sep:str='') -> list:
         - i.e. `'04d16h47m09s'`
     - Input:
         - `seconds`: positive `int` or `float`
-        - `sep`: separator between values
+        - `sep` (`str`): separator between values
             - Default: no separator
     - Return:
         - `list` with `str` in given format and `int` values
@@ -100,13 +77,13 @@ def sec_mod(seconds:float, sep:str='') -> list:
 def timestamp(brackets:bool=True, microseconds:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
     '''
     - Creates a timestamp in ISO format with additional formatting
-        - Default: `[2022-07-06T13:57:12-06:00]`
-    - Input:
+        - Default example: [2022-07-06T13:57:12-06:00]
+    - Input (`bool`):
         - `brackets`: surround timestamp in square brackets
             - Default: `True`
         - `microseconds`: include microseconds
             - Default: `False`
-        - `offset`: include offset from UTC
+        - `offset`: include offset from UTC, e.g. timezone
             - Default: `True`
         - `readable`: internal whitespace for legibility
             - Default: `False`
@@ -138,4 +115,24 @@ def timestamp(brackets:bool=True, microseconds:bool=False, offset:bool=True, rea
     if brackets:
         now = f'[{now}]'
     return now.strip()
+
+def unpack(iterable) -> list:
+    '''
+    - Recursively retrieves items from nested `list` and `tuple` types
+    - Input: `iterable`: `list`/`tuple`
+    - Return:
+        - `list` of all retrieved items
+        - `iterable` itself if not a `list`/`tuple`
+    '''
+    iterable_list = ['list', 'tuple']
+    if gettype(iterable) not in iterable_list:
+        return iterable
+    else:
+        values = []
+        for item in iterable:
+            if gettype(item) not in iterable_list:
+                values.append(item)
+            else:
+                values += unpack(item)
+    return values
 
