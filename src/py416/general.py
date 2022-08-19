@@ -10,51 +10,44 @@ from datetime import datetime as dt
 
 def gettype(thing) -> str:
     '''
-    - Wrapper for `type`
+    - Wrapper for `type()`
     - Gets the type of an object
     - Input: `thing`: object of any type
-    - Return:
-        - `str` with type
+    - Return: `str` with type
     '''
     return str(type(thing)).split("'")[1]
 
 def month2num(month_word:str) -> str:
     '''
     - Converts month names to their 2-digit number
-    - Input: `month_word`: `str` with a month
-    - Return:
-        - `str` with 2-digit number
-        - Empty `str` if input is not a month
+    - Input: `month_word` (`str`): full month name
+    - Return: `str` with zero-padded 2-digit number
     '''
     if gettype(month_word) != 'str':
         raise TypeError('Input must be a string')
-    months = ['january', 'february', 'march',
-              'april', 'may', 'june',
-              'july', 'august', 'september',
-              'october', 'november', 'december']
+    month_list = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
+                  'august', 'september', 'october', 'november', 'december']
     mydict = {}
-    for i, month in enumerate(months, 1):
+    for i, month in enumerate(month_list, 1):
         mydict[month] = str(i).zfill(2)
-    try:
-        return mydict[month_word.lower()]
-    except KeyError:
-        return ''
+    return mydict[month_word.lower()]
 
 def sec_mod(seconds:float, sep:str='') -> list:
     '''
     - Formats a number of seconds nicely, split by days, hours, minutes, and seconds
         - i.e. `'04d16h47m09s'`
+    - Takes the absolute value of input, so 
     - Input:
-        - `seconds`: positive `int` or `float`
+        - `seconds`: `int` or `float`
         - `sep` (`str`): separator between values
             - Default: no separator
     - Return:
         - `list` with `str` in given format and `int` values
             - i.e. `['04d16h47m09s', 9, 47, 16, 4]`
     '''
-    if seconds < 0:
-        raise ValueError('Input must be positive')
-    seconds = int(seconds)
+    seconds = abs(int(seconds))
+    if gettype(sep) != 'str':
+        raise ValueError('Input must be a string')
     if not seconds:
         return ['0s', 0, 0, 0, 0]
     result = ''
@@ -70,18 +63,18 @@ def sec_mod(seconds:float, sep:str='') -> list:
         result += zf(m) + 'm' + sep
     if s:
         result += zf(s) + 's'
-    if sep.endswith(result):
+    if result.endswith(sep):
         result = result.replace(sep, '')
     return [result, s, m, h, d]
 
-def timestamp(brackets:bool=True, microseconds:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
+def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
     '''
     - Creates a timestamp in ISO format with additional formatting
         - Default example: [2022-07-06T13:57:12-06:00]
     - Input (`bool`):
         - `brackets`: surround timestamp in square brackets
             - Default: `True`
-        - `microseconds`: include microseconds
+        - `micro`: include microseconds
             - Default: `False`
         - `offset`: include offset from UTC, e.g. timezone
             - Default: `True`
@@ -101,7 +94,7 @@ def timestamp(brackets:bool=True, microseconds:bool=False, offset:bool=True, rea
     else:
         now = dt.now()
         offset_val = str(now.astimezone())[-6:]
-    if not microseconds:
+    if not micro:
         now = now.replace(microsecond=0)
     now = now.isoformat()
     if not seconds:
