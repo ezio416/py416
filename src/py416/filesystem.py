@@ -142,9 +142,13 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
     makedirs(parent(path))
     now = timestamp(*ts_args) + '  ' if ts else ''
     orig_stdout = sys.stdout
-    with open(path, 'a') as file:
-        sys.stdout = file
-        print(f'{now}{msg}')
+    try:
+        with open(path, 'a') as file:
+            sys.stdout = file
+            print(f'{now}{msg}')
+    except Exception as e:
+        pass
+    finally:
         sys.stdout = orig_stdout
 
 def makedirs(*dirs) -> None:
@@ -160,6 +164,25 @@ def makedirs(*dirs) -> None:
     for dir in unpack(dirs):
         if not os.path.exists(dir):
             os.makedirs(dir)
+
+def move(file:str, dest:str) -> bool:
+    '''
+    - Moves `file` into `dest`
+        - `file` is path to file
+        - `dest` is path to destination directory
+    - Creates `dest` if nonexistent
+    - Raises
+        - `FileNotFoundError` if `file` nonexistent
+        - `FileExistsError` if `dest` exists and is not a directory
+    - Returns `True` for success
+    '''
+    if not os.path.exists(file):
+        raise FileNotFoundError('The specified file does not exist')
+    if all([os.path.exists(dest), not os.path.isdir(dest)]):
+        raise FileExistsError('The specified destination exists as a file')
+    makedirs(dest)
+    os.rename(file, f'{dest}/{os.path.basename(file)}')
+    return True
 
 def parent(path:str='') -> str:
     '''
