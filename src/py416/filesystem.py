@@ -178,7 +178,7 @@ def move(file:str, dest:str) -> bool:
     '''
     if not os.path.exists(file):
         raise FileNotFoundError('The specified file does not exist')
-    if all([os.path.exists(dest), not os.path.isdir(dest)]):
+    if os.path.exists(dest) and not os.path.isdir(dest):
         raise FileExistsError('The specified destination exists as a file')
     makedirs(dest)
     os.rename(file, f'{dest}/{os.path.basename(file)}')
