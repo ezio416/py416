@@ -8,6 +8,7 @@ Methods for file system manipulation
 '''
 from datetime import datetime as dt
 import os
+import shutil as sh
 import sys
 
 from .general import gettype, timestamp, unpack
@@ -45,10 +46,7 @@ class File:
         - Input: `dest` (`str`): directory to move file into
         '''
         dest = forslash(dest)
-        new_path = f'{dest}/{self.name}'
-        makedirs(dest)
-        os.rename(self.path, new_path)
-        self.path = new_path
+        self.path = move(self.path, dest)
         self.parent = dest
 
     def rename(self, new_name:str):
@@ -84,7 +82,7 @@ def forslash(path:str) -> str:
     - Replaces `\\` in paths with `/`
     - Used to unify path formatting between OS types
     - Input: `path` (`str`): path
-    - Return: `str` with path separated by `/`
+    - Return: `str` with path (formatted with `/`)
     '''
     return path.replace('\\', '/')
 
@@ -92,7 +90,7 @@ def getcwd() -> str:
     '''
     - Wrapper for `os.getcwd()`
     - Gets the current working directory
-    - Return: `str` with path separated by `/`
+    - Return: `str` with path (formatted with `/`)
     '''
     return(forslash(os.getcwd()))
 
@@ -107,7 +105,7 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
             - Default: `True`
         - `files` (`bool`): whether to list files
             - Default: `True`
-    - Return: `list` of `str` with paths separated by `/`
+    - Return: `list` of `str` with paths (formatted with `/`)
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
@@ -165,31 +163,30 @@ def makedirs(*dirs) -> None:
         if not os.path.exists(dir):
             os.makedirs(dir)
 
-def move(file:str, dest:str) -> bool:
+def move(path:str, dest:str) -> str:
     '''
-    - Moves `file` into `dest`
-        - `file` is path to file
-        - `dest` is path to destination directory
-    - Creates `dest` if nonexistent
-    - Raises
-        - `FileNotFoundError` if `file` nonexistent
-        - `FileExistsError` if `dest` exists and is not a directory
-    - Returns `True` for success
+    - Wrapper for `shutil.move()`
+    - Moves file with some extra safety
+    - Input:
+        - `path` (`str`): path to file/directory
+        - `dest` (`str`): path to destination directory
+    - Return: `str` with path to destination file (formatted with `/`)
     '''
-    if not os.path.exists(file):
-        raise FileNotFoundError('The specified file does not exist')
+    if not os.path.exists(path):
+        raise FileNotFoundError('The file does not exist')
     if os.path.exists(dest) and not os.path.isdir(dest):
-        raise FileExistsError('The specified destination exists as a file')
+        raise FileExistsError('The destination exists as a file')
     makedirs(dest)
-    os.rename(file, f'{dest}/{os.path.basename(file)}')
-    return True
+    if os.path.exists(f'{dest}/{os.path.basename(path)}'):
+        raise FileExistsError('The destination file already exists')
+    return forslash(sh.move(path, dest))
 
 def parent(path:str='') -> str:
     '''
     - Gets the directory containing something
     - Input: `path` (`str`): path to find the parent of
         - Default: file that called `parent()`
-    - Return: `str` with path separated by `/`
+    - Return: `str` with path (formatted with `/`)
         - Directory containing `path`
         - Directory containing file that called `parent()`
     '''
@@ -210,8 +207,7 @@ def realpath(filedir:str) -> str:
     - Wrapper for `os.path.realpath()`
     - Gets the path of something
     - Input: `filedir` (`str`): file or directory
-    - Return:
-        - `str` with path separated by `/`
+    - Return: `str` with path (formatted with `/`)
     '''
     if gettype(filedir) != 'str':
         raise TypeError('Input must be a string')
