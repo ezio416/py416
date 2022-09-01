@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-08-19
+Updated: 2022-08-22
 
 Methods for various things
 '''
@@ -36,7 +36,7 @@ def sec_mod(seconds:float, sep:str='') -> list:
     '''
     - Formats a number of seconds nicely, split by days, hours, minutes, and seconds
         - i.e. `'04d16h47m09s'`
-    - Takes the absolute value of input, so 
+    - Takes the absolute value of input, so the result is always positive
     - Input:
         - `seconds`: `int` or `float`
         - `sep` (`str`): separator between values
@@ -88,6 +88,7 @@ def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:b
         - `str` with current timestamp with chosen formatting
             - i.e. `[2022-08-18 07:15:43.962 +00:00]`
     '''
+    brackets, micro, offset, readable, seconds, utc = [bool(flag) for flag in [brackets, micro, offset, readable, seconds, utc]]
     if utc:
         now = dt.utcnow()
         offset_val = '+00:00'
