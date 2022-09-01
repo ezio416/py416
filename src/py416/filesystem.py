@@ -2,14 +2,64 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-08-19
+Updated: 2022-09-01
 
 Methods for file system manipulation
 '''
+from datetime import datetime as dt
 import os
 import sys
 
 from .general import gettype, timestamp, unpack
+
+class File:
+    def __init__(self, file):
+        self.exists = os.path.exists(file)
+        if self.exists:
+            self.name = os.path.basename(file)
+            self.path = realpath(file)
+            self.parent = parent(self.path)
+            self.size = os.path.getsize(self.path)
+
+            self.isdir = os.path.isdir(file)
+            self.children = listdir(file) if self.isdir else []
+            self.extension = self.name.split('.')[-1] if not self.isdir else ''
+
+            self.atime = os.path.getatime(self.path)
+            self.atime_vals = dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+            self.ctime = os.path.getctime(self.path)
+            self.ctime_vals = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+            self.mtime = os.path.getmtime(self.path)
+            self.mtime_vals = dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+
+    def delete(self):
+        '''
+        - Deletes file
+        '''
+        os.remove(self.path)
+        self.exists = False
+
+    def move(self, dest:str):
+        '''
+        - Moves file
+        - Input: `dest` (`str`): directory to move file into
+        '''
+        dest = forslash(dest)
+        new_path = f'{dest}/{self.name}'
+        makedirs(dest)
+        os.rename(self.path, new_path)
+        self.path = new_path
+        self.parent = dest
+
+    def rename(self, new_name:str):
+        '''
+        - Renames file, keeping in same directory
+        - Input: `new_name` (`str`): new file name
+        '''
+        new_path = f'{self.parent}/{new_name}'
+        os.rename(self.path, new_path)
+        self.name = new_name
+        self.path = new_path
 
 def cd(dir:str='..') -> bool:
     '''
@@ -67,9 +117,9 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     path = forslash(path) if path else getcwd()
     for child in os.listdir(path):
         child = f'{path}/{child}'
-        if all(dirs, os.path.isdir(child)):
+        if dirs and os.path.isdir(child):
             result.append(child)
-        if all(files, not os.path.isdir(child)):
+        if files and not os.path.isdir(child):
             result.append(child)
     return result
 
