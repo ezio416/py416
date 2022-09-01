@@ -213,6 +213,29 @@ def realpath(filedir:str) -> str:
         raise TypeError('Input must be a string')
     return(forslash(os.path.realpath(filedir)))
 
+def rmdir(dirpath:str, delroot:bool=True) -> int:
+    '''
+    - Wrapper for `os.rmdir()`
+    - Recursively deletes empty directories
+    - Input:
+        - `dirpath` (`str`): directory path to delete within
+        - `delroot` (`bool`): whether to delete `dirpath` as well
+    - Return: number of deleted directories
+    '''
+    count = 0
+    if not os.path.isdir(dirpath):
+        return 0
+    files = listdir(dirpath)
+    if len(files):
+        for item in files:
+            if os.path.isdir(item):
+                count += rmdir(item)
+    files = os.listdir(dirpath)
+    if not len(files) and delroot:
+        os.rmdir(dirpath)
+        count += 1
+    return count
+
 def splitpath(path:str) -> list:
     '''
     - Splits a path string
