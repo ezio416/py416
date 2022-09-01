@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-08-22
+Updated: 2022-09-01
 
 Methods for various things
 '''
@@ -32,7 +32,7 @@ def month2num(month_word:str) -> str:
         mydict[month] = str(i).zfill(2)
     return mydict[month_word.lower()]
 
-def sec_mod(seconds:float, sep:str='') -> list:
+def secmod(seconds:float, sep:str='') -> list:
     '''
     - Formats a number of seconds nicely, split by days, hours, minutes, and seconds
         - i.e. `'04d16h47m09s'`
