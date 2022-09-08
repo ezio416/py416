@@ -1,0 +1,5 @@
+Windows
+-
+
+Posix
+- parent of home raises FileNotFoundError
