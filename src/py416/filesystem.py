@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-07
+Updated: 2022-09-08
 
 Methods for file system manipulation
 '''
@@ -15,7 +15,7 @@ from .general import gettype, timestamp, unpack
 
 class File():
     def __init__(self, path):
-        self.path = forslash(path)
+        self.path = forslash(os.path.realpath(path))
         self.isdir = os.path.isdir(self.path)
         self.ctime = os.path.getctime(self.path)
         self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
