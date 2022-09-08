@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-01
+Updated: 2022-09-07
 
 Methods for file system manipulation
 '''
@@ -13,51 +13,87 @@ import sys
 
 from .general import gettype, timestamp, unpack
 
-class File:
-    def __init__(self, file):
-        self.exists = os.path.exists(file)
-        if self.exists:
-            self.name = os.path.basename(file)
-            self.path = realpath(file)
-            self.parent = parent(self.path)
-            self.size = os.path.getsize(self.path)
+class File():
+    def __init__(self, path):
+        self.path = forslash(path)
+        self.isdir = os.path.isdir(self.path)
+        self.ctime = os.path.getctime(self.path)
+        self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    
+    def __repr__(self):
+        return 'py416.filesystem.File()'
+    
+    def __str__(self):
+        return self.path
+    
+    @property
+    def atime(self) -> float:
+        return os.path.getatime(self.path)
 
-            self.isdir = os.path.isdir(file)
-            self.children = listdir(file) if self.isdir else []
-            self.extension = self.name.split('.')[-1] if not self.isdir else ''
+    @property
+    def atimes(self) -> list:
+        return dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    
+    @property
+    def children(self) -> list:
+        return listdir(self.path) if self.isdir else []
+        
+    @property
+    def exists(self) -> bool:
+        return os.path.exists(self.path)
 
-            self.atime = os.path.getatime(self.path)
-            self.atime_vals = dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-            self.ctime = os.path.getctime(self.path)
-            self.ctime_vals = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-            self.mtime = os.path.getmtime(self.path)
-            self.mtime_vals = dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-
+    @property
+    def mtime(self) -> float:
+        return os.path.getmtime(self.path)
+    
+    @property
+    def mtimes(self) -> list:
+        return dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    
+    @property
+    def name(self) -> str:
+        return os.path.basename(self.path)
+    
+    @property
+    def parent(self) -> str:
+        return File('/'.join(self.path.split('/')[:-1]))
+    
+    @property
+    def parts(self) -> list:
+        return self.path.split('/')
+    
+    @property
+    def size(self) -> int:
+        return os.path.getsize(self.path)
+    
+    @property
+    def stem(self) -> str:
+        return self.name.split('.')[0]
+    
+    @property
+    def suffix(self) -> str:
+        return '.' + self.name.split('.')[-1] if not self.isdir else ''
+    
     def delete(self):
         '''
         - Deletes file
         '''
-        os.remove(self.path)
-        self.exists = False
+        if self.exists:
+            os.remove(self.path)
 
     def move(self, dest:str):
         '''
         - Moves file
         - Input: `dest` (`str`): directory to move file into
         '''
-        dest = forslash(dest)
         self.path = move(self.path, dest)
-        self.parent = dest
 
     def rename(self, new_name:str):
         '''
         - Renames file, keeping in same directory
         - Input: `new_name` (`str`): new file name
         '''
-        new_path = f'{self.parent}/{new_name}'
-        os.rename(self.path, new_path)
-        self.name = new_name
-        self.path = new_path
+        self.path = rename(self.path, new_name)
 
 def cd(dir:str='..') -> bool:
     '''
@@ -181,24 +217,19 @@ def move(path:str, dest:str) -> str:
         raise FileExistsError('The destination file already exists')
     return forslash(sh.move(path, dest))
 
-def parent(path:str='') -> str:
+def parent(path:str) -> str:
     '''
     - Gets the directory containing something
     - Input: `path` (`str`): path to find the parent of
-        - Default: file that called `parent()`
     - Return: `str` with path (formatted with `/`)
-        - Directory containing `path`
-        - Directory containing file that called `parent()`
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
     dirname = lambda path_: forslash(os.path.dirname(path_))
-    if path:
-        return dirname(path)
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
     try:
-        return dirname(realpath(__file__))
+        return dirname(realpath(path))
     except NameError:
         return getcwd()
 
@@ -212,6 +243,21 @@ def realpath(filedir:str) -> str:
     if gettype(filedir) != 'str':
         raise TypeError('Input must be a string')
     return(forslash(os.path.realpath(filedir)))
+
+def rename(path:str, name:str) -> str:
+    '''
+    - Wrapper for `os.rename()`
+    - Renames file
+    - Input:
+        - `path` (`str`): path to file/directory to be renamed
+        - `name` (`str`): new basename for file (not path)
+    - Return: `str` with path (formatted with `/`)
+    '''
+    if gettype(path) != gettype(name) != 'str':
+        raise TypeError('Input must be a string')
+    new_path = f'{parent(path)}/{name}'
+    os.rename(path, new_path)
+    return new_path
 
 def rmdir(dirpath:str, delroot:bool=True) -> int:
     '''
