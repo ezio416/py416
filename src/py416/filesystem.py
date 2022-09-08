@@ -21,7 +21,7 @@ class File():
         self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
     
     def __repr__(self):
-        return 'py416.filesystem.File()'
+        return f'py416.filesystem.File(\'{self.path}\')'
     
     def __str__(self):
         return self.path
@@ -56,7 +56,7 @@ class File():
     
     @property
     def parent(self) -> str:
-        return File('/'.join(self.path.split('/')[:-1]))
+        return File(parent(self.path))
     
     @property
     def parts(self) -> list:
@@ -225,11 +225,11 @@ def parent(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
-    dirname = lambda path_: forslash(os.path.dirname(path_))
+    dirname = lambda path_: realpath(f'{realpath(path_)}/..')
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
     try:
-        return dirname(realpath(path))
+        return dirname(path)
     except NameError:
         return getcwd()
 
