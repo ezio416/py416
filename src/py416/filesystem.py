@@ -2,9 +2,9 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-08
+Updated: 2022-09-09
 
-Methods for file system manipulation
+Functions for file system manipulation
 '''
 from datetime import datetime as dt
 import os
@@ -60,7 +60,7 @@ class File():
 
     @property
     def parts(self) -> list:
-        return self.path.split('/')
+        return self.path.split('/') if not self.root else self.path
 
     @property
     def root(self) -> bool:
@@ -78,12 +78,21 @@ class File():
     def suffix(self) -> str:
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
 
-    def delete(self):
+    def delete(self, force:bool=False):
         '''
-        - Deletes file
+        - Deletes file/directory
+        - If the object is a directory and all subdirs are empty, recursively deletes them
+        - Input: `force` (`bool`): whether to force deletion via `shutil.rmtree()`
         '''
+        force = bool(force)
         if self.exists:
-            os.remove(self.path)
+            if self.isdir:
+                if force:
+                    sh.rmtree(self.path)
+                else:
+                    rmdir(self.path)
+            else:
+                os.remove(self.path)
         return self
 
     def move(self, dest:str):
