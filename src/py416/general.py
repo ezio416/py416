@@ -2,9 +2,9 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-01
+Updated: 2022-09-09
 
-Methods for various things
+Functions for various things
 '''
 from datetime import datetime as dt
 
