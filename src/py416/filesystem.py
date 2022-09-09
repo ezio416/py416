@@ -19,13 +19,13 @@ class File():
         self.isdir = os.path.isdir(self.path)
         self.ctime = os.path.getctime(self.path)
         self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-    
+
     def __repr__(self):
         return f'py416.filesystem.File(\'{self.path}\')'
-    
+
     def __str__(self):
         return self.path
-    
+
     @property
     def atime(self) -> float:
         return os.path.getatime(self.path)
@@ -33,11 +33,11 @@ class File():
     @property
     def atimes(self) -> list:
         return dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-    
+
     @property
     def children(self) -> list:
         return listdir(self.path) if self.isdir else []
-        
+
     @property
     def exists(self) -> bool:
         return os.path.exists(self.path)
@@ -45,41 +45,46 @@ class File():
     @property
     def mtime(self) -> float:
         return os.path.getmtime(self.path)
-    
+
     @property
     def mtimes(self) -> list:
         return dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
-    
+
     @property
     def name(self) -> str:
-        return os.path.basename(self.path)
-    
+        return os.path.basename(self.path) if not self.root else self.path
+
     @property
     def parent(self) -> str:
         return File(parent(self.path))
-    
+
     @property
     def parts(self) -> list:
         return self.path.split('/')
-    
+
+    @property
+    def root(self) -> bool:
+        return self.path == str(self.parent)
+
     @property
     def size(self) -> int:
         return os.path.getsize(self.path)
-    
+
     @property
     def stem(self) -> str:
         return self.name.split('.')[0]
-    
+
     @property
     def suffix(self) -> str:
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
-    
+
     def delete(self):
         '''
         - Deletes file
         '''
         if self.exists:
             os.remove(self.path)
+        return self
 
     def move(self, dest:str):
         '''
@@ -87,6 +92,7 @@ class File():
         - Input: `dest` (`str`): directory to move file into
         '''
         self.path = move(self.path, dest)
+        return self
 
     def rename(self, new_name:str):
         '''
@@ -94,6 +100,7 @@ class File():
         - Input: `new_name` (`str`): new file name
         '''
         self.path = rename(self.path, new_name)
+        return self
 
 def cd(dir:str='..') -> bool:
     '''
