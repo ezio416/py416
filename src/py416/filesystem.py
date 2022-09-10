@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-09
+Updated: 2022-09-10
 
 Functions for file system manipulation
 '''
@@ -43,6 +43,10 @@ class File():
         return os.path.exists(self.path)
 
     @property
+    def isroot(self) -> bool:
+        return self.path == str(self.parent)
+
+    @property
     def mtime(self) -> float:
         return os.path.getmtime(self.path)
 
@@ -52,7 +56,7 @@ class File():
 
     @property
     def name(self) -> str:
-        return os.path.basename(self.path) if not self.root else self.path
+        return os.path.basename(self.path) if not self.isroot else self.path
 
     @property
     def parent(self) -> str:
@@ -63,8 +67,8 @@ class File():
         return splitpath(self.path)
 
     @property
-    def root(self) -> bool:
-        return self.path == str(self.parent)
+    def root(self) -> str:
+        return self.parts[0]
 
     @property
     def size(self) -> int:
@@ -72,7 +76,7 @@ class File():
 
     @property
     def stem(self) -> str:
-        return self.name.split('.')[0]
+        return self.name if self.isdir else self.name.split('.')[0]
 
     @property
     def suffix(self) -> str:
@@ -249,6 +253,18 @@ def parent(path:str) -> str:
     except NameError:
         return getcwd()
 
+def pathjoin(*parts) -> str:
+    '''
+    - Imitator for `os.path.join()`
+    - Joins parts of a path into a string path
+    - Input: `parts` (iterable): directories/file to join together
+    - Return: `str` with path (formatted with `/`)
+    '''
+    parts_ = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
+    if parts_ == ['']:
+        return '/'
+    return '/'.join(parts_)
+
 def realpath(path:str) -> str:
     '''
     - Wrapper for `os.path.realpath()`
@@ -263,7 +279,7 @@ def realpath(path:str) -> str:
 def rename(path:str, name:str) -> str:
     '''
     - Wrapper for `os.rename()`
-    - Renames file
+    - Renames file without moving it
     - Input:
         - `path` (`str`): path to file/directory to be renamed
         - `name` (`str`): new basename for file (not path)
@@ -307,8 +323,7 @@ def splitpath(path:str) -> list:
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
     result = forslash(path).split('/')
-    if result[0] == '':
-        result[0] = '/'
+    result[0] = f'{result[0]}/' # root
     if result[1] == '':
         return [result[0]]
     return result
