@@ -60,7 +60,7 @@ class File():
 
     @property
     def parts(self) -> list:
-        return self.path.split('/') if not self.root else self.path
+        return splitpath(self.path) if not self.root else [self.path]
 
     @property
     def root(self) -> bool:
