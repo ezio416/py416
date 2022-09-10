@@ -309,5 +309,7 @@ def splitpath(path:str) -> list:
     result = forslash(path).split('/')
     if result[0] == '':
         result[0] = '/'
+    if result[1] == '':
+        return [result[0]]
     return result
 
