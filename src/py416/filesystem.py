@@ -15,7 +15,7 @@ from .general import gettype, timestamp, unpack
 
 class File():
     def __init__(self, path):
-        self.path = forslash(os.path.realpath(path))
+        self.path = realpath(path)
         self.isdir = os.path.isdir(self.path)
         self.ctime = os.path.getctime(self.path)
         self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
@@ -60,7 +60,7 @@ class File():
 
     @property
     def parts(self) -> list:
-        return splitpath(self.path) if not self.root else [self.path]
+        return splitpath(self.path)
 
     @property
     def root(self) -> bool:
@@ -249,16 +249,16 @@ def parent(path:str) -> str:
     except NameError:
         return getcwd()
 
-def realpath(filedir:str) -> str:
+def realpath(path:str) -> str:
     '''
     - Wrapper for `os.path.realpath()`
     - Gets the path of something
     - Input: `filedir` (`str`): file or directory
     - Return: `str` with path (formatted with `/`)
     '''
-    if gettype(filedir) != 'str':
+    if gettype(path) != 'str':
         raise TypeError('Input must be a string')
-    return(forslash(os.path.realpath(filedir)))
+    return(forslash(os.path.realpath(path)))
 
 def rename(path:str, name:str) -> str:
     '''
@@ -275,7 +275,7 @@ def rename(path:str, name:str) -> str:
     os.rename(path, new_path)
     return new_path
 
-def rmdir(dirpath:str, delroot:bool=True) -> int:
+def rmdir(path:str, delroot:bool=True) -> int:
     '''
     - Wrapper for `os.rmdir()`
     - Recursively deletes empty directories
@@ -285,26 +285,29 @@ def rmdir(dirpath:str, delroot:bool=True) -> int:
     - Return: number of deleted directories
     '''
     count = 0
-    if not os.path.isdir(dirpath):
+    if not os.path.isdir(path):
         return 0
-    files = listdir(dirpath)
+    files = listdir(path)
     if len(files):
         for item in files:
             if os.path.isdir(item):
                 count += rmdir(item)
-    files = os.listdir(dirpath)
+    files = os.listdir(path)
     if not len(files) and delroot:
-        os.rmdir(dirpath)
+        os.rmdir(path)
         count += 1
     return count
 
 def splitpath(path:str) -> list:
     '''
-    - Splits a path string
+    - Splits a path string into its parts
     - Input: `path` (`str`): path
     - Return: `list` of directories/file
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
-    return forslash(path).split('/')
+    result = forslash(path).split('/')
+    if result[0] == '':
+        result[0] = '/'
+    return result
 
