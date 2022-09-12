@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-09
+Updated: 2022-09-12
 
 Functions for various things
 '''
@@ -30,7 +30,10 @@ def month2num(month_word:str) -> str:
     mydict = {}
     for i, month in enumerate(month_list, 1):
         mydict[month] = str(i).zfill(2)
-    return mydict[month_word.lower()]
+    try:
+        return mydict[month_word.lower()]
+    except KeyError:
+        return ''
 
 def secmod(seconds:float, sep:str='') -> list:
     '''
