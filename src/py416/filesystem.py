@@ -133,6 +133,40 @@ def cd(dir:str='..') -> bool:
     except Exception:
         return False
 
+def checkzip(path:str) -> bool:
+    '''
+    - Imports: `py7zr`: `path` ends with .7z
+    - Checks if an archive file (.7z or .zip) exists and is valid
+    - Deletes if invalid or incomplete
+    - Input: `path` (`str`): path to the archive file
+    - Return:
+        - `True`: file exists and is valid
+        - `False`: file doesn't exist, possibly because we deleted it due to corruption
+    '''
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
+    try:
+        if path.endswith('.7z'):
+            from py7zr import exceptions, SevenZipFile
+            try:
+                with SevenZipFile(path, 'r') as z:
+                    pass
+                return True
+            except exceptions.Bad7zFile:
+                os.remove(path)
+                return False
+        elif path.endswith('.zip'):
+            from zipfile import BadZipFile, ZipFile
+            try:
+                with ZipFile(path) as z:
+                    pass
+                return True
+            except BadZipFile:
+                os.remove(path)
+                return False
+    except FileNotFoundError:
+        return False
+
 def forslash(path:str) -> str:
     '''
     - Replaces `\\` in paths with `/`
