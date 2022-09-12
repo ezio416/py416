@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-10
+Updated: 2022-09-12
 
 Functions for file system manipulation
 '''
@@ -261,9 +261,7 @@ def pathjoin(*parts) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     parts_ = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
-    if parts_ == ['']:
-        return '/'
-    return '/'.join(parts_)
+    return '/' if parts_ == [''] else '/'.join(parts_)
 
 def realpath(path:str) -> str:
     '''
@@ -327,4 +325,58 @@ def splitpath(path:str) -> list:
     if result[1] == '':
         return [result[0]]
     return result
+
+def unzip(path:str, delete:bool=False) -> int:
+    '''
+    - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
+    - Input:
+        - `path` (`str`): path to archive file
+        - `delete` (`bool`): whether to delete archive after unzipping
+            - Default: `False`
+    - Return:
+        - `0` for success
+        - `1` for delete failure
+        - `2` for unzip failure
+        - `-1` if nothing was attempted
+    '''
+    if gettype(path) != 'str':
+        raise TypeError('Input must be a string')
+    delete = bool(delete)
+    fparent = parent(path)
+    if path.endswith('.7z'):
+        try:
+            from py7zr import unpack_7zarchive
+            unpack_7zarchive(path, fparent)
+            if delete:
+                os.remove(path)
+        except Exception:
+            return 2
+    elif path.endswith(tuple(['.gz', '.rar', '.tar', '.zip'])):
+        try:
+            sh.unpack_archive(path, fparent)
+            if delete:
+                os.remove(path)
+        except Exception:
+            return 2
+    else:
+        return -1
+    return 0
+
+def unzipdir(dir:str='.') -> int:
+    '''
+    - Unzips all archives in a directory until it is unable to continue
+    - Input: `dir` (`str`): directory from which to unzip archives
+        - Default: current working directory
+    - Return: `int` of unzipped archives
+    '''
+    unzipped = 0
+    while True:
+        unzipped_thisrun = 0
+        for file in listdir(dir, dirs=False):
+            if not unzip(file, delete=True):
+                unzipped += 1
+                unzipped_thisrun += 1
+        if not unzipped_thisrun:
+            break
+    return unzipped
 
