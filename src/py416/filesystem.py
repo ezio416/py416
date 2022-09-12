@@ -223,10 +223,11 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
         - `ts_args` (`list`/`tuple`): arguments to pass to `py416.timestamp()`
             - Default example: [2022-08-19 13:24:54 -06:00]
     '''
-    if any(gettype(path) != 'str', gettype(msg) != 'str'):
+    if gettype(path) != gettype(msg) != 'str':
         raise ValueError('Input must be a string')
     if gettype(ts_args) not in ['list', 'tuple']:
         raise ValueError('Input must be a list/tuple')
+    ts = bool(ts)
     makedirs(parent(path))
     now = timestamp(*ts_args) + '  ' if ts else ''
     orig_stdout = sys.stdout
@@ -234,7 +235,7 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
         with open(path, 'a') as file:
             sys.stdout = file
             print(f'{now}{msg}')
-    except Exception as e:
+    except Exception:
         pass
     finally:
         sys.stdout = orig_stdout
