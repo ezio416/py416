@@ -115,23 +115,21 @@ class File():
         self.path = rename(self.path, new_name)
         return self
 
-def cd(dir:str='..') -> bool:
+def cd(dir:str='..') -> str:
     '''
     - Wrapper for `os.chdir()`
     - Changes current working directory
+    - Creates destination if nonexistent
     - Input: `dir` (`str`): directory path
         - Default: up a directory
-    - Return:
-        - `True`: success
-        - `False`: error
+    - Return: `str` with current working directory
     '''
     if gettype(dir) != 'str':
         raise TypeError('Input must be a string')
-    try:
-        os.chdir(dir)
-        return True
-    except Exception:
-        return False
+    dir = realpath(dir)
+    makedirs(dir)
+    os.chdir(dir)
+    return dir
 
 def checkzip(path:str) -> bool:
     '''
