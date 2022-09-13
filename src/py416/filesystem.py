@@ -21,7 +21,7 @@ class File():
         self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
 
     def __repr__(self):
-        return f'py416.filesystem.File(\'{self.path}\')'
+        return f"py416.filesystem.File('{self.path}')"
 
     def __str__(self):
         return self.path
@@ -89,14 +89,7 @@ class File():
         - Input: `force` (`bool`): whether to force deletion via `shutil.rmtree()`
         '''
         force = bool(force)
-        if self.exists:
-            if self.isdir:
-                if force:
-                    sh.rmtree(self.path)
-                else:
-                    rmdir(self.path)
-            else:
-                os.remove(self.path)
+        delete(self.path, force=force)
         return self
 
     def move(self, dest:str):
@@ -164,6 +157,25 @@ def checkzip(path:str) -> bool:
                 return False
     except FileNotFoundError:
         return False
+
+def delete(path:str, force:bool=False) -> None:
+    '''
+    - Deletes file or directory
+    - Input:
+        - `path` (`str`): path to file or directory
+        - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory
+    '''
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
+    force = bool(force)
+    if os.path.exists(path):
+        if os.path.isdir(path):
+            if force:
+                sh.rmtree(path)
+            else:
+                rmdir(path)
+        else:
+            os.remove(path)
 
 def forslash(path:str) -> str:
     '''
