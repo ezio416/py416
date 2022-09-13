@@ -8,4 +8,4 @@ Version: 0.22.1
 A collection of my custom-built functions
 '''
 from .general import *
-__version__ = 0, 22.1
+__version__ = 0, 22, 1
