@@ -186,7 +186,7 @@ def delete(path:str, force:bool=False) -> None:
 def forslash(path:str) -> str:
     '''
     - Replaces `\\` in paths with `/`
-    - Used to unify path formatting between OS types
+    - Used to unify path formatting between OS types because I hate backslashes used like that
     - Input: `path` (`str`): path
     - Return: `str` with path (formatted with `/`)
     '''
@@ -374,11 +374,13 @@ def splitpath(path:str) -> list:
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
-    result = forslash(path).split('/')
-    result[0] = f'{result[0]}/' # root
-    if result[1] == '':
-        return [result[0]]
-    return result
+    path = forslash(path)
+    parts = forslash(os.path.abspath(path)).split('/')
+    parts[0] = f'{parts[0]}/' # root
+    if path.startswith('//'): # Windows network location
+        result = [f'//{parts[2]}'] # network root
+        return result + [a for a in parts[3:]] if len(parts) > 2 else result
+    return [parts[0]] if parts[1] == '' else parts
 
 def unzip(path:str, delete:bool=False) -> int:
     '''
