@@ -2,7 +2,7 @@
 Name:    py416.filesystem
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-12
+Updated: 2022-09-13
 
 Functions for file system manipulation
 '''
@@ -15,10 +15,8 @@ from .general import gettype, timestamp, unpack
 
 class File():
     def __init__(self, path):
-        self.path = realpath(path)
+        self.path = getpath(path)
         self.isdir = os.path.isdir(self.path)
-        self.ctime = os.path.getctime(self.path)
-        self.ctimes = dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
 
     def __repr__(self):
         return f"py416.filesystem.File('{self.path}')"
@@ -37,6 +35,14 @@ class File():
     @property
     def children(self) -> list:
         return listdir(self.path) if self.isdir else []
+
+    @property
+    def ctime(self) -> float:
+        return os.path.getctime(self.path)
+
+    @property
+    def ctimes(self) -> list:
+        return dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
 
     @property
     def exists(self) -> bool:
@@ -119,7 +125,7 @@ def cd(dir:str='..') -> str:
     '''
     if gettype(dir) != 'str':
         raise TypeError('Input must be a string')
-    dir = realpath(dir)
+    dir = getpath(dir)
     makedirs(dir)
     os.chdir(dir)
     return dir
@@ -193,6 +199,20 @@ def getcwd() -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     return(forslash(os.getcwd()))
+
+def getpath(path:str) -> str:
+    '''
+    - Gets the full path of something
+    - Input: `path` (`str`): absolute or relative path
+        - If relative, we're assuming it's in the current working directory
+    - Return: `str` with path (formatted with `/`)
+    '''
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
+    drives = ['/'] + [f'{ch}:/' for ch in 'abcdefghijklmnopqrstuvwxyz']
+    if splitpath(path)[0].lower() not in drives: # relative path
+        return f'{getcwd()}/{forslash(path)}'
+    return forslash(os.path.abspath(path))
 
 def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     '''
@@ -290,7 +310,7 @@ def parent(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('Input must be a string')
-    dirname = lambda path_: realpath(f'{realpath(path_)}/..')
+    dirname = lambda path_: getpath(os.path.abspath(f'{getpath(path_)}/..'))
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
     try:
@@ -307,17 +327,6 @@ def pathjoin(*parts) -> str:
     '''
     parts_ = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
     return '/' if parts_ == [''] else '/'.join(parts_)
-
-def realpath(path:str) -> str:
-    '''
-    - Wrapper for `os.path.realpath()`
-    - Gets the path of something
-    - Input: `filedir` (`str`): file or directory
-    - Return: `str` with path (formatted with `/`)
-    '''
-    if gettype(path) != 'str':
-        raise TypeError('Input must be a string')
-    return(forslash(os.path.realpath(path)))
 
 def rename(path:str, name:str) -> str:
     '''
