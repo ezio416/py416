@@ -1,10 +1,11 @@
 '''
-Name:    py416.path
+Name:    py416.paths
 Author:  Ezio416
 Created: 2022-08-16
 Updated: 2022-09-15
 
 Functions for file system manipulation
+OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
 '''
 from datetime import datetime as dt
 import os
@@ -303,24 +304,40 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
     finally:
         sys.stdout = orig_stdout
 
-def makedirs(*dirs) -> None:
+def makedirs(*dirs, ignore_errors:bool=True) -> list:
     '''
     - Wrapper for `os.makedirs()`
     - Creates directories if nonexistent
-    - Input: `dirs`:
-        - `str` directory path
-        - Nestings of `list`/`tuple` objects with `str` directory path base elements
+    - Input:
+        - `dirs`:
+            - `str` directory path
+            - Nestings of `list`/`tuple` objects with `str` directory path base elements
+        - `ignore_errors` (`bool`): whether to catch all Exceptions in the process
+            - Useful to create as many of the requested directories as possible
+            - Default: `True`
+    - Return: `list` of directories we failed to create
     '''
     if gettype(dirs) not in ['list', 'str', 'tuple']:
-        raise TypeError('Input must be a string, list, or tuple')
+        raise TypeError('input must be a string, list, or tuple')
+    ignore_errors = bool(ignore_errors)
+    errored = []
     for dir in unpack(dirs):
+        if gettype(dir) != 'str':
+            errored.append(dir)
+            continue
         if not os.path.exists(dir):
-            os.makedirs(dir)
+            try:
+                os.makedirs(dir)
+            except Exception:
+                if not ignore_errors:
+                    raise
+                errored.append(dir)
+    return errored
 
 def move(path:str, dest:str, overwrite:bool=False) -> str:
     '''
     - Wrapper for `shutil.move()`
-    - Moves file with some extra safety
+    - Moves file with some extra safety in the form of Exceptions
     - Input:
         - `path` (`str`): path to file/directory
         - `dest` (`str`): path to destination directory
@@ -345,7 +362,7 @@ def parent(path:str) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     if gettype(path) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     dirname = lambda path_: getpath(os.path.abspath(f'{getpath(path_)}/..'))
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
@@ -361,8 +378,8 @@ def pathjoin(*parts) -> str:
     - Input: `parts` (iterable): directories/file to join together
     - Return: `str` with path (formatted with `/`)
     '''
-    parts_ = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
-    return '/' if parts_ == [''] else '/'.join(parts_)
+    parts = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
+    return '/' if parts == [''] else '/'.join(parts)
 
 def rename(path:str, name:str) -> str:
     '''
@@ -371,10 +388,10 @@ def rename(path:str, name:str) -> str:
     - Input:
         - `path` (`str`): path to file/directory to be renamed
         - `name` (`str`): new basename for file (not path)
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with new path (formatted with `/`)
     '''
     if gettype(path) != gettype(name) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     new_path = f'{parent(path)}/{name}'
     os.rename(path, new_path)
     return new_path
@@ -385,8 +402,9 @@ def rmdir(path:str, delroot:bool=True) -> int:
     - Recursively deletes empty directories
     - Input:
         - `dirpath` (`str`): directory path to delete within
-        - `delroot` (`bool`): whether to delete `dirpath` as well
-    - Return: number of deleted directories
+        - `delroot` (`bool`): whether to delete `path` as well
+            - Default: `True`
+    - Return: `int` with number of deleted directories
     '''
     count = 0
     if os.path.exists(path) and not os.path.isdir(path):
@@ -398,6 +416,8 @@ def rmdir(path:str, delroot:bool=True) -> int:
                 count += rmdir(item)
     files = os.listdir(path)
     if not len(files) and delroot:
+        if getpath(path) == getcwd():
+            cd() # we're in the directory we're trying to delete, so go up
         os.rmdir(path)
         count += 1
     return count
@@ -418,57 +438,58 @@ def splitpath(path:str) -> list:
         return result + [a for a in parts[3:]] if len(parts) > 2 else result
     return [parts[0]] if parts[1] == '' else parts
 
-def unzip(path:str, delete:bool=False) -> int:
+def unzip(path:str, remove:bool=False) -> None:
     '''
     - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
     - Input:
         - `path` (`str`): path to archive file
-        - `delete` (`bool`): whether to delete archive after unzipping
+        - `remove` (`bool`): whether to delete archive after unzipping
             - Default: `False`
-    - Return:
-        - `0` for success
-        - `1` for delete failure
-        - `2` for unzip failure
-        - `-1` if nothing was attempted
     '''
     if gettype(path) != 'str':
-        raise TypeError('Input must be a string')
-    delete = bool(delete)
+        raise TypeError('input must be a string')
+    remove = bool(remove)
     fparent = parent(path)
     if path.endswith('.7z'):
-        try:
-            from py7zr import unpack_7zarchive
-            unpack_7zarchive(path, fparent)
-            if delete:
-                os.remove(path)
-        except Exception:
-            return 2
-    elif path.endswith(tuple(['.gz', '.rar', '.tar', '.zip'])):
-        try:
-            sh.unpack_archive(path, fparent)
-            if delete:
-                os.remove(path)
-        except Exception:
-            return 2
+        from py7zr import unpack_7zarchive
+        unpack_7zarchive(path, fparent)
+        if remove:
+            delete(path)
+    elif path.endswith(('.gz', '.rar', '.tar', '.zip')):
+        sh.unpack_archive(path, fparent)
+        if remove:
+            delete(path)
     else:
-        return -1
-    return 0
+        raise NotImplementedError('unsupported archive format')
 
-def unzipdir(dir:str='.') -> int:
+def unzipdir(path:str='.', ignore_errors:bool=True) -> int:
     '''
     - Unzips all archives in a directory until it is unable to continue
-    - Input: `dir` (`str`): directory from which to unzip archives
-        - Default: current working directory
-    - Return: `int` of unzipped archives
+    - Deletes all archives as it unzips
+    - Supports archives of type: (.7z, .gz, .rar, .tar, .zip)
+    - Input:
+        - `path` (`str`): directory from which to unzip archives
+            - Default: current working directory
+        - `ignore_errors` (`bool`): whether to catch all Exceptions in unzipping
+            - Useful to unzip everything possible in the directory
+            - Default: `True`
+    - Return: `int` with number of unzipped archives
     '''
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
+    ignore_errors = bool(ignore_errors)
     unzipped = 0
     while True:
-        unzipped_thisrun = 0
-        for file in listdir(dir, dirs=False):
-            if not unzip(file, delete=True):
-                unzipped += 1
-                unzipped_thisrun += 1
-        if not unzipped_thisrun:
+        unzipped_this_run = 0
+        for file in listdir(path, dirs=False):
+            try:
+                if not unzip(file, remove=True):
+                    unzipped += 1
+                    unzipped_this_run += 1
+            except Exception:
+                if not ignore_errors:
+                    raise
+        if not unzipped_this_run:
             break
     return unzipped
 
