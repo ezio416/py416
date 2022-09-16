@@ -6,6 +6,7 @@ Updated: 2022-09-15
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
+Basically everything here takes strings, so pass strings
 '''
 from datetime import datetime as dt
 import os
