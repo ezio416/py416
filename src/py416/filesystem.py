@@ -1,8 +1,8 @@
 '''
-Name:    py416.filesystem
+Name:    py416.path
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-13
+Updated: 2022-09-15
 
 Functions for file system manipulation
 '''
@@ -16,7 +16,6 @@ from .general import gettype, timestamp, unpack
 class File():
     def __init__(self, path):
         self.path = getpath(path)
-        self.isdir = os.path.isdir(self.path)
 
     def __repr__(self):
         return f"py416.filesystem.File('{self.path}')"
@@ -47,6 +46,14 @@ class File():
     @property
     def exists(self) -> bool:
         return os.path.exists(self.path)
+
+    @property
+    def isdir(self) -> bool:
+        return os.path.isdir(self.path)
+
+    @property
+    def isfile(self) -> bool:
+        return os.path.isfile(self.path)
 
     @property
     def isroot(self) -> bool:
@@ -92,7 +99,7 @@ class File():
         '''
         - Deletes file/directory
         - If the object is a directory and all subdirs are empty, recursively deletes them
-        - Input: `force` (`bool`): whether to force deletion via `shutil.rmtree()`
+        - Input: `force` (`bool`): whether to force deletion with `shutil.rmtree()`
         '''
         force = bool(force)
         delete(self.path, force=force)
@@ -121,10 +128,10 @@ def cd(dir:str='..') -> str:
     - Creates destination if nonexistent
     - Input: `dir` (`str`): directory path
         - Default: up a directory
-    - Return: `str` with current working directory
+    - Return: `str` with current working directory (formatted with `/`)
     '''
     if gettype(dir) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     dir = getpath(dir)
     makedirs(dir)
     os.chdir(dir)
@@ -132,9 +139,9 @@ def cd(dir:str='..') -> str:
 
 def checkzip(path:str) -> bool:
     '''
-    - Imports: `py7zr`: `path` ends with .7z
     - Checks if an archive file (.7z or .zip) exists and is valid
-    - Deletes if invalid or incomplete
+    - Imports `py7zr` if `path` ends with .7z
+    - Deletes file if invalid or incomplete
     - Input: `path` (`str`): path to the archive file
     - Return:
         - `True`: file exists and is valid
@@ -150,19 +157,43 @@ def checkzip(path:str) -> bool:
                     pass
                 return True
             except exceptions.Bad7zFile:
-                os.remove(path)
+                delete(path)
                 return False
-        elif path.endswith('.zip'):
+        if path.endswith('.zip'):
             from zipfile import BadZipFile, ZipFile
             try:
                 with ZipFile(path) as z:
                     pass
                 return True
             except BadZipFile:
-                os.remove(path)
+                delete(path)
                 return False
     except FileNotFoundError:
         return False
+
+def copy(path:str, dest:str, overwrite:bool=False) -> str:
+    '''
+    - Wrapper for `shutil.copy2()`
+    - Copies file, creating destination if nonexistent
+    - Input:
+        - `path` (`str`): path to file
+        - `dest` (`str`): path to destination directory
+        - `overwrite` (`bool`): whether to overwrite an existing file
+    - Return: `str` with path to copied file (formatted with `/`)
+    '''
+    if gettype(path) != gettype(dest) != 'str':
+        raise TypeError('input must be a string')
+    overwrite = bool(overwrite)
+    if not os.path.exists(path):
+        raise FileNotFoundError('file does not exist')
+    if os.path.exists(dest) and not os.path.isdir(dest):
+        raise FileExistsError('destination exists as a file')
+    makedirs(dest)
+    newpath = f'{dest}/{os.path.basename(path)}'
+    if os.path.exists(newpath) and not overwrite:
+        raise FileExistsError('destination file already exists')
+    sh.copy2(path, newpath)
+    return newpath
 
 def delete(path:str, force:bool=False) -> None:
     '''
@@ -186,10 +217,12 @@ def delete(path:str, force:bool=False) -> None:
 def forslash(path:str) -> str:
     '''
     - Replaces `\\` in paths with `/`
-    - Used to unify path formatting between OS types because I hate backslashes used like that
-    - Input: `path` (`str`): path
+    - Used to unify path formatting between OS types
+    - Input: `path` (`str`): path string
     - Return: `str` with path (formatted with `/`)
     '''
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
     return path.replace('\\', '/')
 
 def getcwd() -> str:
@@ -198,13 +231,13 @@ def getcwd() -> str:
     - Gets the current working directory
     - Return: `str` with path (formatted with `/`)
     '''
-    return(forslash(os.getcwd()))
+    return forslash(os.getcwd())
 
 def getpath(path:str) -> str:
     '''
     - Gets the full path of something
     - Input: `path` (`str`): absolute or relative path
-        - If relative, we're assuming it's in the current working directory
+        - If relative, we assume it's in the current working directory
     - Return: `str` with path (formatted with `/`)
     '''
     if gettype(path) != 'str':
@@ -228,7 +261,7 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     - Return: `list` of `str` with paths (formatted with `/`)
     '''
     if gettype(path) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     dirs = bool(dirs)
     files = bool(files)
     result = []
@@ -254,9 +287,9 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
             - Default example: [2022-08-19 13:24:54 -06:00]
     '''
     if gettype(path) != gettype(msg) != 'str':
-        raise ValueError('Input must be a string')
+        raise ValueError('input must be a string')
     if gettype(ts_args) not in ['list', 'tuple']:
-        raise ValueError('Input must be a list/tuple')
+        raise ValueError('input must be a list/tuple')
     ts = bool(ts)
     makedirs(parent(path))
     now = timestamp(*ts_args) + '  ' if ts else ''
@@ -284,7 +317,7 @@ def makedirs(*dirs) -> None:
         if not os.path.exists(dir):
             os.makedirs(dir)
 
-def move(path:str, dest:str) -> str:
+def move(path:str, dest:str, overwrite:bool=False) -> str:
     '''
     - Wrapper for `shutil.move()`
     - Moves file with some extra safety
@@ -293,13 +326,16 @@ def move(path:str, dest:str) -> str:
         - `dest` (`str`): path to destination directory
     - Return: `str` with path to destination file (formatted with `/`)
     '''
+    if gettype(path) != gettype(dest) != 'str':
+        raise TypeError('input must be a string')
+    overwrite = bool(overwrite)
     if not os.path.exists(path):
-        raise FileNotFoundError('The file does not exist')
+        raise FileNotFoundError('file does not exist')
     if os.path.exists(dest) and not os.path.isdir(dest):
-        raise FileExistsError('The destination exists as a file')
+        raise FileExistsError('destination exists as a file')
     makedirs(dest)
     if os.path.exists(f'{dest}/{os.path.basename(path)}'):
-        raise FileExistsError('The destination file already exists')
+        raise FileExistsError('destination file already exists')
     return forslash(sh.move(path, dest))
 
 def parent(path:str) -> str:
@@ -353,8 +389,8 @@ def rmdir(path:str, delroot:bool=True) -> int:
     - Return: number of deleted directories
     '''
     count = 0
-    if not os.path.isdir(path):
-        return 0
+    if os.path.exists(path) and not os.path.isdir(path):
+        raise ValueError('path is not a directory')
     files = listdir(path)
     if len(files):
         for item in files:
@@ -373,7 +409,7 @@ def splitpath(path:str) -> list:
     - Return: `list` of directories/file
     '''
     if gettype(path) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     path = forslash(path)
     parts = forslash(os.path.abspath(path)).split('/')
     parts[0] = f'{parts[0]}/' # root
