@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-12
+Updated: 2022-09-15
 
 Functions for various things
 '''
@@ -24,7 +24,7 @@ def month2num(month_word:str) -> str:
     - Return: `str` with zero-padded 2-digit number
     '''
     if gettype(month_word) != 'str':
-        raise TypeError('Input must be a string')
+        raise TypeError('input must be a string')
     month_list = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
                   'august', 'september', 'october', 'november', 'december']
     mydict = {}
@@ -50,7 +50,7 @@ def secmod(seconds:float, sep:str='') -> list:
     '''
     seconds = abs(int(seconds))
     if gettype(sep) != 'str':
-        raise ValueError('Input must be a string')
+        raise ValueError('input must be a string')
     if not seconds:
         return ['0s', 0, 0, 0, 0]
     result = ''
