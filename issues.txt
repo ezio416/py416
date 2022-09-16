@@ -1,7 +1,5 @@
 Windows
-- Mapped network drive letters
-    - getcwd
-        - entirely caused by os.path.realpath
+-
 
 Unix
 -
