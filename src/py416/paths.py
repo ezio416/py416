@@ -97,6 +97,15 @@ class File():
     def suffix(self) -> str:
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
 
+    def copy(self, dest:str):
+        '''
+        - Copies file/directory
+        - Input: `dest` (`str`): directory to copy file into
+        - The copy is not tracked
+        '''
+        copy(self.path, dest)
+        return self
+
     def delete(self, force:bool=False):
         '''
         - Deletes file/directory
@@ -109,18 +118,18 @@ class File():
 
     def move(self, dest:str):
         '''
-        - Moves file
+        - Moves file/directory
         - Input: `dest` (`str`): directory to move file into
         '''
         self.path = move(self.path, dest)
         return self
 
-    def rename(self, new_name:str):
+    def rename(self, newname:str):
         '''
         - Renames file, keeping in same directory
         - Input: `new_name` (`str`): new file name
         '''
-        self.path = rename(self.path, new_name)
+        self.path = rename(self.path, newname)
         return self
 
 def cd(dir:str='..') -> str:
@@ -173,29 +182,49 @@ def checkzip(path:str) -> bool:
     except FileNotFoundError:
         return False
 
+def copymove(func):
+    '''
+    - Wrapper for `py416.paths.copy()` and `py416.paths.move()`
+    - Copy and move are very similar, so this handles some of what they share
+    '''
+    def _copymove(path:str, dest:str, overwrite:bool=False):
+        if gettype(path) != gettype(dest) != 'str':
+            raise TypeError('input must be a string')
+        if getpath(path) == getpath(dest):
+            raise ValueError('you can\'t move something into itself')
+        overwrite = bool(overwrite)
+        if not os.path.exists(path):
+            raise FileNotFoundError('path does not exist')
+        if os.path.exists(dest) and not os.path.isdir(dest):
+            raise FileExistsError('you can\'t move something into a file')
+        makedirs(dest)
+        return forslash(func(path, dest, overwrite))
+    return _copymove
+
+@copymove
 def copy(path:str, dest:str, overwrite:bool=False) -> str:
     '''
-    - Wrapper for `shutil.copy2()`
-    - Copies file, creating destination if nonexistent
+    - Copies file or directory and all contents, creating destination if nonexistent
+    - Adds some extra safety to `shutil` functions with Exceptions
     - Input:
-        - `path` (`str`): path to file
-        - `dest` (`str`): path to destination directory
-        - `overwrite` (`bool`): whether to overwrite an existing file
-    - Return: `str` with path to copied file (formatted with `/`)
+        - `path` (`str`): path to desired file/directory
+        - `dest` (`str`): path to destination parent directory (where we're going into)
+        - `overwrite` (`bool`): whether to overwrite an existing file/directory
+            - Merges directories, but overwrites files if they exist
+            - Default: `False`
+    - Return: `str` with path to copied file/directory (formatted with `/`)
     '''
-    if gettype(path) != gettype(dest) != 'str':
-        raise TypeError('input must be a string')
-    overwrite = bool(overwrite)
-    if not os.path.exists(path):
-        raise FileNotFoundError('file does not exist')
-    if os.path.exists(dest) and not os.path.isdir(dest):
-        raise FileExistsError('destination exists as a file')
-    makedirs(dest)
     newpath = f'{dest}/{os.path.basename(path)}'
-    if os.path.exists(newpath) and not overwrite:
-        raise FileExistsError('destination file already exists')
-    sh.copy2(path, newpath)
-    return newpath
+    newpath_exists = os.path.exists(newpath)
+    if os.path.isfile(path): # copying file
+        if newpath_exists:
+            if overwrite:
+                return sh.copy2(path, newpath) # overwriting dest file
+            raise FileExistsError('destination file already exists') # not overwriting
+        return sh.copy2(path, newpath) # dest file doesn't exist, good
+    if newpath_exists and overwrite: # copying directory
+        return sh.copytree(path, newpath, dirs_exist_ok=True) # overwriting dest dir
+    return sh.copytree(path, newpath) # dest dir doesn't exist, or if it does, shutil raises FileExistsError
 
 def delete(path:str, force:bool=False) -> None:
     '''
@@ -335,26 +364,35 @@ def makedirs(*dirs, ignore_errors:bool=True) -> list:
                 errored.append(dir)
     return errored
 
+@copymove
 def move(path:str, dest:str, overwrite:bool=False) -> str:
     '''
-    - Wrapper for `shutil.move()`
-    - Moves file with some extra safety in the form of Exceptions
+    - Moves file or directory and all contents, creating destination if nonexistent
+    - Adds some extra safety to `shutil` functions with Exceptions
     - Input:
-        - `path` (`str`): path to file/directory
-        - `dest` (`str`): path to destination directory
-    - Return: `str` with path to destination file (formatted with `/`)
+        - `path` (`str`): path to desired file/directory
+        - `dest` (`str`): path to destination parent directory (where we're going into)
+        - `overwrite` (`bool`): whether to overwrite an existing file/directory
+            - Overwrites files if they exist
+            - Default: `False`
+    - Return: `str` with path to moved file/directory (formatted with `/`)
     '''
-    if gettype(path) != gettype(dest) != 'str':
-        raise TypeError('input must be a string')
-    overwrite = bool(overwrite)
-    if not os.path.exists(path):
-        raise FileNotFoundError('file does not exist')
-    if os.path.exists(dest) and not os.path.isdir(dest):
-        raise FileExistsError('destination exists as a file')
-    makedirs(dest)
-    if os.path.exists(f'{dest}/{os.path.basename(path)}'):
-        raise FileExistsError('destination file already exists')
-    return forslash(sh.move(path, dest))
+    newpath = f'{dest}/{os.path.basename(path)}'
+    newpath_exists = os.path.exists(newpath)
+    _move = lambda: sh.move(path, dest)
+    if os.path.isfile(path): # moving file
+        if newpath_exists:
+            if overwrite:
+                return _move() # overwriting dest file
+            raise FileExistsError('destination file already exists') # not overwriting
+        return _move() # dest file doesn't exist, good
+    if newpath_exists: # moving directory
+        if overwrite:
+            result = sh.copytree(path, newpath, dirs_exist_ok=True) # overwriting dest dir
+            delete(path, force=True) # deleting original (we're doing copy->delete manually)
+            return result
+        raise FileExistsError('destination directory already exists') # not overwriting
+    return _move() # dest dir doesn't exist, good
 
 def parent(path:str) -> str:
     '''
