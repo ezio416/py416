@@ -190,13 +190,13 @@ def copymove(func):
     def _copymove(path:str, dest:str, overwrite:bool=False):
         if gettype(path) != gettype(dest) != 'str':
             raise TypeError('input must be a string')
-        if getpath(path) == getpath(dest):
-            raise ValueError('you can\'t move something into itself')
-        overwrite = bool(overwrite)
         if not os.path.exists(path):
             raise FileNotFoundError('path does not exist')
         if os.path.exists(dest) and not os.path.isdir(dest):
             raise FileExistsError('you can\'t move something into a file')
+        if getpath(path) == getpath(dest):
+            raise ValueError('you can\'t move something into itself')
+        overwrite = bool(overwrite)
         makedirs(dest)
         return forslash(func(path, dest, overwrite))
     return _copymove
@@ -235,15 +235,16 @@ def delete(path:str, force:bool=False) -> None:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     force = bool(force)
-    if os.path.exists(path):
-        if os.path.isdir(path):
-            if force:
-                sh.rmtree(path)
-            else:
-                rmdir(path)
+    if os.path.isdir(path):
+        if force:
+            sh.rmtree(path)
         else:
-            os.remove(path)
+            rmdir(path)
+    else:
+        os.remove(path)
 
 def forslash(path:str) -> str:
     '''
@@ -273,6 +274,8 @@ def getpath(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     drives = ['/'] + [f'{ch}:/' for ch in 'abcdefghijklmnopqrstuvwxyz']
     if splitpath(path)[0].lower() not in drives: # relative path
         return f'{getcwd()}/{forslash(path)}'
@@ -293,6 +296,8 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     dirs = bool(dirs)
     files = bool(files)
     result = []
@@ -402,6 +407,8 @@ def parent(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     dirname = lambda path_: getpath(os.path.abspath(f'{getpath(path_)}/..'))
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
@@ -431,9 +438,11 @@ def rename(path:str, name:str) -> str:
     '''
     if gettype(path) != gettype(name) != 'str':
         raise TypeError('input must be a string')
-    new_path = f'{parent(path)}/{name}'
-    os.rename(path, new_path)
-    return new_path
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
+    newpath = f'{parent(path)}/{name}'
+    os.rename(path, newpath)
+    return newpath
 
 def rmdir(path:str, delroot:bool=True) -> int:
     '''
@@ -445,16 +454,18 @@ def rmdir(path:str, delroot:bool=True) -> int:
             - Default: `True`
     - Return: `int` with number of deleted directories
     '''
-    count = 0
-    if os.path.exists(path) and not os.path.isdir(path):
+    if gettype(path) != 'str':
+        raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
+    if not os.path.isdir(path):
         raise ValueError('path is not a directory')
-    files = listdir(path)
-    if len(files):
-        for item in files:
-            if os.path.isdir(item):
-                count += rmdir(item)
-    files = os.listdir(path)
-    if not len(files) and delroot:
+    delroot = bool(delroot)
+    count = 0
+    for item in listdir(path):
+        if os.path.isdir(item):
+            count += rmdir(item)
+    if not len(listdir(path)) and delroot:
         if getpath(path) == getcwd():
             cd() # we're in the directory we're trying to delete, so go up
         os.rmdir(path)
@@ -487,6 +498,8 @@ def unzip(path:str, remove:bool=False) -> None:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     remove = bool(remove)
     fparent = parent(path)
     if path.endswith('.7z'):
@@ -516,6 +529,8 @@ def unzipdir(path:str='.', ignore_errors:bool=True) -> int:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    if not os.path.exists(path):
+        raise FileNotFoundError('path does not exist')
     ignore_errors = bool(ignore_errors)
     unzipped = 0
     while True:
