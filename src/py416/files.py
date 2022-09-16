@@ -1,8 +1,8 @@
 '''
-Name:    py416.paths
+Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-15
+Updated: 2022-09-16
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -20,7 +20,7 @@ class File():
         self.path = getpath(path)
 
     def __repr__(self):
-        return f"py416.paths.File('{self.path}')"
+        return f"py416.files.File('{self.path}')"
 
     def __str__(self):
         return self.path
