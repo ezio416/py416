@@ -20,7 +20,7 @@ class File():
         self.path = getpath(path)
 
     def __repr__(self):
-        return f"py416.filesystem.File('{self.path}')"
+        return f"py416.paths.File('{self.path}')"
 
     def __str__(self):
         return self.path
