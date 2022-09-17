@@ -2,7 +2,7 @@
 Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-16
+Updated: 2022-09-17
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -279,7 +279,7 @@ def getpath(path:str) -> str:
         return f'{getcwd()}/{forslash(path)}'
     return forslash(os.path.abspath(path))
 
-def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
+def listdir(path:str='.', dirs:bool=True, files:bool=True) -> list:
     '''
     - Wrapper for `os.listdir()`
     - Lists directories/files within a directory
@@ -298,8 +298,8 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
         return []
     dirs = bool(dirs)
     files = bool(files)
+    path = getpath(path)
     result = []
-    path = forslash(path) if path else getcwd()
     for child in os.listdir(path):
         child = f'{path}/{child}'
         if dirs and os.path.isdir(child):
