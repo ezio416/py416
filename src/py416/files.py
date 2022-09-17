@@ -132,7 +132,7 @@ class File():
         self.path = rename(self.path, newname)
         return self
 
-def cd(dir:str='..') -> str:
+def cd(path:str='..') -> str:
     '''
     - Wrapper for `os.chdir()`
     - Changes current working directory
@@ -141,12 +141,12 @@ def cd(dir:str='..') -> str:
         - Default: up a directory
     - Return: `str` with current working directory (formatted with `/`)
     '''
-    if gettype(dir) != 'str':
+    if gettype(path) != 'str':
         raise TypeError('input must be a string')
-    dir = getpath(dir)
-    makedirs(dir)
-    os.chdir(dir)
-    return dir
+    path = getpath(path)
+    makedirs(path)
+    os.chdir(path)
+    return path
 
 def checkzip(path:str) -> bool:
     '''
@@ -274,8 +274,6 @@ def getpath(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
     drives = ['/'] + [f'{ch}:/' for ch in 'abcdefghijklmnopqrstuvwxyz']
     if splitpath(path)[0].lower() not in drives: # relative path
         return f'{getcwd()}/{forslash(path)}'
@@ -407,9 +405,7 @@ def parent(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
-    dirname = lambda path_: getpath(os.path.abspath(f'{getpath(path_)}/..'))
+    dirname = lambda _path: getpath(os.path.abspath(f'{getpath(_path)}/..'))
     if getattr(sys, 'frozen', False):
         return dirname(sys.executable)
     try:
