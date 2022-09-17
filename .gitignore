@@ -8,6 +8,7 @@ env*/
 
 # Files
 upload.cmd
+upload_copy_pypi.py
 
 # General
 test*
