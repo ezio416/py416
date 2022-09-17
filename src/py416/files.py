@@ -295,7 +295,7 @@ def listdir(path:str='', dirs:bool=True, files:bool=True) -> list:
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
     if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
+        return []
     dirs = bool(dirs)
     files = bool(files)
     result = []
