@@ -2,7 +2,7 @@
 Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-17
+Updated: 2022-09-19
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -30,20 +30,20 @@ class File():
         return os.path.getatime(self.path)
 
     @property
-    def atimes(self) -> list:
-        return dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    def atimes(self) -> tuple:
+        return tuple(dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
-    def children(self) -> list:
-        return listdir(self.path) if self.isdir else []
+    def children(self) -> tuple:
+        return listdir(self.path) if self.isdir else ()
 
     @property
     def ctime(self) -> float:
         return os.path.getctime(self.path)
 
     @property
-    def ctimes(self) -> list:
-        return dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    def ctimes(self) -> tuple:
+        return tuple(dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
     def exists(self) -> bool:
@@ -66,8 +66,8 @@ class File():
         return os.path.getmtime(self.path)
 
     @property
-    def mtimes(self) -> list:
-        return dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(',')
+    def mtimes(self) -> tuple:
+        return tuple(dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
     def name(self) -> str:
@@ -78,7 +78,7 @@ class File():
         return File(parent(self.path))
 
     @property
-    def parts(self) -> list:
+    def parts(self) -> tuple:
         return splitpath(self.path)
 
     @property
@@ -279,7 +279,7 @@ def getpath(path:str) -> str:
         return f'{getcwd()}/{forslash(path)}'
     return forslash(os.path.abspath(path))
 
-def listdir(path:str='.', dirs:bool=True, files:bool=True) -> list:
+def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     '''
     - Wrapper for `os.listdir()`
     - Lists directories/files within a directory
@@ -290,7 +290,7 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> list:
             - Default: `True`
         - `files` (`bool`): whether to list files
             - Default: `True`
-    - Return: `list` of `str` with paths (formatted with `/`)
+    - Return: `tuple` of `str` with paths (formatted with `/`)
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
@@ -306,9 +306,9 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> list:
             result.append(child)
         if files and not os.path.isdir(child):
             result.append(child)
-    return result
+    return tuple(result)
 
-def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
+def log(path:str, msg:str, ts:bool=True, ts_args:tuple=(1,0,1,1,1,0)) -> None:
     '''
     - Logs to file with current timestamp
     - Creates file and its parent directory if nonexistent
@@ -337,7 +337,7 @@ def log(path:str, msg:str, ts:bool=True, ts_args:list=[1,0,1,1,1,0]) -> None:
     finally:
         sys.stdout = orig_stdout
 
-def makedirs(*dirs, ignore_errors:bool=True) -> list:
+def makedirs(*dirs, ignore_errors:bool=True) -> tuple:
     '''
     - Wrapper for `os.makedirs()`
     - Creates directories if nonexistent
@@ -348,7 +348,7 @@ def makedirs(*dirs, ignore_errors:bool=True) -> list:
         - `ignore_errors` (`bool`): whether to catch all Exceptions in the process
             - Useful to create as many of the requested directories as possible
             - Default: `True`
-    - Return: `list` of directories we failed to create
+    - Return: `tuple` of directories we failed to create
     '''
     if gettype(dirs) not in ['list', 'str', 'tuple']:
         raise TypeError('input must be a string, list, or tuple')
@@ -365,7 +365,7 @@ def makedirs(*dirs, ignore_errors:bool=True) -> list:
                 if not ignore_errors:
                     raise
                 errored.append(dir)
-    return errored
+    return tuple(errored)
 
 @copymove
 def move(path:str, dest:str, overwrite:bool=False) -> str:
@@ -420,8 +420,8 @@ def pathjoin(*parts) -> str:
     - Input: `parts` (iterable): directories/file to join together
     - Return: `str` with path (formatted with `/`)
     '''
-    parts = [str(item).replace('/', '').replace('\\', '') for item in unpack(parts)]
-    return '/' if parts == [''] else '/'.join(parts)
+    parts = (str(item).replace('/', '').replace('\\', '') for item in unpack(parts))
+    return '/' if parts == ('') else '/'.join(parts)
 
 def rename(path:str, name:str) -> str:
     '''
@@ -468,11 +468,11 @@ def rmdir(path:str, delroot:bool=True) -> int:
         count += 1
     return count
 
-def splitpath(path:str) -> list:
+def splitpath(path:str) -> tuple:
     '''
     - Splits a path string into its parts
     - Input: `path` (`str`): path
-    - Return: `list` of directories/file
+    - Return: `tuple` of directories/file
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
@@ -481,8 +481,8 @@ def splitpath(path:str) -> list:
     parts[0] = f'{parts[0]}/' # root
     if path.startswith('//'): # Windows network location
         result = [f'//{parts[2]}'] # network root
-        return result + [a for a in parts[3:]] if len(parts) > 2 else result
-    return [parts[0]] if parts[1] == '' else parts
+        return tuple(result + [a for a in parts[3:]]) if len(parts) > 2 else tuple(result)
+    return (parts[0],) if parts[1] == '' else tuple(parts)
 
 def unzip(path:str, remove:bool=False) -> None:
     '''
