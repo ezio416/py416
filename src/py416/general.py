@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-15
+Updated: 2022-09-19
 
 Functions for various things
 '''
@@ -35,7 +35,7 @@ def month2num(month_word:str) -> str:
     except KeyError:
         return ''
 
-def secmod(seconds:float, sep:str='') -> list:
+def secmod(seconds:float, sep:str='') -> tuple:
     '''
     - Formats a number of seconds nicely, split by days, hours, minutes, and seconds
         - i.e. `'04d16h47m09s'`
@@ -45,8 +45,8 @@ def secmod(seconds:float, sep:str='') -> list:
         - `sep` (`str`): separator between values
             - Default: no separator
     - Return:
-        - `list` with `str` in given format and `int` values
-            - i.e. `['04d16h47m09s', 9, 47, 16, 4]`
+        - `tuple` with `str` in given format and `int` values
+            - i.e. `[('04d16h47m09s', 9, 47, 16, 4)`
     '''
     seconds = abs(int(seconds))
     if gettype(sep) != 'str':
@@ -68,7 +68,7 @@ def secmod(seconds:float, sep:str='') -> list:
         result += zf(s) + 's'
     if result.endswith(sep):
         result = result.replace(sep, '')
-    return [result, s, m, h, d]
+    return result, s, m, h, d
 
 def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
     '''
@@ -91,7 +91,7 @@ def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:b
         - `str` with current timestamp with chosen formatting
             - i.e. `[2022-08-18 07:15:43.962 +00:00]`
     '''
-    brackets, micro, offset, readable, seconds, utc = [bool(flag) for flag in [brackets, micro, offset, readable, seconds, utc]]
+    brackets, micro, offset, readable, seconds, utc = (bool(flag) for flag in (brackets, micro, offset, readable, seconds, utc))
     if utc:
         now = dt.utcnow()
         offset_val = '+00:00'
@@ -113,10 +113,14 @@ def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:b
         now = f'[{now}]'
     return now.strip()
 
-def unpack(iterable) -> list:
+def unpack(iterable, return_list:bool=False):
     '''
-    - Recursively retrieves items from nested `list` and `tuple` types
-    - Input: `iterable`: `list`/`tuple`
+    - Recursively retrieves items from some iterable types
+    - Input:
+        - `iterable` (`list`/`tuple`): thing to unpack
+        - `return_list` (`bool`): whether to return values in a list
+            - Used when this is called recursively
+            - Default: `False`
     - Return:
         - `list` of all retrieved items
         - `iterable` itself if not a `list`/`tuple`
@@ -124,12 +128,13 @@ def unpack(iterable) -> list:
     iterable_list = ['list', 'tuple']
     if gettype(iterable) not in iterable_list:
         return iterable
-    else:
-        values = []
-        for item in iterable:
-            if gettype(item) not in iterable_list:
-                values.append(item)
-            else:
-                values += unpack(item)
-    return values
+    values = []
+    for item in iterable:
+        if gettype(item) not in iterable_list:
+            values.append(item)
+        else:
+            values += unpack(item, return_list=True)
+    if return_list: # function was called recursively, return a list
+        return values
+    return tuple(values) # we're at the top, return a tuple
 
