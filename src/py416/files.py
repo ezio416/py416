@@ -274,10 +274,14 @@ def getpath(path:str) -> str:
     '''
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
+    path = forslash(path)
+    root = splitpath(path)[0].lower()
+    if root.startswith('//'): # Windows network location
+        return path
     drives = ['/'] + [f'{ch}:/' for ch in 'abcdefghijklmnopqrstuvwxyz']
-    if splitpath(path)[0].lower() not in drives: # relative path
-        return f'{getcwd()}/{forslash(path)}'
-    return forslash(os.path.abspath(path))
+    if root not in drives: # relative path
+        return f'{getcwd()}/{path}'
+    return path
 
 def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     '''
@@ -477,7 +481,7 @@ def splitpath(path:str) -> tuple:
     if gettype(path) != 'str':
         raise TypeError('input must be a string')
     path = forslash(path)
-    parts = forslash(os.path.abspath(path)).split('/')
+    parts = path.split('/')
     parts[0] = f'{parts[0]}/' # root
     if path.startswith('//'): # Windows network location
         result = [f'//{parts[2]}'] # network root
