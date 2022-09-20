@@ -2,7 +2,7 @@
 Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-19
+Updated: 2022-09-20
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -148,6 +148,23 @@ def cd(path:str='..') -> str:
     os.chdir(path)
     return path
 
+def checkwindrive(drive:str) -> str:
+    '''
+    - Checks if a given string is a Windows drive letter (i.e. 'C:', 'D:\\\\', 'E:/')
+    - Input: `drive` (`str`): string to check
+    - Return: `str` with drive (formatted with `/`)
+    '''
+    drive = forslash(drive).upper()
+    if len(drive) not in (2, 3):
+        return ''
+    if drive[0] not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' or drive[1] != ':':
+        return ''
+    if len(drive) == 3:
+        if drive[2] != '/':
+            return ''
+        return drive
+    return drive + '/'
+
 def checkzip(path:str) -> bool:
     '''
     - Checks if an archive file (.7z or .zip) exists and is valid
@@ -272,16 +289,41 @@ def getpath(path:str) -> str:
         - If relative, we assume it's in the current working directory
     - Return: `str` with path (formatted with `/`)
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    path = forslash(path)
-    root = splitpath(path)[0].lower()
-    if root.startswith('//'): # Windows network location
+    parts = list(splitpath(path))
+    path = joinpath(parts)
+    root = parts[0]
+    if root.startswith('//') or root == '/': # Windows network location or Unix root
         return path
-    drives = ['/'] + [f'{ch}:/' for ch in 'abcdefghijklmnopqrstuvwxyz']
-    if root not in drives: # relative path
-        return f'{getcwd()}/{path}'
-    return path
+    cwdrive = checkwindrive(root)
+    if cwdrive: # Windows root
+        parts[0] = cwdrive
+        return joinpath(parts)
+    return f'{getcwd()}/{path}'
+
+def joinpath(*parts) -> str:
+    '''
+    - Imitator for `os.path.join()`
+    - Joins parts of a path together in the order they were received
+    - Input: `parts` (iterable): directories/file to join together
+    - Return: `str` with path (formatted with `/`)
+    '''
+    parts = list(unpack([list(splitpath(part)) for part in unpack(parts)])) # split elements if partial paths
+    while '' in parts:
+        parts.remove('') # fixes rare cases, such as passing 'folder/..' to splitpath()
+    if not len(parts):
+        return '' # nothing was passed, or it was cancelled out with '..'
+    if parts[0].startswith('//'):
+        return '/'.join(parts) # Windows network location
+    if parts == ['/']:
+        return '/' # Unix root, alone
+    if parts[0] == '/':
+        return '/' + '/'.join(parts[1:]) # Unix root, preceding
+    cwdrive = checkwindrive(parts[0])
+    if cwdrive:
+        if len(parts) == 1:
+            return cwdrive # Windows drive root, alone
+        return cwdrive + '/'.join(parts[1:]) # Windows drive root, preceding
+    return '/'.join(parts) # all else
 
 def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     '''
@@ -296,13 +338,11 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
             - Default: `True`
     - Return: `tuple` of `str` with paths (formatted with `/`)
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
+    path = getpath(path)
     if not os.path.exists(path):
-        return []
+        return ()
     dirs = bool(dirs)
     files = bool(files)
-    path = getpath(path)
     result = []
     for child in os.listdir(path):
         child = f'{path}/{child}'
@@ -326,7 +366,7 @@ def log(path:str, msg:str, ts:bool=True, ts_args:tuple=(1,0,1,1,1,0)) -> None:
     '''
     if gettype(path) != gettype(msg) != 'str':
         raise ValueError('input must be a string')
-    if gettype(ts_args) not in ['list', 'tuple']:
+    if gettype(ts_args) not in ('list', 'tuple'):
         raise ValueError('input must be a list/tuple')
     ts = bool(ts)
     makedirs(parent(path))
@@ -354,7 +394,7 @@ def makedirs(*dirs, ignore_errors:bool=True) -> tuple:
             - Default: `True`
     - Return: `tuple` of directories we failed to create
     '''
-    if gettype(dirs) not in ['list', 'str', 'tuple']:
+    if gettype(dirs) not in ('list', 'str', 'tuple'):
         raise TypeError('input must be a string, list, or tuple')
     ignore_errors = bool(ignore_errors)
     errored = []
@@ -417,16 +457,6 @@ def parent(path:str) -> str:
     except NameError:
         return getcwd()
 
-def pathjoin(*parts) -> str:
-    '''
-    - Imitator for `os.path.join()`
-    - Joins parts of a path into a string path
-    - Input: `parts` (iterable): directories/file to join together
-    - Return: `str` with path (formatted with `/`)
-    '''
-    parts = (str(item).replace('/', '').replace('\\', '') for item in unpack(parts))
-    return '/' if parts == ('') else '/'.join(parts)
-
 def rename(path:str, name:str) -> str:
     '''
     - Wrapper for `os.rename()`
@@ -478,15 +508,34 @@ def splitpath(path:str) -> tuple:
     - Input: `path` (`str`): path
     - Return: `tuple` of directories/file
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
+    if not path:
+        return '',
     path = forslash(path)
     parts = path.split('/')
-    parts[0] = f'{parts[0]}/' # root
+    if path == '.': # current directory
+        path = getcwd()
+    elif path == '..': # parent of current directory
+        path = forslash(os.path.dirname(getcwd()))
+    elif parts[-1] == '.': # path/. is just path
+        path = path[:-2]
+    elif parts[-1] == '..': # parent of path
+        if len(parts) == 2: # 'folder/..'
+            return '',
+        path = os.path.dirname(os.path.dirname(path))
+    parts = path.split('/')
+
+    if not parts[0]: # Unix root
+        parts[0] = '/'
+    cwdrive = checkwindrive(parts[0])
+    if cwdrive: # Windows drive root
+        parts[0] = cwdrive
     if path.startswith('//'): # Windows network location
-        result = [f'//{parts[2]}'] # network root
+        result = [f'//{parts[2]}']
         return tuple(result + [a for a in parts[3:]]) if len(parts) > 2 else tuple(result)
-    return (parts[0],) if parts[1] == '' else tuple(parts)
+    if len(parts) == 2:
+        if parts[1] == '':
+            return parts[0],
+    return tuple(parts)
 
 def unzip(path:str, remove:bool=False) -> None:
     '''
