@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-19
+Updated: 2022-09-20
 
 Functions for various things
 '''
@@ -113,16 +113,12 @@ def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:b
         now = f'[{now}]'
     return now.strip()
 
-def unpack(iterable, return_list:bool=False):
+def unpack(iterable) -> tuple:
     '''
     - Recursively retrieves items from some iterable types
-    - Input:
-        - `iterable` (`list`/`tuple`): thing to unpack
-        - `return_list` (`bool`): whether to return values in a list
-            - Used when this is called recursively
-            - Default: `False`
+    - Input: `iterable` (`list`/`tuple`): thing to unpack
     - Return:
-        - `list` of all retrieved items
+        - `tuple` of all retrieved items
         - `iterable` itself if not a `list`/`tuple`
     '''
     iterable_list = ['list', 'tuple']
@@ -133,8 +129,6 @@ def unpack(iterable, return_list:bool=False):
         if gettype(item) not in iterable_list:
             values.append(item)
         else:
-            values += unpack(item, return_list=True)
-    if return_list: # function was called recursively, return a list
-        return values
-    return tuple(values) # we're at the top, return a tuple
+            values += list(unpack(item))
+    return tuple(values)
 
