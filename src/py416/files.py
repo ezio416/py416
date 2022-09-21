@@ -198,7 +198,7 @@ def checkzip(path:str) -> bool:
 
 def copymove(func):
     '''
-    - Wrapper for `py416.paths.copy()` and `py416.paths.move()`
+    - Wrapper for `py416.files.copy()` and `py416.files.move()`
     - Copy and move are very similar, so this handles some of what they share
     '''
     def _copymove(path:str, dest:str, overwrite:bool=False):
