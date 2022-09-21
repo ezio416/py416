@@ -2,7 +2,7 @@
 Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-20
+Updated: 2022-09-21
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -290,6 +290,8 @@ def getpath(path:str) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     parts = list(splitpath(path))
+    if parts == ['']: # special case
+        return ''
     path = joinpath(parts)
     root = parts[0]
     if root.startswith('//') or root == '/': # Windows network location or Unix root
@@ -308,8 +310,10 @@ def joinpath(*parts) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     parts = list(unpack([list(splitpath(part)) for part in unpack(parts)])) # split elements if partial paths
+    if parts == ['/', '/']: # special case
+        return '/'
     while '' in parts:
-        parts.remove('') # fixes rare cases, such as passing 'folder/..' to splitpath()
+        parts.remove('') # special case, such as passing 'folder/..' to splitpath()
     if not len(parts):
         return '' # nothing was passed, or it was cancelled out with '..'
     if parts[0].startswith('//'):
@@ -323,7 +327,7 @@ def joinpath(*parts) -> str:
         if len(parts) == 1:
             return cwdrive # Windows drive root, alone
         return cwdrive + '/'.join(parts[1:]) # Windows drive root, preceding
-    return '/'.join(parts) # all else
+    return '/'.join(parts)
 
 def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     '''
@@ -345,7 +349,7 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     files = bool(files)
     result = []
     for child in os.listdir(path):
-        child = f'{path}/{child}'
+        child = joinpath(path, child)
         if dirs and os.path.isdir(child):
             result.append(child)
         if files and not os.path.isdir(child):
@@ -447,15 +451,14 @@ def parent(path:str) -> str:
     - Input: `path` (`str`): path to find the parent of
     - Return: `str` with path (formatted with `/`)
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    dirname = lambda _path: getpath(os.path.abspath(f'{getpath(_path)}/..'))
-    if getattr(sys, 'frozen', False):
-        return dirname(sys.executable)
-    try:
-        return dirname(path)
-    except NameError:
-        return getcwd()
+    path = getpath(path)
+    if not path:
+        return ''
+    if any([path == '/', # Root
+            checkwindrive(path),
+            path.startswith('//') and len(splitpath(path)) == 1]):
+        return path
+    return getpath(f'{path}/..')
 
 def rename(path:str, name:str) -> str:
     '''
@@ -511,6 +514,10 @@ def splitpath(path:str) -> tuple:
     if not path:
         return '',
     path = forslash(path)
+    win_net = False
+    
+    if path in ('/', '/.', '/..'): # special cases
+        return '/',
     parts = path.split('/')
     if path == '.': # current directory
         path = getcwd()
@@ -521,7 +528,12 @@ def splitpath(path:str) -> tuple:
     elif parts[-1] == '..': # parent of path
         if len(parts) == 2: # 'folder/..'
             return '',
+        if path.startswith('//'): # Windows network location
+            path = path.lstrip('/')
+            win_net = True
         path = os.path.dirname(os.path.dirname(path))
+        if win_net:
+            path = '//' + path
     parts = path.split('/')
 
     if not parts[0]: # Unix root
