@@ -2,7 +2,7 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-20
+Updated: 2022-09-21
 
 Functions for various things
 '''
@@ -45,8 +45,8 @@ def secmod(seconds:float, sep:str='') -> tuple:
         - `sep` (`str`): separator between values
             - Default: no separator
     - Return:
-        - `tuple` with `str` in given format and `int` values
-            - i.e. `[('04d16h47m09s', 9, 47, 16, 4)`
+        - `tuple` with `str` in requested format and `int` values
+            - i.e. `('04d16h47m09s', 9, 47, 16, 4)`
     '''
     seconds = abs(int(seconds))
     if gettype(sep) != 'str':
