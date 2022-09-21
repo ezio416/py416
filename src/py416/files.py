@@ -141,8 +141,6 @@ def cd(path:str='..') -> str:
         - Default: up a directory
     - Return: `str` with current working directory (formatted with `/`)
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
     path = getpath(path)
     makedirs(path)
     os.chdir(path)
@@ -175,8 +173,7 @@ def checkzip(path:str) -> bool:
         - `True`: file exists and is valid
         - `False`: file doesn't exist, possibly because we deleted it due to corruption
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
+    path = getpath(path)
     try:
         if path.endswith('.7z'):
             from py7zr import exceptions, SevenZipFile
@@ -205,15 +202,15 @@ def copymove(func):
     - Copy and move are very similar, so this handles some of what they share
     '''
     def _copymove(path:str, dest:str, overwrite:bool=False):
-        if gettype(path) != gettype(dest) != 'str':
-            raise TypeError('input must be a string')
-        if not os.path.exists(path):
-            raise FileNotFoundError('path does not exist')
-        if os.path.exists(dest) and not os.path.isdir(dest):
-            raise FileExistsError('you can\'t move something into a file')
-        if getpath(path) == getpath(dest):
-            raise ValueError('you can\'t move something into itself')
+        path = getpath(path)
+        dest = getpath(dest)
         overwrite = bool(overwrite)
+        if not os.path.exists(path):
+            raise FileNotFoundError(f'not found: {path}')
+        if path == dest:
+            raise ValueError(f'you can\'t move something into itself: {path}')
+        if os.path.exists(dest) and not os.path.isdir(dest):
+            raise FileExistsError(f'you can\'t move something into a file: {dest}')
         makedirs(dest)
         return forslash(func(path, dest, overwrite))
     return _copymove
@@ -231,17 +228,17 @@ def copy(path:str, dest:str, overwrite:bool=False) -> str:
             - Default: `False`
     - Return: `str` with path to copied file/directory (formatted with `/`)
     '''
-    newpath = f'{dest}/{os.path.basename(path)}'
-    newpath_exists = os.path.exists(newpath)
+    new_path = f'{dest}/{os.path.basename(path)}'
+    newpath_exists = os.path.exists(new_path)
     if os.path.isfile(path): # copying file
         if newpath_exists:
             if overwrite:
-                return sh.copy2(path, newpath) # overwriting dest file
+                return sh.copy2(path, new_path) # overwriting dest file
             raise FileExistsError('destination file already exists') # not overwriting
-        return sh.copy2(path, newpath) # dest file doesn't exist, good
+        return sh.copy2(path, new_path) # dest file doesn't exist, good
     if newpath_exists and overwrite: # copying directory
-        return sh.copytree(path, newpath, dirs_exist_ok=True) # overwriting dest dir
-    return sh.copytree(path, newpath) # dest dir doesn't exist, or if it does, shutil raises FileExistsError
+        return sh.copytree(path, new_path, dirs_exist_ok=True) # overwriting dest dir
+    return sh.copytree(path, new_path) # dest dir doesn't exist, or if it does, shutil raises FileExistsError
 
 def delete(path:str, force:bool=False) -> None:
     '''
@@ -250,11 +247,10 @@ def delete(path:str, force:bool=False) -> None:
         - `path` (`str`): path to file or directory
         - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
+    path = getpath(path)
     force = bool(force)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f'not found: {path}')
     if os.path.isdir(path):
         if force:
             sh.rmtree(path)
@@ -271,7 +267,7 @@ def forslash(path:str) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     if gettype(path) != 'str':
-        raise TypeError('input must be a string')
+        raise TypeError(f'input must be a string; invalid: {path}')
     return path.replace('\\', '/')
 
 def getcwd() -> str:
@@ -343,10 +339,10 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
     - Return: `tuple` of `str` with paths (formatted with `/`)
     '''
     path = getpath(path)
-    if not os.path.exists(path):
-        return ()
     dirs = bool(dirs)
     files = bool(files)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f'not found: {path}')
     result = []
     for child in os.listdir(path):
         child = joinpath(path, child)
@@ -368,11 +364,12 @@ def log(path:str, msg:str, ts:bool=True, ts_args:tuple=(1,0,1,1,1,0)) -> None:
         - `ts_args` (`list`/`tuple`): arguments to pass to `py416.timestamp()`
             - Default example: [2022-08-19 13:24:54 -06:00]
     '''
-    if gettype(path) != gettype(msg) != 'str':
-        raise ValueError('input must be a string')
-    if gettype(ts_args) not in ('list', 'tuple'):
-        raise ValueError('input must be a list/tuple')
+    path = getpath(path)
+    if gettype(msg) != 'str':
+        raise ValueError(f'input must be a string; invalid: {msg}')
     ts = bool(ts)
+    if gettype(ts_args) not in ('list', 'tuple'):
+        raise ValueError(f'input must be a list/tuple; invalid: {ts_args}')
     makedirs(parent(path))
     now = timestamp(*ts_args) + '  ' if ts else ''
     orig_stdout = sys.stdout
@@ -399,13 +396,14 @@ def makedirs(*dirs, ignore_errors:bool=True) -> tuple:
     - Return: `tuple` of directories we failed to create
     '''
     if gettype(dirs) not in ('list', 'str', 'tuple'):
-        raise TypeError('input must be a string, list, or tuple')
+        raise TypeError(f'input must be a string/list/tuple; invalid: {dirs}')
     ignore_errors = bool(ignore_errors)
     errored = []
     for dir in unpack(dirs):
         if gettype(dir) != 'str':
             errored.append(dir)
             continue
+        dir = getpath(dir)
         if not os.path.exists(dir):
             try:
                 os.makedirs(dir)
@@ -435,14 +433,14 @@ def move(path:str, dest:str, overwrite:bool=False) -> str:
         if newpath_exists:
             if overwrite:
                 return _move() # overwriting dest file
-            raise FileExistsError('destination file already exists') # not overwriting
+            raise FileExistsError(f'destination file already exists: {newpath}')
         return _move() # dest file doesn't exist, good
     if newpath_exists: # moving directory
         if overwrite:
             result = sh.copytree(path, newpath, dirs_exist_ok=True) # overwriting dest dir
             delete(path, force=True) # deleting original (we're doing copy->delete manually)
             return result
-        raise FileExistsError('destination directory already exists') # not overwriting
+        raise FileExistsError(f'destination directory already exists: {newpath}')
     return _move() # dest dir doesn't exist, good
 
 def parent(path:str) -> str:
@@ -469,10 +467,11 @@ def rename(path:str, name:str) -> str:
         - `name` (`str`): new basename for file (not path)
     - Return: `str` with new path (formatted with `/`)
     '''
-    if gettype(path) != gettype(name) != 'str':
-        raise TypeError('input must be a string')
+    path = getpath(path)
+    if gettype(name) != 'str':
+        raise TypeError(f'input must be a string; invalid: {name}')
     if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
+        raise FileNotFoundError(f'not found: {path}')
     newpath = f'{parent(path)}/{name}'
     os.rename(path, newpath)
     return newpath
@@ -487,19 +486,18 @@ def rmdir(path:str, delroot:bool=True) -> int:
             - Default: `True`
     - Return: `int` with number of deleted directories
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
-    if not os.path.isdir(path):
-        raise ValueError('path is not a directory')
+    path = getpath(path)
     delroot = bool(delroot)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f'not found: {path}')
+    if not os.path.isdir(path):
+        raise ValueError(f'not a directory: {path}')
     count = 0
     for item in listdir(path):
         if os.path.isdir(item):
             count += rmdir(item)
     if not len(listdir(path)) and delroot:
-        if getpath(path) == getcwd():
+        if path == getcwd():
             cd() # we're in the directory we're trying to delete, so go up
         os.rmdir(path)
         count += 1
@@ -557,11 +555,10 @@ def unzip(path:str, remove:bool=False) -> None:
         - `remove` (`bool`): whether to delete archive after unzipping
             - Default: `False`
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
+    path = getpath(path)
     remove = bool(remove)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f'not found: {path}')
     fparent = parent(path)
     if path.endswith('.7z'):
         from py7zr import unpack_7zarchive
@@ -573,26 +570,24 @@ def unzip(path:str, remove:bool=False) -> None:
         if remove:
             delete(path)
     else:
-        raise NotImplementedError('unsupported archive format')
+        raise NotImplementedError(f'unsupported archive format: {path.split(".")[-1]}')
 
-def unzipdir(path:str='.', ignore_errors:bool=True) -> int:
+def unzipdir(path:str, ignore_errors:bool=True) -> int:
     '''
-    - Unzips all archives in a directory until it is unable to continue
+    - Unzips all archives in a directory (only 1st level) until it is unable to continue
     - Deletes all archives as it unzips
     - Supports archives of type: (.7z, .gz, .rar, .tar, .zip)
     - Input:
-        - `path` (`str`): directory from which to unzip archives
-            - Default: current working directory
+        - `path` (`str`): directory containing archive files
         - `ignore_errors` (`bool`): whether to catch all Exceptions in unzipping
             - Useful to unzip everything possible in the directory
             - Default: `True`
     - Return: `int` with number of unzipped archives
     '''
-    if gettype(path) != 'str':
-        raise TypeError('input must be a string')
-    if not os.path.exists(path):
-        raise FileNotFoundError('path does not exist')
+    path = getpath(path)
     ignore_errors = bool(ignore_errors)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f'not found: {path}')
     unzipped = 0
     while True:
         unzipped_this_run = 0
