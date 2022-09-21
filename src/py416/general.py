@@ -24,7 +24,7 @@ def month2num(month_word:str) -> str:
     - Return: `str` with zero-padded 2-digit number
     '''
     if gettype(month_word) != 'str':
-        raise TypeError('input must be a string')
+        raise TypeError(f'input must be a string; invalid: {month_word}')
     month_list = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
                   'august', 'september', 'october', 'november', 'december']
     mydict = {}
@@ -50,7 +50,7 @@ def secmod(seconds:float, sep:str='') -> tuple:
     '''
     seconds = abs(int(seconds))
     if gettype(sep) != 'str':
-        raise ValueError('input must be a string')
+        raise ValueError(f'input must be a string; invalid: {sep}')
     if not seconds:
         return ['0s', 0, 0, 0, 0]
     result = ''
@@ -66,8 +66,7 @@ def secmod(seconds:float, sep:str='') -> tuple:
         result += zf(m) + 'm' + sep
     if s:
         result += zf(s) + 's'
-    if result.endswith(sep):
-        result = result.replace(sep, '')
+    result = result.rstrip(sep)
     return result, s, m, h, d
 
 def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
@@ -121,12 +120,12 @@ def unpack(iterable) -> tuple:
         - `tuple` of all retrieved items
         - `iterable` itself if not a `list`/`tuple`
     '''
-    iterable_list = ['list', 'tuple']
-    if gettype(iterable) not in iterable_list:
+    iterables = ('list', 'tuple')
+    if gettype(iterable) not in iterables:
         return iterable
     values = []
     for item in iterable:
-        if gettype(item) not in iterable_list:
+        if gettype(item) not in iterables:
             values.append(item)
         else:
             values += list(unpack(item))
