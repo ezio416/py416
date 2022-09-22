@@ -111,22 +111,22 @@ def test_getpath(i, o):
 def test_joinpath(i, o):
     assert p4f.joinpath(i) == o
 
-def test_listdir(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
-    d1 = f'{str_path}/testdir'
-    f1 = f'{str_path}/file.txt'
-    f2 = f'{d1}/file2.txt'
-    os.makedirs(d1)
-    with open(f1, 'a') as f:
-        f.write('this is file number 1')
-    with open(f2, 'a') as f:
-        f.write('this is file number 2')
-    check.is_in(d1, p4f.listdir(str_path))
-    check.is_in(d1, p4f.listdir(str_path, files=False))
-    check.is_in(f1, p4f.listdir(str_path))
-    check.is_in(f1, p4f.listdir(str_path, dirs=False))
-    check.is_in(f2, p4f.listdir(d1))
-    check.is_in(f2, p4f.listdir(d1, dirs=False))
+# def test_listdir(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     d1 = f'{str_path}/testdir'
+#     f1 = f'{str_path}/file.txt'
+#     f2 = f'{d1}/file2.txt'
+#     os.makedirs(d1)
+#     with open(f1, 'a') as f:
+#         f.write('this is file number 1')
+#     with open(f2, 'a') as f:
+#         f.write('this is file number 2')
+#     check.is_in(d1, p4f.listdir(str_path))
+#     check.is_in(d1, p4f.listdir(str_path, files=False))
+#     check.is_in(f1, p4f.listdir(str_path))
+#     check.is_in(f1, p4f.listdir(str_path, dirs=False))
+#     check.is_in(f2, p4f.listdir(d1))
+#     check.is_in(f2, p4f.listdir(d1, dirs=False))
 
 def test_log():
     pass
