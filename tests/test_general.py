@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import sys
 
 import pytest
@@ -71,10 +72,17 @@ from src.py416.files import File
     ((3, f'g', {6, 7}), 'tuple'),
     ((True, 98), 'tuple'),
 
-    (File, 'type'),
+    (File(''), 'src.py416.files.File'),
 ])
 def test_gettype(i, o):
     assert g.gettype(i) == o
+
+def test_gettype_Path():
+    p = Path()
+    if os.name == 'nt':
+        assert g.gettype(p) == 'pathlib.WindowsPath'
+    elif os.name == 'posix':
+        assert g.gettype(p) == 'pathlib.PosixPath'
 
 @pytest.mark.parametrize('i,o', [
     ('january', '01'),
