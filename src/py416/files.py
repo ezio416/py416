@@ -2,7 +2,7 @@
 Name:    py416.files
 Author:  Ezio416
 Created: 2022-08-16
-Updated: 2022-09-21
+Updated: 2022-09-22
 
 Functions for file system manipulation
 OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
@@ -547,6 +547,7 @@ def splitpath(path:str) -> tuple:
 def unzip(path:str, remove:bool=False) -> None:
     '''
     - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
+    - Imports `py7zr` if a file ends with .7z
     - Input:
         - `path` (`str`): path to archive file
         - `remove` (`bool`): whether to delete archive after unzipping
@@ -574,6 +575,7 @@ def unzipdir(path:str, ignore_errors:bool=True) -> int:
     - Unzips all archives in a directory (only 1st level) until it is unable to continue
     - Deletes all archives as it unzips
     - Supports archives of type: (.7z, .gz, .rar, .tar, .zip)
+    - Imports `py7zr` if a file ends with .7z
     - Input:
         - `path` (`str`): directory containing archive files
         - `ignore_errors` (`bool`): whether to catch all Exceptions in unzipping
@@ -593,6 +595,8 @@ def unzipdir(path:str, ignore_errors:bool=True) -> int:
                 if not unzip(file, remove=True):
                     unzipped += 1
                     unzipped_this_run += 1
+            except ModuleNotFoundError:
+                raise
             except Exception:
                 if not ignore_errors:
                     raise
