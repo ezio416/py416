@@ -11,45 +11,9 @@ sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/..')
 import src.py416.files as p4f
 
 def test_File():
-    print(test_File.__name__)
-
-    # dirs = []
-    # files = []
-    # for item in [f.File(file) for file in f.listdir('D:/test/test2')]:
-    #     if item.isdir:
-    #         dirs.append(item)
-    #     else:
-    #         files.append(item)
-
-    # a = f.File('D:/test/a.txt')
-    # print(a.name)
-    # print('none')
-    # a.rename('ickandballs.txt')
-    # a.rename('fuckyou.csv').move('D:/test/d').delete()
-    # a.move('D:/test/e')
-    # a.move('D:/test/f')
-    # a.move('C:/test')
-    # a.rename('a.txt')
-    # b = f.File('M:/test/b')
-    # b.delete()
-    # b.move('D:/test/c')
-    # b.rename('c')
-    # print(b.exists)
-    # f.cd('M:/deciPush')
-    # cdir = '\\\\bdi-az-data01\\Projects'
-    # c = f.File(cdir)
-    # d = f.File('.')
-    # e = p4f.File('..')
-    # h = f.File('M:/')
-
-    # print('end test_File')
     pass
 
 def test_cd():
-    # a = p4f.cd('D:/test')
-    # print(a)
-    # b = p4f.cd('M:')
-    # print(b)
     pass
 
 @pytest.mark.parametrize('i,o', [
@@ -71,12 +35,6 @@ def test_checkzip():
     pass
 
 def test_copy():
-    # d1 = 'D:/test/d1'
-    # d2 = 'D:/test/d2'
-    # f1 = 'D:/test/f1.txt'
-
-    # a = p4f.copy(d1, d1, overwrite=True)
-    # print(a)
     pass
 
 @pytest.mark.parametrize('i,o', [
@@ -152,8 +110,13 @@ def test_getpath(i, o):
 def test_joinpath(i, o):
     assert p4f.joinpath(i) == o
 
-def test_listdir():
-    pass
+# def test_listdir(tmp_path):
+#     str_path = str(tmp_path)
+#     f1 = f'{str_path}/file.txt'
+#     with open(f1, 'a'):
+#         pass
+#     f = p4f.listdir(str_path)
+#     assert type(f) == 
 
 def test_log():
     pass
@@ -227,22 +190,3 @@ def test_unzip():
 
 def test_unzipdir():
     pass
-
-# test_File()
-# test_cd()
-# test_checkwindrive()
-# test_checkzip()
-# test_copy()
-# test_forslash()
-# test_getcwd()
-# test_getpath()
-# test_joinpath()
-# test_listdir()
-# test_log()
-# test_move()
-# test_parent()
-# test_rename()
-# test_rmdir()
-# test_splitpath()
-# test_unzip()
-# test_unzipdir()
