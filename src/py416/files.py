@@ -141,7 +141,7 @@ def cd(path: str = '..') -> str:
     - Creates destination if nonexistent
     - Input: `dir` (`str`): directory path
         - Default: up a directory
-    - Return: `str` with current working directory (formatted with `/`)
+    - Return: `str` with current working directory
     '''
     path = getpath(path)
     makedirs(path)
@@ -153,7 +153,7 @@ def checkwindrive(drive: str) -> str:
     '''
     - Checks if a given string is a Windows drive letter (i.e. 'C:', 'D:\\\\', 'E:/')
     - Input: `drive` (`str`): string to check
-    - Return: `str` with drive (formatted with `/`)
+    - Return: `str` with drive
     '''
     drive = forslash(drive).upper()
     if len(drive) not in (2, 3):
@@ -232,7 +232,7 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
         - `overwrite` (`bool`): whether to overwrite an existing file/directory
             - Merges directories, but overwrites files if they exist
             - Default: `False`
-    - Return: `str` with path to copied file/directory (formatted with `/`)
+    - Return: `str` with path to copied file/directory
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
@@ -252,7 +252,8 @@ def delete(path: str, force: bool = False) -> None:
     - Deletes file or directory
     - Input:
         - `path` (`str`): path to file or directory
-        - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory
+        - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory and its contents
+            - Default: `False`
     '''
     path = getpath(path)
     force = bool(force)
@@ -272,7 +273,7 @@ def forslash(path: str) -> str:
     - Replaces `\\` in paths with `/`
     - Used to unify path formatting between OS types
     - Input: `path` (`str`): path string
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with path
     '''
     if gettype(path) != 'str':
         raise TypeError(f'input must be a string; invalid: {path}')
@@ -283,7 +284,7 @@ def getcwd() -> str:
     '''
     - Wrapper for `os.getcwd()`
     - Gets the current working directory
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with path
     '''
     return forslash(os.getcwd())
 
@@ -293,7 +294,7 @@ def getpath(path: str) -> str:
     - Gets the full path of something
     - Input: `path` (`str`): absolute or relative path
         - If relative, we assume it's in the current working directory
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with path
     '''
     parts = list(splitpath(path))
     if parts == ['']:  # special case
@@ -314,7 +315,7 @@ def joinpath(*parts) -> str:
     - Imitator for `os.path.join()`
     - Joins parts of a path together in the order they were received
     - Input: `parts` (iterable): directories/file to join together
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with path
     '''
     parts = list(unpack([list(splitpath(part)) for part in unpack(parts)]))  # split elements if partial paths
     if parts == ['/', '/']:  # special case
@@ -348,7 +349,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
             - Default: `True`
         - `files` (`bool`): whether to list files
             - Default: `True`
-    - Return: `tuple` of `str` with paths (formatted with `/`)
+    - Return: `tuple` of `str` with paths
     '''
     path = getpath(path)
     dirs = bool(dirs)
@@ -428,6 +429,34 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     return tuple(errored)
 
 
+def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
+    '''
+    - Wrapper for `open()`
+    - Creates a new file
+    - Input:
+        - `path` (`str`): full path of desired new file
+        - `msg` (`str`): text to put in the file
+            - Default: nothing
+        - `overwrite` (`bool`): whether to overwrite a file if it already exists
+            - Default: `False`
+    - Return: `str` with path to new file
+    '''
+    path = getpath(path)
+    if gettype(msg) != 'str':
+        raise TypeError(f'input must be a string; invalid: {path}')
+    overwrite = bool(overwrite)
+    if os.path.exists(path) and overwrite:
+        delete(path, force=True)
+    if os.path.isfile(path):
+        raise FileExistsError(f'destination file already exists: {path}')
+    if os.path.isdir(path):
+        raise IsADirectoryError(f'destination already exists as a directory: {path}')
+    makedirs(parent(path))
+    with open(path, 'a') as file:
+        file.write(msg)
+    return path
+
+
 @copymove
 def move(path: str, dest: str, overwrite: bool = False) -> str:
     '''
@@ -439,7 +468,7 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
         - `overwrite` (`bool`): whether to overwrite an existing file/directory
             - Overwrites files if they exist
             - Default: `False`
-    - Return: `str` with path to moved file/directory (formatted with `/`)
+    - Return: `str` with path to moved file/directory
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
@@ -460,7 +489,7 @@ def parent(path: str) -> str:
     '''
     - Gets the directory containing something
     - Input: `path` (`str`): path to find the parent of
-    - Return: `str` with path (formatted with `/`)
+    - Return: `str` with path
     '''
     path = getpath(path)
     if not path:
@@ -479,7 +508,7 @@ def rename(path: str, name: str) -> str:
     - Input:
         - `path` (`str`): path to file/directory to be renamed
         - `name` (`str`): new basename for file (not path)
-    - Return: `str` with new path (formatted with `/`)
+    - Return: `str` with new path
     '''
     path = getpath(path)
     if gettype(name) != 'str':
