@@ -1,12 +1,16 @@
 '''
-Name:    py416.files
-Author:  Ezio416
-Created: 2022-08-16
-Updated: 2022-09-22
+- Author:  Ezio416
+- Created: 2022-08-16
+- Updated: 2022-09-23
 
 Functions for file system manipulation
-OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes
-Basically everything here takes strings, so pass strings
+    - OS-agnostic (Windows/Unix) - we always return Windows paths with forward slashes
+    - supports absolute and relative paths
+
+Does not yet support any paths that:
+    - are not strings
+    - contain multiple single or double-dots [ . | .. ]
+    - contain single or double-dots in the beginning/middle
 '''
 from datetime import datetime as dt
 import os
@@ -17,65 +21,130 @@ from .general import gettype, timestamp, unpack
 
 
 class File():
+    '''
+    - class for keeping track of a file/folder and performing actions on it
+
+    Parameters
+    ----------
+    path : str
+        - path to the file/folder we wish to track
+    '''
     def __init__(self, path):
         self.path = getpath(path)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"py416.files.File('{self.path}')"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.path
 
     @property
     def atime(self) -> float:
+        '''
+        - the last time the file/folder was accessed
+        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - i.e. 1663948504.5217497
+        '''
         return os.path.getatime(self.path)
 
     @property
     def atimes(self) -> tuple:
+        '''
+        - the last time the file/folder was accessed
+        - given as a tuple[int], starting with year and ending with microseconds
+        - i.e. (2022, 09, 23, 10, 01, 43, 544875)
+        '''
         return tuple(dt.fromtimestamp(self.atime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
     def children(self) -> tuple:
+        '''
+        - tuple of full paths for everything inside the folder
+        - if path is empty or not a folder, returns an empty tuple
+        - i.e. ('C:/thisfolder/file1.txt', 'C:/thisfolder/file2.csv') or ( )
+        '''
         return listdir(self.path) if self.isdir else ()
 
     @property
     def ctime(self) -> float:
+        '''
+        - the time the file/folder was created
+        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - i.e. 1663948504.5217497
+        '''
         return os.path.getctime(self.path)
 
     @property
     def ctimes(self) -> tuple:
+        '''
+        - the time the file/folder was created
+        - given as a tuple[int], starting with year and ending with microseconds
+        - i.e. (2022, 09, 23, 10, 01, 43, 544875)
+        '''
         return tuple(dt.fromtimestamp(self.ctime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
     def exists(self) -> bool:
+        '''
+        - whether the file/folder exists
+        '''
         return os.path.exists(self.path)
 
     @property
     def isdir(self) -> bool:
+        '''
+        - whether the file/folder is a folder
+        '''
         return os.path.isdir(self.path)
 
     @property
     def isfile(self) -> bool:
+        '''
+        - whether the file/folder is a file
+        '''
         return os.path.isfile(self.path)
 
     @property
     def isroot(self) -> bool:
+        '''
+        - whether the folder is a root directory
+            - on Unix, this is always a single forward slash ( / )
+            - on Windows, these are drive letters ( C:/ ) or network locations ( //netloc )
+        '''
         return self.path == str(self.parent)
 
     @property
     def mtime(self) -> float:
+        '''
+        - the last time the file/folder was modified
+        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - i.e. 1663948504.5217497
+        '''
         return os.path.getmtime(self.path)
 
     @property
     def mtimes(self) -> tuple:
+        '''
+        - the last time the file/folder was modified
+        - given as a tuple[int], starting with year and ending with microseconds
+        - i.e. (2022, 09, 23, 10, 01, 43, 544875)
+        '''
         return tuple(dt.fromtimestamp(self.mtime).strftime('%Y,%m,%d,%H,%M,%S,%f').split(','))
 
     @property
     def name(self) -> str:
+        '''
+        - the basename of the file/folder
+        - i.e. file.txt or foldername
+        '''
         return os.path.basename(self.path) if not self.isroot else self.path
 
     @property
-    def parent(self) -> str:
+    def parent(self) -> object:
+        '''
+        - the parent path of the file/folder
+        - creates a new File() instance for the parent path
+        '''
         return File(parent(self.path))
 
     @property
@@ -98,39 +167,63 @@ class File():
     def suffix(self) -> str:
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
 
-    def copy(self, dest: str):
+    def copy(self, dest: str, overwrite: bool = False) -> object:
         '''
-        - Copies file/directory
-        - Input: `dest` (`str`): directory to copy file into
-        - The copy is not tracked
+        - copies file/folder without tracking the created copy
+
+        Parameters
+        ----------
+            dest: str
+                - folder to copy file/folder into
+            overwrite: bool
+                - whether to overwrite if the destination file/folder already exists
+                - default: False
+        
+        Returns
+        -------
+            self: File
         '''
-        copy(self.path, dest)
+        copy(self.path, dest, overwrite=overwrite)
         return self
 
-    def delete(self, force: bool = False):
+    def delete(self, force: bool = False) -> object:
         '''
-        - Deletes file/directory
-        - If the object is a directory and all subdirs are empty, recursively deletes them
-        - Input: `force` (`bool`): whether to force deletion with `shutil.rmtree()`
+        - deletes file/folder, attempting to recursively delete empty subfolders
+
+        Parameters
+        ----------
+            force: bool
+                - whether to force deletion with `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_
+                - default: False
         '''
-        force = bool(force)
         delete(self.path, force=force)
         return self
 
-    def move(self, dest: str):
+    def move(self, dest: str, overwrite: bool = False) -> object:
         '''
-        - Moves file/directory
-        - Input: `dest` (`str`): directory to move file into
+        - moves file/folder, maintaining tracking at the new location
+
+        Parameters
+        ----------
+            dest: str
+                - folder to move file/folder into
+            overwrite: bool
+                - whether to overwrite if the destination file/folder already exists
+                - default: False
         '''
-        self.path = move(self.path, dest)
+        self.path = move(self.path, dest, overwrite=overwrite)
         return self
 
-    def rename(self, newname: str):
+    def rename(self, name: str) -> object:
         '''
-        - Renames file, keeping in same directory
-        - Input: `new_name` (`str`): new file name
+        - renames file/folder without moving it
+        
+        Parameters
+        ----------
+            name: str
+                - new basename for the file/folder
         '''
-        self.path = rename(self.path, newname)
+        self.path = rename(self.path, name)
         return self
 
 
