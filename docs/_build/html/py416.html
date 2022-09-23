@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>py416 package &mdash; py416  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> py416
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">py416 package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-src.py416.files">py416.files module</a></li>
+<li><a class="reference internal" href="#module-src.py416.general">py416.general module</a></li>
+<li><a class="reference internal" href="#module-src.py416.variables">py416.variables module</a></li>
+<li><a class="reference internal" href="#module-src.py416">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py416</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>py416 package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/py416.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="py416-package">
+<h1>py416 package<a class="headerlink" href="#py416-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-src.py416.files">
+<span id="py416-files-module"></span><h2>py416.files module<a class="headerlink" href="#module-src.py416.files" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Name:    py416.files</p></li>
+<li><p>Author:  Ezio416</p></li>
+<li><p>Created: 2022-08-16</p></li>
+<li><p>Updated: 2022-09-22</p></li>
+<li><p>Functions for file system manipulation</p></li>
+<li><p>OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes</p></li>
+<li><p>Basically everything here takes strings, so pass strings</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.py416.files.File">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">File</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#File"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.File" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.atime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#src.py416.files.File.atime" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.atimes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atimes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#src.py416.files.File.atimes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#src.py416.files.File.children" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.py416.files.File.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#File.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.File.copy" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Copies file/directory</p></li>
+<li><p>Input: <cite>dest</cite> (<cite>str</cite>): directory to copy file into</p></li>
+<li><p>The copy is not tracked</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.ctime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ctime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#src.py416.files.File.ctime" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.ctimes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ctimes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#src.py416.files.File.ctimes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.py416.files.File.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#File.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.File.delete" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Deletes file/directory</p></li>
+<li><p>If the object is a directory and all subdirs are empty, recursively deletes them</p></li>
+<li><p>Input: <cite>force</cite> (<cite>bool</cite>): whether to force deletion with <cite>shutil.rmtree()</cite></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.exists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#src.py416.files.File.exists" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.isdir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">isdir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#src.py416.files.File.isdir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.isfile">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">isfile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#src.py416.files.File.isfile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.isroot">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">isroot</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#src.py416.files.File.isroot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.py416.files.File.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#File.move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.File.move" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Moves file/directory</p></li>
+<li><p>Input: <cite>dest</cite> (<cite>str</cite>): directory to move file into</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.mtime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mtime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#src.py416.files.File.mtime" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.mtimes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mtimes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#src.py416.files.File.mtimes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.py416.files.File.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.py416.files.File.parent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.parts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#src.py416.files.File.parts" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.py416.files.File.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#File.rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.File.rename" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Renames file, keeping in same directory</p></li>
+<li><p>Input: <cite>new_name</cite> (<cite>str</cite>): new file name</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.root">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.py416.files.File.root" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#src.py416.files.File.size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.stem">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stem</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.py416.files.File.stem" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="src.py416.files.File.suffix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">suffix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#src.py416.files.File.suffix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.cd">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">cd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'..'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#cd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.cd" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.chdir()</cite></p></li>
+<li><p>Changes current working directory</p></li>
+<li><p>Creates destination if nonexistent</p></li>
+<li><dl class="simple">
+<dt>Input: <cite>dir</cite> (<cite>str</cite>): directory path</dt><dd><ul>
+<li><p>Default: up a directory</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>str</cite> with current working directory</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.checkwindrive">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">checkwindrive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#checkwindrive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.checkwindrive" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Checks if a given string is a Windows drive letter (i.e. ‘C:’, ‘D:\’, ‘E:/’)</p></li>
+<li><p>Input: <cite>drive</cite> (<cite>str</cite>): string to check</p></li>
+<li><p>Return: <cite>str</cite> with drive</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.checkzip">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">checkzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#checkzip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.checkzip" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Checks if an archive file (.7z or .zip) exists and is valid</p></li>
+<li><p>Imports <cite>py7zr</cite> if <cite>path</cite> ends with .7z</p></li>
+<li><p>Deletes file if invalid or incomplete</p></li>
+<li><p>Input: <cite>path</cite> (<cite>str</cite>): path to the archive file</p></li>
+<li><dl class="simple">
+<dt>Return:</dt><dd><ul>
+<li><p><cite>True</cite>: file exists and is valid</p></li>
+<li><p><cite>False</cite>: file doesn’t exist, possibly because we deleted it due to corruption</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.copy">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.copy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.copymove">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">copymove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#copymove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.copymove" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>py416.files.copy()</cite> and <cite>py416.files.move()</cite></p></li>
+<li><p>Copy and move are very similar, so this handles some of what they share</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.delete">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.delete" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Deletes file or directory</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): path to file or directory</p></li>
+<li><dl class="simple">
+<dt><cite>force</cite> (<cite>bool</cite>): whether to try <cite>shutil.rmtree()</cite> to delete a directory and its contents</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.forslash">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">forslash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#forslash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.forslash" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Replaces <cite>` in paths with `/</cite></p></li>
+<li><p>Used to unify path formatting between OS types</p></li>
+<li><p>Input: <cite>path</cite> (<cite>str</cite>): path string</p></li>
+<li><p>Return: <cite>str</cite> with path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.getcwd">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">getcwd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#getcwd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.getcwd" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.getcwd()</cite></p></li>
+<li><p>Gets the current working directory</p></li>
+<li><p>Return: <cite>str</cite> with path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.getpath">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">getpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#getpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.getpath" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Gets the full path of something</p></li>
+<li><dl class="simple">
+<dt>Input: <cite>path</cite> (<cite>str</cite>): absolute or relative path</dt><dd><ul>
+<li><p>If relative, we assume it’s in the current working directory</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>str</cite> with path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.joinpath">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">joinpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">parts</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#joinpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.joinpath" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Imitator for <cite>os.path.join()</cite></p></li>
+<li><p>Joins parts of a path together in the order they were received</p></li>
+<li><p>Input: <cite>parts</cite> (iterable): directories/file to join together</p></li>
+<li><p>Return: <cite>str</cite> with path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.listdir">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">listdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#listdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.listdir" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.listdir()</cite></p></li>
+<li><p>Lists directories/files within a directory</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>path</cite> (<cite>str</cite>): directory path to search in</dt><dd><ul>
+<li><p>Default: current working directory</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>dirs</cite> (<cite>bool</cite>): whether to list directories</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>files</cite> (<cite>bool</cite>): whether to list files</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>tuple</cite> of <cite>str</cite> with paths</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.log">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.log" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Logs to file with current timestamp</p></li>
+<li><p>Creates file and its parent directory if nonexistent</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): path to desired log file</p></li>
+<li><p><cite>msg</cite> (<cite>str</cite>): message to log</p></li>
+<li><dl class="simple">
+<dt><cite>ts</cite> (<cite>bool</cite>): whether to include timestamp</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>ts_args</cite> (<cite>list</cite>/<cite>tuple</cite>): arguments to pass to <cite>py416.timestamp()</cite></dt><dd><ul>
+<li><p>Default example: [2022-08-19 13:24:54 -06:00]</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.makedirs">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">makedirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#makedirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.makedirs" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.makedirs()</cite></p></li>
+<li><p>Creates directories if nonexistent</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>dirs</cite>:</dt><dd><ul>
+<li><p><cite>str</cite> directory path</p></li>
+<li><p>Nestings of <cite>list</cite>/<cite>tuple</cite> objects with <cite>str</cite> directory path base elements</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>ignore_errors</cite> (<cite>bool</cite>): whether to catch all Exceptions in the process</dt><dd><ul>
+<li><p>Useful to create as many of the requested directories as possible</p></li>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>tuple</cite> of directories we failed to create</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.makefile">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">makefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#makefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.makefile" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>open()</cite></p></li>
+<li><p>Creates a new file</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): full path of desired new file</p></li>
+<li><dl class="simple">
+<dt><cite>msg</cite> (<cite>str</cite>): text to put in the file</dt><dd><ul>
+<li><p>Default: nothing</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>overwrite</cite> (<cite>bool</cite>): whether to overwrite a file if it already exists</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>str</cite> with path to new file</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.move">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/py416/files.html#move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.move" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.parent">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.parent" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Gets the directory containing something</p></li>
+<li><p>Input: <cite>path</cite> (<cite>str</cite>): path to find the parent of</p></li>
+<li><p>Return: <cite>str</cite> with path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.rename">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.rename" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.rename()</cite></p></li>
+<li><p>Renames file without moving it</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): path to file/directory to be renamed</p></li>
+<li><p><cite>name</cite> (<cite>str</cite>): new basename for file (not path)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>str</cite> with new path</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.rmdir">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">rmdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delroot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#rmdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.rmdir" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>os.rmdir()</cite></p></li>
+<li><p>Recursively deletes empty directories</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>dirpath</cite> (<cite>str</cite>): directory path to delete within</p></li>
+<li><dl class="simple">
+<dt><cite>delroot</cite> (<cite>bool</cite>): whether to delete <cite>path</cite> as well</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>int</cite> with number of deleted directories</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.splitpath">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">splitpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#splitpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.splitpath" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Splits a path string into its parts</p></li>
+<li><p>Input: <cite>path</cite> (<cite>str</cite>): path</p></li>
+<li><p>Return: <cite>tuple</cite> of directories/file</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.unzip">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">unzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#unzip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.unzip" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)</p></li>
+<li><p>Imports <cite>py7zr</cite> if a file ends with .7z</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): path to archive file</p></li>
+<li><dl class="simple">
+<dt><cite>remove</cite> (<cite>bool</cite>): whether to delete archive after unzipping</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.files.unzipdir">
+<span class="sig-prename descclassname"><span class="pre">src.py416.files.</span></span><span class="sig-name descname"><span class="pre">unzipdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/src/py416/files.html#unzipdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.files.unzipdir" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Unzips all archives in a directory (only 1st level) until it is unable to continue</p></li>
+<li><p>Deletes all archives as it unzips</p></li>
+<li><p>Supports archives of type: (.7z, .gz, .rar, .tar, .zip)</p></li>
+<li><p>Imports <cite>py7zr</cite> if a file ends with .7z</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>path</cite> (<cite>str</cite>): directory containing archive files</p></li>
+<li><dl class="simple">
+<dt><cite>ignore_errors</cite> (<cite>bool</cite>): whether to catch all Exceptions in unzipping</dt><dd><ul>
+<li><p>Useful to unzip everything possible in the directory</p></li>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return: <cite>int</cite> with number of unzipped archives</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="module-src.py416.general">
+<span id="py416-general-module"></span><h2>py416.general module<a class="headerlink" href="#module-src.py416.general" title="Permalink to this heading"></a></h2>
+<p>Name:    py416.general
+Author:  Ezio416
+Created: 2022-08-18
+Updated: 2022-09-22</p>
+<p>Functions for various things</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.general.gettype">
+<span class="sig-prename descclassname"><span class="pre">src.py416.general.</span></span><span class="sig-name descname"><span class="pre">gettype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#gettype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.general.gettype" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Wrapper for <cite>type()</cite></p></li>
+<li><p>Gets the type of an object</p></li>
+<li><p>Input: <cite>thing</cite>: object of any type</p></li>
+<li><p>Return: <cite>str</cite> with type</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.general.month2num">
+<span class="sig-prename descclassname"><span class="pre">src.py416.general.</span></span><span class="sig-name descname"><span class="pre">month2num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month_word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#month2num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.general.month2num" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Converts month names to their 2-digit number</p></li>
+<li><p>Input: <cite>month_word</cite> (<cite>str</cite>): full month name</p></li>
+<li><p>Return: <cite>str</cite> with zero-padded 2-digit number</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.general.secmod">
+<span class="sig-prename descclassname"><span class="pre">src.py416.general.</span></span><span class="sig-name descname"><span class="pre">secmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#secmod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.general.secmod" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><dl class="simple">
+<dt>Formats a number of seconds nicely, split by days, hours, minutes, and seconds</dt><dd><ul>
+<li><p>i.e. <cite>‘04d16h47m09s’</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Takes the absolute value of input, so the result is always positive</p></li>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>seconds</cite>: <cite>int</cite> or <cite>float</cite></p></li>
+<li><dl class="simple">
+<dt><cite>sep</cite> (<cite>str</cite>): separator between values</dt><dd><ul>
+<li><p>Default: no separator</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Return:</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>tuple</cite> with <cite>str</cite> in requested format and <cite>int</cite> values</dt><dd><ul>
+<li><p>i.e. <cite>(‘04d16h47m09s’, 9, 47, 16, 4)</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.general.timestamp">
+<span class="sig-prename descclassname"><span class="pre">src.py416.general.</span></span><span class="sig-name descname"><span class="pre">timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brackets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micro</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.general.timestamp" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><dl class="simple">
+<dt>Creates a timestamp in ISO format with additional formatting</dt><dd><ul>
+<li><p>Default example: [2022-07-06T13:57:12-06:00]</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Input (<cite>bool</cite>):</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>brackets</cite>: surround timestamp in square brackets</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>micro</cite>: include microseconds</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>offset</cite>: include offset from UTC, e.g. timezone</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>readable</cite>: internal whitespace for legibility</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>seconds</cite>: include seconds</dt><dd><ul>
+<li><p>Default: <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>utc</cite>: current UTC time</dt><dd><ul>
+<li><p>Default: <cite>False</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Return:</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>str</cite> with current timestamp with chosen formatting</dt><dd><ul>
+<li><p>i.e. <cite>[2022-08-18 07:15:43.962 +00:00]</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.py416.general.unpack">
+<span class="sig-prename descclassname"><span class="pre">src.py416.general.</span></span><span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.py416.general.unpack" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Recursively retrieves items from some iterable types</p></li>
+<li><p>Input: <cite>iterable</cite> (<cite>list</cite>/<cite>tuple</cite>): thing to unpack</p></li>
+<li><dl class="simple">
+<dt>Return:</dt><dd><ul>
+<li><p><cite>tuple</cite> of all retrieved items</p></li>
+<li><p><cite>iterable</cite> itself if not a <cite>list</cite>/<cite>tuple</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="module-src.py416.variables">
+<span id="py416-variables-module"></span><h2>py416.variables module<a class="headerlink" href="#module-src.py416.variables" title="Permalink to this heading"></a></h2>
+<p>Name:    py416.variables
+Author:  Ezio416
+Created: 2022-08-06
+Updated: 2022-08-16</p>
+<p>A collection of useful variables
+There should be no calculation done in here</p>
+</section>
+<section id="module-src.py416">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.py416" title="Permalink to this heading"></a></h2>
+<p>Name:    py416
+Author:  Ezio416
+Created: 2022-08-15
+Updated: 2022-09-22
+Version: 0.39</p>
+<p>A collection of my custom-built functions</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Ezio416.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
