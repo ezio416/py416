@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.py416.general &mdash; py416  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> py416
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">py416</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>src.py416.general</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.py416.general</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Name:    py416.general</span>
+<span class="sd">Author:  Ezio416</span>
+<span class="sd">Created: 2022-08-18</span>
+<span class="sd">Updated: 2022-09-22</span>
+
+<span class="sd">Functions for various things</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
+
+
+<div class="viewcode-block" id="gettype"><a class="viewcode-back" href="../../../py416.html#src.py416.general.gettype">[docs]</a><span class="k">def</span> <span class="nf">gettype</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - Wrapper for `type()`</span>
+<span class="sd">    - Gets the type of an object</span>
+<span class="sd">    - Input: `thing`: object of any type</span>
+<span class="sd">    - Return: `str` with type</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">thing</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="month2num"><a class="viewcode-back" href="../../../py416.html#src.py416.general.month2num">[docs]</a><span class="k">def</span> <span class="nf">month2num</span><span class="p">(</span><span class="n">month_word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - Converts month names to their 2-digit number</span>
+<span class="sd">    - Input: `month_word` (`str`): full month name</span>
+<span class="sd">    - Return: `str` with zero-padded 2-digit number</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">month_word</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;input must be a string; invalid: </span><span class="si">{</span><span class="n">month_word</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">month_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">,</span> <span class="s1">&#39;april&#39;</span><span class="p">,</span> <span class="s1">&#39;may&#39;</span><span class="p">,</span> <span class="s1">&#39;june&#39;</span><span class="p">,</span> <span class="s1">&#39;july&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;august&#39;</span><span class="p">,</span> <span class="s1">&#39;september&#39;</span><span class="p">,</span> <span class="s1">&#39;october&#39;</span><span class="p">,</span> <span class="s1">&#39;november&#39;</span><span class="p">,</span> <span class="s1">&#39;december&#39;</span><span class="p">]</span>
+    <span class="n">mydict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">month</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">month_list</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">mydict</span><span class="p">[</span><span class="n">month</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mydict</span><span class="p">[</span><span class="n">month_word</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="secmod"><a class="viewcode-back" href="../../../py416.html#src.py416.general.secmod">[docs]</a><span class="k">def</span> <span class="nf">secmod</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - Formats a number of seconds nicely, split by days, hours, minutes, and seconds</span>
+<span class="sd">        - i.e. `&#39;04d16h47m09s&#39;`</span>
+<span class="sd">    - Takes the absolute value of input, so the result is always positive</span>
+<span class="sd">    - Input:</span>
+<span class="sd">        - `seconds`: `int` or `float`</span>
+<span class="sd">        - `sep` (`str`): separator between values</span>
+<span class="sd">            - Default: no separator</span>
+<span class="sd">    - Return:</span>
+<span class="sd">        - `tuple` with `str` in requested format and `int` values</span>
+<span class="sd">            - i.e. `(&#39;04d16h47m09s&#39;, 9, 47, 16, 4)`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">seconds</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;input must be a string; invalid: </span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">seconds</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;0s&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">zf</span><span class="p">(</span><span class="n">var</span><span class="p">):</span> <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">zf</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;d&#39;</span> <span class="o">+</span> <span class="n">sep</span>
+    <span class="k">if</span> <span class="n">h</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">zf</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;h&#39;</span> <span class="o">+</span> <span class="n">sep</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">zf</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;m&#39;</span> <span class="o">+</span> <span class="n">sep</span>
+    <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">zf</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="timestamp"><a class="viewcode-back" href="../../../py416.html#src.py416.general.timestamp">[docs]</a><span class="k">def</span> <span class="nf">timestamp</span><span class="p">(</span><span class="n">brackets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">micro</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">readable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - Creates a timestamp in ISO format with additional formatting</span>
+<span class="sd">        - Default example: [2022-07-06T13:57:12-06:00]</span>
+<span class="sd">    - Input (`bool`):</span>
+<span class="sd">        - `brackets`: surround timestamp in square brackets</span>
+<span class="sd">            - Default: `True`</span>
+<span class="sd">        - `micro`: include microseconds</span>
+<span class="sd">            - Default: `False`</span>
+<span class="sd">        - `offset`: include offset from UTC, e.g. timezone</span>
+<span class="sd">            - Default: `True`</span>
+<span class="sd">        - `readable`: internal whitespace for legibility</span>
+<span class="sd">            - Default: `False`</span>
+<span class="sd">        - `seconds`: include seconds</span>
+<span class="sd">            - Default: `True`</span>
+<span class="sd">        - `utc`: current UTC time</span>
+<span class="sd">            - Default: `False`</span>
+<span class="sd">    - Return:</span>
+<span class="sd">        - `str` with current timestamp with chosen formatting</span>
+<span class="sd">            - i.e. `[2022-08-18 07:15:43.962 +00:00]`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">brackets</span><span class="p">,</span> <span class="n">micro</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">readable</span><span class="p">,</span> <span class="n">seconds</span><span class="p">,</span> <span class="n">utc</span> <span class="o">=</span> <span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="p">(</span><span class="n">brackets</span><span class="p">,</span> <span class="n">micro</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">readable</span><span class="p">,</span> <span class="n">seconds</span><span class="p">,</span> <span class="n">utc</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">utc</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">offset_val</span> <span class="o">=</span> <span class="s1">&#39;+00:00&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">offset_val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">astimezone</span><span class="p">())[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">micro</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">seconds</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">readable</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">offset</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span>
+    <span class="k">if</span> <span class="n">offset</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">+=</span> <span class="n">offset_val</span>
+    <span class="k">if</span> <span class="n">brackets</span><span class="p">:</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">now</span><span class="si">}</span><span class="s1">]&#39;</span>
+    <span class="k">return</span> <span class="n">now</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="unpack"><a class="viewcode-back" href="../../../py416.html#src.py416.general.unpack">[docs]</a><span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - Recursively retrieves items from some iterable types</span>
+<span class="sd">    - Input: `iterable` (`list`/`tuple`): thing to unpack</span>
+<span class="sd">    - Return:</span>
+<span class="sd">        - `tuple` of all retrieved items</span>
+<span class="sd">        - `iterable` itself if not a `list`/`tuple`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">iterables</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;tuple&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">iterable</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">:</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Ezio416.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
