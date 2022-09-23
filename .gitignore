@@ -1,14 +1,13 @@
 # Directories
 __pycache__/
 .pytest_cache/
-*.egg-info/
+.tox/
 dist/
 env*/
-.tox/
+py416.egg-info/
 
 # Extensions
 *.log
 
 # Files
-upload.cmd
 upload_copy_pypi.py
