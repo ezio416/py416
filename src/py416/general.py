@@ -2,11 +2,12 @@
 Name:    py416.general
 Author:  Ezio416
 Created: 2022-08-18
-Updated: 2022-09-21
+Updated: 2022-09-22
 
 Functions for various things
 '''
 from datetime import datetime as dt
+
 
 def gettype(thing) -> str:
     '''
@@ -17,7 +18,8 @@ def gettype(thing) -> str:
     '''
     return str(type(thing)).split("'")[1]
 
-def month2num(month_word:str) -> str:
+
+def month2num(month_word: str) -> str:
     '''
     - Converts month names to their 2-digit number
     - Input: `month_word` (`str`): full month name
@@ -35,7 +37,8 @@ def month2num(month_word:str) -> str:
     except KeyError:
         return ''
 
-def secmod(seconds:float, sep:str='') -> tuple:
+
+def secmod(seconds: float, sep: str = '') -> tuple:
     '''
     - Formats a number of seconds nicely, split by days, hours, minutes, and seconds
         - i.e. `'04d16h47m09s'`
@@ -57,7 +60,7 @@ def secmod(seconds:float, sep:str='') -> tuple:
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
     d, h = divmod(h, 24)
-    zf = lambda var: str(var).zfill(2)
+    def zf(var): return str(var).zfill(2)
     if d:
         result += zf(d) + 'd' + sep
     if h:
@@ -69,7 +72,8 @@ def secmod(seconds:float, sep:str='') -> tuple:
     result = result.rstrip(sep)
     return result, s, m, h, d
 
-def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:bool=False, seconds:bool=True, utc:bool=False) -> str:
+
+def timestamp(brackets: bool = True, micro: bool = False, offset: bool = True, readable: bool = False, seconds: bool = True, utc: bool = False) -> str:
     '''
     - Creates a timestamp in ISO format with additional formatting
         - Default example: [2022-07-06T13:57:12-06:00]
@@ -112,6 +116,7 @@ def timestamp(brackets:bool=True, micro:bool=False, offset:bool=True, readable:b
         now = f'[{now}]'
     return now.strip()
 
+
 def unpack(iterable) -> tuple:
     '''
     - Recursively retrieves items from some iterable types
@@ -130,4 +135,3 @@ def unpack(iterable) -> tuple:
         else:
             values += list(unpack(item))
     return tuple(values)
-
