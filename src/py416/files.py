@@ -15,6 +15,7 @@ import sys
 
 from .general import gettype, timestamp, unpack
 
+
 class File():
     def __init__(self, path):
         self.path = getpath(path)
@@ -97,7 +98,7 @@ class File():
     def suffix(self) -> str:
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
 
-    def copy(self, dest:str):
+    def copy(self, dest: str):
         '''
         - Copies file/directory
         - Input: `dest` (`str`): directory to copy file into
@@ -106,7 +107,7 @@ class File():
         copy(self.path, dest)
         return self
 
-    def delete(self, force:bool=False):
+    def delete(self, force: bool = False):
         '''
         - Deletes file/directory
         - If the object is a directory and all subdirs are empty, recursively deletes them
@@ -116,7 +117,7 @@ class File():
         delete(self.path, force=force)
         return self
 
-    def move(self, dest:str):
+    def move(self, dest: str):
         '''
         - Moves file/directory
         - Input: `dest` (`str`): directory to move file into
@@ -124,7 +125,7 @@ class File():
         self.path = move(self.path, dest)
         return self
 
-    def rename(self, newname:str):
+    def rename(self, newname: str):
         '''
         - Renames file, keeping in same directory
         - Input: `new_name` (`str`): new file name
@@ -132,7 +133,8 @@ class File():
         self.path = rename(self.path, newname)
         return self
 
-def cd(path:str='..') -> str:
+
+def cd(path: str = '..') -> str:
     '''
     - Wrapper for `os.chdir()`
     - Changes current working directory
@@ -146,7 +148,8 @@ def cd(path:str='..') -> str:
     os.chdir(path)
     return path
 
-def checkwindrive(drive:str) -> str:
+
+def checkwindrive(drive: str) -> str:
     '''
     - Checks if a given string is a Windows drive letter (i.e. 'C:', 'D:\\\\', 'E:/')
     - Input: `drive` (`str`): string to check
@@ -163,7 +166,8 @@ def checkwindrive(drive:str) -> str:
         return drive
     return drive + '/'
 
-def checkzip(path:str) -> bool:
+
+def checkzip(path: str) -> bool:
     '''
     - Checks if an archive file (.7z or .zip) exists and is valid
     - Imports `py7zr` if `path` ends with .7z
@@ -178,7 +182,7 @@ def checkzip(path:str) -> bool:
         if path.endswith('.7z'):
             from py7zr import exceptions, SevenZipFile
             try:
-                with SevenZipFile(path, 'r') as z:
+                with SevenZipFile(path, 'r'):
                     pass
                 return True
             except exceptions.Bad7zFile:
@@ -187,7 +191,7 @@ def checkzip(path:str) -> bool:
         if path.endswith('.zip'):
             from zipfile import BadZipFile, ZipFile
             try:
-                with ZipFile(path) as z:
+                with ZipFile(path):
                     pass
                 return True
             except BadZipFile:
@@ -196,12 +200,13 @@ def checkzip(path:str) -> bool:
     except FileNotFoundError:
         return False
 
+
 def copymove(func):
     '''
     - Wrapper for `py416.files.copy()` and `py416.files.move()`
     - Copy and move are very similar, so this handles some of what they share
     '''
-    def _copymove(path:str, dest:str, overwrite:bool=False):
+    def _copymove(path: str, dest: str, overwrite: bool = False):
         path = getpath(path)
         dest = getpath(dest)
         overwrite = bool(overwrite)
@@ -215,8 +220,9 @@ def copymove(func):
         return forslash(func(path, dest, overwrite))
     return _copymove
 
+
 @copymove
-def copy(path:str, dest:str, overwrite:bool=False) -> str:
+def copy(path: str, dest: str, overwrite: bool = False) -> str:
     '''
     - Copies file or directory and all contents, creating destination if nonexistent
     - Adds some extra safety to `shutil` functions with Exceptions
@@ -230,17 +236,18 @@ def copy(path:str, dest:str, overwrite:bool=False) -> str:
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
-    if os.path.isfile(path): # copying file
+    if os.path.isfile(path):  # copying file
         if new_path_exists and not overwrite:
             raise FileExistsError(f'destination file already exists: {new_path}')
         return sh.copy2(path, new_path)
-    if new_path_exists: # copying directory
+    if new_path_exists:  # copying directory
         if overwrite:
-            return sh.copytree(path, new_path, dirs_exist_ok=True) # overwriting dest dir
+            return sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest dir
         raise FileExistsError(f'destination directory already exists: {new_path}')
-    return sh.copytree(path, new_path) # dest dir doesn't exist, good
+    return sh.copytree(path, new_path)  # dest dir doesn't exist, good
 
-def delete(path:str, force:bool=False) -> None:
+
+def delete(path: str, force: bool = False) -> None:
     '''
     - Deletes file or directory
     - Input:
@@ -259,7 +266,8 @@ def delete(path:str, force:bool=False) -> None:
     else:
         os.remove(path)
 
-def forslash(path:str) -> str:
+
+def forslash(path: str) -> str:
     '''
     - Replaces `\\` in paths with `/`
     - Used to unify path formatting between OS types
@@ -270,6 +278,7 @@ def forslash(path:str) -> str:
         raise TypeError(f'input must be a string; invalid: {path}')
     return path.replace('\\', '/')
 
+
 def getcwd() -> str:
     '''
     - Wrapper for `os.getcwd()`
@@ -278,7 +287,8 @@ def getcwd() -> str:
     '''
     return forslash(os.getcwd())
 
-def getpath(path:str) -> str:
+
+def getpath(path: str) -> str:
     '''
     - Gets the full path of something
     - Input: `path` (`str`): absolute or relative path
@@ -286,17 +296,18 @@ def getpath(path:str) -> str:
     - Return: `str` with path (formatted with `/`)
     '''
     parts = list(splitpath(path))
-    if parts == ['']: # special case
+    if parts == ['']:  # special case
         return ''
     path = joinpath(parts)
     root = parts[0]
-    if root.startswith('//') or root == '/': # Windows network location or Unix root
+    if root.startswith('//') or root == '/':  # Windows network location or Unix root
         return path
     cwdrive = checkwindrive(root)
-    if cwdrive: # Windows root
+    if cwdrive:  # Windows root
         parts[0] = cwdrive
         return joinpath(parts)
     return f'{getcwd()}/{path}'
+
 
 def joinpath(*parts) -> str:
     '''
@@ -305,27 +316,28 @@ def joinpath(*parts) -> str:
     - Input: `parts` (iterable): directories/file to join together
     - Return: `str` with path (formatted with `/`)
     '''
-    parts = list(unpack([list(splitpath(part)) for part in unpack(parts)])) # split elements if partial paths
-    if parts == ['/', '/']: # special case
+    parts = list(unpack([list(splitpath(part)) for part in unpack(parts)]))  # split elements if partial paths
+    if parts == ['/', '/']:  # special case
         return '/'
     while '' in parts:
-        parts.remove('') # special case, such as passing 'folder/..' to splitpath()
+        parts.remove('')  # special case, such as passing 'folder/..' to splitpath()
     if not len(parts):
-        return '' # nothing was passed, or it was cancelled out with '..'
+        return ''  # nothing was passed, or it was cancelled out with '..'
     if parts[0].startswith('//'):
-        return '/'.join(parts) # Windows network location
+        return '/'.join(parts)  # Windows network location
     if parts == ['/']:
-        return '/' # Unix root, alone
+        return '/'  # Unix root, alone
     if parts[0] == '/':
-        return '/' + '/'.join(parts[1:]) # Unix root, preceding
+        return '/' + '/'.join(parts[1:])  # Unix root, preceding
     cwdrive = checkwindrive(parts[0])
     if cwdrive:
         if len(parts) == 1:
-            return cwdrive # Windows drive root, alone
-        return cwdrive + '/'.join(parts[1:]) # Windows drive root, preceding
+            return cwdrive  # Windows drive root, alone
+        return cwdrive + '/'.join(parts[1:])  # Windows drive root, preceding
     return '/'.join(parts)
 
-def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
+
+def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     '''
     - Wrapper for `os.listdir()`
     - Lists directories/files within a directory
@@ -352,7 +364,8 @@ def listdir(path:str='.', dirs:bool=True, files:bool=True) -> tuple:
             result.append(child)
     return tuple(result)
 
-def log(path:str, msg:str, ts:bool=True, ts_args:tuple=(1,0,1,1,1,0)) -> None:
+
+def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0)) -> None:
     '''
     - Logs to file with current timestamp
     - Creates file and its parent directory if nonexistent
@@ -382,7 +395,8 @@ def log(path:str, msg:str, ts:bool=True, ts_args:tuple=(1,0,1,1,1,0)) -> None:
     finally:
         sys.stdout = orig_stdout
 
-def makedirs(*dirs, ignore_errors:bool=True) -> tuple:
+
+def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     '''
     - Wrapper for `os.makedirs()`
     - Creates directories if nonexistent
@@ -413,8 +427,9 @@ def makedirs(*dirs, ignore_errors:bool=True) -> tuple:
                 errored.append(dir)
     return tuple(errored)
 
+
 @copymove
-def move(path:str, dest:str, overwrite:bool=False) -> str:
+def move(path: str, dest: str, overwrite: bool = False) -> str:
     '''
     - Moves file or directory and all contents, creating destination if nonexistent
     - Adds some extra safety to `shutil` functions with Exceptions
@@ -428,19 +443,20 @@ def move(path:str, dest:str, overwrite:bool=False) -> str:
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
-    if os.path.isfile(path): # moving file
+    if os.path.isfile(path):  # moving file
         if new_path_exists and not overwrite:
             raise FileExistsError(f'destination file already exists: {new_path}')
         return sh.move(path, dest)
-    if new_path_exists: # moving directory
+    if new_path_exists:  # moving directory
         if overwrite:
-            result = sh.copytree(path, new_path, dirs_exist_ok=True) # overwriting dest dir
-            delete(path, force=True) # deleting original (we're doing copy->delete manually)
+            result = sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest dir
+            delete(path, force=True)  # deleting original (we're doing copy->delete manually)
             return result
         raise FileExistsError(f'destination directory already exists: {new_path}')
-    return sh.move(path, dest) # dest dir doesn't exist, good
+    return sh.move(path, dest)  # dest dir doesn't exist, good
 
-def parent(path:str) -> str:
+
+def parent(path: str) -> str:
     '''
     - Gets the directory containing something
     - Input: `path` (`str`): path to find the parent of
@@ -449,13 +465,14 @@ def parent(path:str) -> str:
     path = getpath(path)
     if not path:
         return ''
-    if any([path == '/', # Root
+    if any([path == '/',  # Root
             checkwindrive(path),
             path.startswith('//') and len(splitpath(path)) == 1]):
         return path
     return getpath(f'{path}/..')
 
-def rename(path:str, name:str) -> str:
+
+def rename(path: str, name: str) -> str:
     '''
     - Wrapper for `os.rename()`
     - Renames file without moving it
@@ -473,7 +490,8 @@ def rename(path:str, name:str) -> str:
     os.rename(path, newpath)
     return newpath
 
-def rmdir(path:str, delroot:bool=True) -> int:
+
+def rmdir(path: str, delroot: bool = True) -> int:
     '''
     - Wrapper for `os.rmdir()`
     - Recursively deletes empty directories
@@ -495,12 +513,13 @@ def rmdir(path:str, delroot:bool=True) -> int:
             count += rmdir(item)
     if not len(listdir(path)) and delroot:
         if path == getcwd():
-            cd() # we're in the directory we're trying to delete, so go up
+            cd()  # we're in the directory we're trying to delete, so go up
         os.rmdir(path)
         count += 1
     return count
 
-def splitpath(path:str) -> tuple:
+
+def splitpath(path: str) -> tuple:
     '''
     - Splits a path string into its parts
     - Input: `path` (`str`): path
@@ -510,20 +529,20 @@ def splitpath(path:str) -> tuple:
         return '',
     path = forslash(path)
     win_net = False
-    
-    if path in ('/', '/.', '/..'): # special cases
+
+    if path in ('/', '/.', '/..'):  # special cases
         return '/',
     parts = path.split('/')
-    if path == '.': # current directory
+    if path == '.':  # current directory
         path = getcwd()
-    elif path == '..': # parent of current directory
+    elif path == '..':  # parent of current directory
         path = forslash(os.path.dirname(getcwd()))
-    elif parts[-1] == '.': # path/. is just path
+    elif parts[-1] == '.':  # path/. is just path
         path = path[:-2]
-    elif parts[-1] == '..': # parent of path
-        if len(parts) == 2: # 'folder/..'
+    elif parts[-1] == '..':  # parent of path
+        if len(parts) == 2:  # 'folder/..'
             return '',
-        if path.startswith('//'): # Windows network location
+        if path.startswith('//'):  # Windows network location
             path = path.lstrip('/')
             win_net = True
         path = os.path.dirname(os.path.dirname(path))
@@ -531,12 +550,12 @@ def splitpath(path:str) -> tuple:
             path = '//' + path
     parts = path.split('/')
 
-    if not parts[0]: # Unix root
+    if not parts[0]:  # Unix root
         parts[0] = '/'
     cwdrive = checkwindrive(parts[0])
-    if cwdrive: # Windows drive root
+    if cwdrive:  # Windows drive root
         parts[0] = cwdrive
-    if path.startswith('//'): # Windows network location
+    if path.startswith('//'):  # Windows network location
         result = [f'//{parts[2]}']
         return tuple(result + [a for a in parts[3:]]) if len(parts) > 2 else tuple(result)
     if len(parts) == 2:
@@ -544,7 +563,8 @@ def splitpath(path:str) -> tuple:
             return parts[0],
     return tuple(parts)
 
-def unzip(path:str, remove:bool=False) -> None:
+
+def unzip(path: str, remove: bool = False) -> None:
     '''
     - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
     - Imports `py7zr` if a file ends with .7z
@@ -570,7 +590,8 @@ def unzip(path:str, remove:bool=False) -> None:
     else:
         raise NotImplementedError(f'unsupported archive format: {path.split(".")[-1]}')
 
-def unzipdir(path:str, ignore_errors:bool=True) -> int:
+
+def unzipdir(path: str, ignore_errors: bool = True) -> int:
     '''
     - Unzips all archives in a directory (only 1st level) until it is unable to continue
     - Deletes all archives as it unzips
@@ -603,4 +624,3 @@ def unzipdir(path:str, ignore_errors:bool=True) -> int:
         if not unzipped_this_run:
             break
     return unzipped
-
