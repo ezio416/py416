@@ -93,14 +93,14 @@ class File():
     @property
     def isdir(self) -> bool:
         '''
-        - whether the file/folder is a folder
+        - whether the file/folder exists and is a folder
         '''
         return os.path.isdir(self.path)
 
     @property
     def isfile(self) -> bool:
         '''
-        - whether the file/folder is a file
+        - whether the file/folder exists and is a file
         '''
         return os.path.isfile(self.path)
 
@@ -137,26 +137,39 @@ class File():
         - the basename of the file/folder
         - i.e. file.txt or foldername
         '''
-        return os.path.basename(self.path) if not self.isroot else self.path
+        return self.parts[-1]
 
     @property
     def parent(self) -> object:
         '''
         - the parent path of the file/folder
-        - creates a new File() instance for the parent path
+        - creates a new File instance for the parent path
         '''
         return File(parent(self.path))
 
     @property
     def parts(self) -> tuple:
+        '''
+        - the parts of the file/folder's path
+        - given as a tuple[str]
+        - i.e. ('C:/', 'folder', 'file.txt')
+        '''
         return splitpath(self.path)
 
     @property
     def root(self) -> str:
+        '''
+        - the root of the file/folder's path
+        - i.e. 'C:/' or '//netloc' or '/'
+        '''
         return self.parts[0]
 
     @property
     def size(self) -> int:
+        '''
+        - the size of the file/folder, in bytes
+        - uses `os.path.getsize() <>`_
+        '''
         return os.path.getsize(self.path)
 
     @property
@@ -170,6 +183,7 @@ class File():
     def copy(self, dest: str, overwrite: bool = False) -> object:
         '''
         - copies file/folder without tracking the created copy
+        - in-place operation
 
         Parameters
         ----------
@@ -178,10 +192,6 @@ class File():
             overwrite: bool
                 - whether to overwrite if the destination file/folder already exists
                 - default: False
-        
-        Returns
-        -------
-            self: File
         '''
         copy(self.path, dest, overwrite=overwrite)
         return self
@@ -189,6 +199,7 @@ class File():
     def delete(self, force: bool = False) -> object:
         '''
         - deletes file/folder, attempting to recursively delete empty subfolders
+        - in-place operation
 
         Parameters
         ----------
@@ -202,6 +213,7 @@ class File():
     def move(self, dest: str, overwrite: bool = False) -> object:
         '''
         - moves file/folder, maintaining tracking at the new location
+        - in-place operation
 
         Parameters
         ----------
@@ -217,6 +229,7 @@ class File():
     def rename(self, name: str) -> object:
         '''
         - renames file/folder without moving it
+        - in-place operation
         
         Parameters
         ----------
