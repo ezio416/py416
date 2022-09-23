@@ -11,11 +11,11 @@ install()
 sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/..')
 import src.py416.files as p4f
 
-def test_File():
-    pass
+# def test_File():
+#     pass
 
-def test_cd():
-    pass
+# def test_cd():
+#     pass
 
 @pytest.mark.parametrize('i,o', [
     ('', ''),
@@ -32,11 +32,11 @@ def test_cd():
 def test_checkwindrive(i, o):
     assert p4f.checkwindrive(i) == o
 
-def test_checkzip():
-    pass
+# def test_checkzip():
+#     pass
 
-def test_copy():
-    pass
+# def test_copy():
+#     pass
 
 @pytest.mark.parametrize('i,o', [
     ('', ''),
@@ -116,7 +116,9 @@ def test_listdir(tmp_path):
     d1 = f'{str_path}/testdir'
     f1 = f'{str_path}/file.txt'
     f2 = f'{d1}/file2.txt'
+    check.equal(p4f.listdir(str_path), ())
     os.makedirs(d1)
+    check.equal(p4f.listdir(str_path), (d1,))
     with open(f1, 'a') as f:
         f.write('this is file number 1')
     with open(f2, 'a') as f:
@@ -128,14 +130,14 @@ def test_listdir(tmp_path):
     check.is_in(f2, p4f.listdir(d1))
     check.is_in(f2, p4f.listdir(d1, dirs=False))
 
-def test_log():
-    pass
+# def test_log():
+#     pass
 
-def test_makedirs():
-    pass
+# def test_makedirs():
+#     pass
 
-def test_move():
-    pass
+# def test_move():
+#     pass
 
 @pytest.mark.parametrize('i,o', [
     # Unix
@@ -163,11 +165,12 @@ def test_move():
 def test_parent(i, o):
     assert p4f.parent(i) == o
 
-def test_rename():
-    pass
+# def test_rename(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+    
 
-def test_rmdir():
-    pass
+# def test_rmdir():
+#     pass
 
 @pytest.mark.parametrize('i,o', [
     # Unix
@@ -195,8 +198,8 @@ def test_rmdir():
 def test_splitpath(i, o):
     assert p4f.splitpath(i) == o
 
-def test_unzip():
-    pass
+# def test_unzip():
+#     pass
 
-def test_unzipdir():
-    pass
+# def test_unzipdir():
+#     pass
