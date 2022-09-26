@@ -37,8 +37,23 @@ def test_checkwindrive(i, o):
 # def test_checkzip():
 #     pass
 
-# def test_copy():
-#     pass
+def test_copy(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    dname = 'dir'
+    dpath = f'{str_path}/{dname}'
+    fname = 'file.txt'
+    fpath = f'{str_path}/{fname}'
+    msg = 'message'
+    os.makedirs(dpath)
+    with open(fpath, 'a') as file:
+        file.write(msg)
+    p4f.copy(fpath, dpath)
+    with open(f'{dpath}/{fname}') as file:
+        tmp = file.read()
+    check.equal(tmp, msg)
+    p4f.copy(dpath, 'dir2')
+    os.chdir(f'dir2/{dname}')
+    check.equal(os.listdir(), ['file.txt'])
 
 @pytest.mark.parametrize('i,o', [
     ('', ''),
