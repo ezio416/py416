@@ -40,20 +40,33 @@ def test_checkwindrive(i, o):
 def test_copy(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
     dname = 'dir'
+    dname2 = 'dir2'
     dpath = f'{str_path}/{dname}'
     fname = 'file.txt'
     fpath = f'{str_path}/{fname}'
     msg = 'message'
+    msg2 = '\nmore text'
     os.makedirs(dpath)
     with open(fpath, 'a') as file:
         file.write(msg)
-    p4f.copy(fpath, dpath)
+    p4f.copy(fpath, dpath)  # copy file
     with open(f'{dpath}/{fname}') as file:
         tmp = file.read()
     check.equal(tmp, msg)
-    p4f.copy(dpath, 'dir2')
-    os.chdir(f'dir2/{dname}')
-    check.equal(os.listdir(), ['file.txt'])
+    p4f.copy(dpath, dname2)  # copy dir
+    os.chdir(f'{dname2}/{dname}')
+    check.equal(os.listdir(), [fname])
+    os.chdir(str_path)
+    with open(fpath, 'a') as file:
+        file.write(msg2)
+    p4f.copy(fpath, dpath, overwrite=True)  # overwrite file
+    with open(f'{dpath}/{fname}') as file:
+        tmp = file.read()
+    check.equal(tmp, f'{msg}{msg2}')
+    p4f.copy(dpath, dname2, overwrite=True)  # overwrite dir
+    with open(f'{dname2}/{dname}/{fname}') as file:
+        tmp = file.read()
+    check.equal(tmp, f'{msg}{msg2}')
 
 @pytest.mark.parametrize('i,o', [
     ('', ''),
@@ -171,7 +184,7 @@ def test_makefile(tmp_path):
     p4f.makefile(fpath, overwrite=True)
     with open(fpath, 'r') as file:
         tmp3 = file.read()
-    check.equal(tmp3, '')    
+    check.equal(tmp3, '')
 
 def test_makedirs(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -218,7 +231,7 @@ def test_parent(i, o):
 
 # def test_rename(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
-    
+
 # def test_rmdir():
 #     pass
 
