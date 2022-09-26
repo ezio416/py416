@@ -1,21 +1,27 @@
 '''
-- Author:  Ezio416
-- Created: 2022-08-16
-- Updated: 2022-09-23
+| Author:  Ezio416
+| Created: 2022-08-16
+| Updated: 2022-09-26
 
-Functions for file system manipulation
+- Functions for filesystem and path string manipulation
+
     - OS-agnostic (Windows/Unix) - we always return Windows paths with forward slashes
     - supports absolute and relative paths
 
-Does not yet support any paths that:
+- Does not yet support any paths that:
+
     - are not strings
-    - contain multiple single or double-dots [ . | .. ]
+    - contain multiple single or double-dots ( . | .. )
     - contain single or double-dots in the beginning/middle
 '''
 from datetime import datetime as dt
+from functools import wraps
 import os
 import shutil as sh
 import sys
+from zipfile import BadZipFile, ZipFile
+
+from py7zr import exceptions, SevenZipFile, unpack_7zarchive
 
 from .general import gettype, timestamp, unpack
 
@@ -42,7 +48,8 @@ class File():
     def atime(self) -> float:
         '''
         - the last time the file/folder was accessed
-        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - wraps `os.path.getatime() <https://docs.python.org/3/library/os.path.html#os.path.getatime>`_
+        - given in `Unix time <https://www.unixtimestamp.com>`_ as a float
         - i.e. 1663948504.5217497
         '''
         return os.path.getatime(self.path)
@@ -69,7 +76,8 @@ class File():
     def ctime(self) -> float:
         '''
         - the time the file/folder was created
-        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - wraps `os.path.getctime() <https://docs.python.org/3/library/os.path.html#os.path.getctime>`_
+        - given in `Unix time <https://www.unixtimestamp.com>`_ as a float
         - i.e. 1663948504.5217497
         '''
         return os.path.getctime(self.path)
@@ -87,6 +95,7 @@ class File():
     def exists(self) -> bool:
         '''
         - whether the file/folder exists
+        - wraps `os.path.exists() <https://docs.python.org/3/library/os.path.html#os.path.exists>`_
         '''
         return os.path.exists(self.path)
 
@@ -94,6 +103,7 @@ class File():
     def isdir(self) -> bool:
         '''
         - whether the file/folder exists and is a folder
+        - wraps `os.path.isdir() <https://docs.python.org/3/library/os.path.html#os.path.isdir>`_
         '''
         return os.path.isdir(self.path)
 
@@ -101,6 +111,7 @@ class File():
     def isfile(self) -> bool:
         '''
         - whether the file/folder exists and is a file
+        - wraps `os.path.isfile() <https://docs.python.org/3/library/os.path.html#os.path.isfile>`_
         '''
         return os.path.isfile(self.path)
 
@@ -117,7 +128,8 @@ class File():
     def mtime(self) -> float:
         '''
         - the last time the file/folder was modified
-        - given in `Unix time <https://www.unixtimestamp.com>`_ (local) as a float
+        - wraps `os.path.getmtime() <https://docs.python.org/3/library/os.path.html#os.path.getmtime>`_
+        - given in `Unix time <https://www.unixtimestamp.com>`_ as a float
         - i.e. 1663948504.5217497
         '''
         return os.path.getmtime(self.path)
@@ -135,7 +147,7 @@ class File():
     def name(self) -> str:
         '''
         - the basename of the file/folder
-        - i.e. file.txt or foldername
+        - i.e. 'file.txt' or 'foldername'
         '''
         return self.parts[-1]
 
@@ -167,8 +179,8 @@ class File():
     @property
     def size(self) -> int:
         '''
-        - the size of the file/folder, in bytes
-        - uses `os.path.getsize() <>`_
+        - the size of the file/folder in bytes
+        - wraps `os.path.getsize() <https://docs.python.org/3/library/os.path.html#os.path.getsize>`_
         '''
         return os.path.getsize(self.path)
 
@@ -187,11 +199,11 @@ class File():
 
         Parameters
         ----------
-            dest: str
-                - folder to copy file/folder into
-            overwrite: bool
-                - whether to overwrite if the destination file/folder already exists
-                - default: False
+        dest: str
+            - folder to copy file/folder into
+        overwrite: bool
+            - whether to overwrite if the destination file/folder already exists
+            - default: False
         '''
         copy(self.path, dest, overwrite=overwrite)
         return self
@@ -203,9 +215,9 @@ class File():
 
         Parameters
         ----------
-            force: bool
-                - whether to force deletion with `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_
-                - default: False
+        force: bool
+            - whether to force deletion with `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_
+            - default: False
         '''
         delete(self.path, force=force)
         return self
@@ -217,11 +229,11 @@ class File():
 
         Parameters
         ----------
-            dest: str
-                - folder to move file/folder into
-            overwrite: bool
-                - whether to overwrite if the destination file/folder already exists
-                - default: False
+        dest: str
+            - folder to move file/folder into
+        overwrite: bool
+            - whether to overwrite if the destination file/folder already exists
+            - default: False
         '''
         self.path = move(self.path, dest, overwrite=overwrite)
         return self
@@ -230,11 +242,11 @@ class File():
         '''
         - renames file/folder without moving it
         - in-place operation
-        
+
         Parameters
         ----------
-            name: str
-                - new basename for the file/folder
+        name: str
+            - new basename for the file/folder
         '''
         self.path = rename(self.path, name)
         return self
@@ -242,12 +254,19 @@ class File():
 
 def cd(path: str = '..') -> str:
     '''
-    - Wrapper for `os.chdir()`
-    - Changes current working directory
-    - Creates destination if nonexistent
-    - Input: `dir` (`str`): directory path
-        - Default: up a directory
-    - Return: `str` with current working directory
+    - changes the current working directory, creating it if nonexistent
+    - wraps `os.chdir() <https://docs.python.org/3/library/os.html#os.chdir>`_
+
+    Parameters
+    ----------
+    path: str
+        - path to folder we want to go in
+        - default: parent (up a folder)
+
+    Returns
+    -------
+    str
+        - path to new current working directory
     '''
     path = getpath(path)
     makedirs(path)
@@ -257,9 +276,17 @@ def cd(path: str = '..') -> str:
 
 def checkwindrive(drive: str) -> str:
     '''
-    - Checks if a given string is a Windows drive letter (i.e. 'C:', 'D:\\\\', 'E:/')
-    - Input: `drive` (`str`): string to check
-    - Return: `str` with drive
+    - checks if a given string is a Windows drive letter (i.e. 'C:', 'D:\\\\', 'E:/')
+
+    Parameters
+    ----------
+    drive: str
+        - string to check
+
+    Returns
+    -------
+    str
+        - normalized root path ( 'C:/' ) if valid, else an empty string
     '''
     drive = forslash(drive).upper()
     if len(drive) not in (2, 3):
@@ -275,18 +302,24 @@ def checkwindrive(drive: str) -> str:
 
 def checkzip(path: str) -> bool:
     '''
-    - Checks if an archive file (.7z or .zip) exists and is valid
-    - Imports `py7zr` if `path` ends with .7z
-    - Deletes file if invalid or incomplete
-    - Input: `path` (`str`): path to the archive file
-    - Return:
-        - `True`: file exists and is valid
-        - `False`: file doesn't exist, possibly because we deleted it due to corruption
+    - checks if an archive file (.7z or .zip) exists and is valid
+    - deletes file if invalid or incomplete
+
+    Parameters
+    ----------
+    path: str
+        - path to the archive file
+
+    Returns
+    -------
+    True
+        - file exists and is valid
+    False
+        - file doesn't exist, possibly because we deleted it due to corruption
     '''
     path = getpath(path)
     try:
         if path.endswith('.7z'):
-            from py7zr import exceptions, SevenZipFile
             try:
                 with SevenZipFile(path, 'r'):
                     pass
@@ -295,7 +328,6 @@ def checkzip(path: str) -> bool:
                 delete(path)
                 return False
         if path.endswith('.zip'):
-            from zipfile import BadZipFile, ZipFile
             try:
                 with ZipFile(path):
                     pass
@@ -309,9 +341,9 @@ def checkzip(path: str) -> bool:
 
 def copymove(func):
     '''
-    - Wrapper for `py416.files.copy()` and `py416.files.move()`
-    - Copy and move are very similar, so this handles some of what they share
+    - wrapper for :func:`py416.files.copy` and :func:`py416.files.move`, which are very similar, so this handles some of what they share
     '''
+    @wraps(func)
     def _copymove(path: str, dest: str, overwrite: bool = False):
         path = getpath(path)
         dest = getpath(dest)
@@ -330,15 +362,23 @@ def copymove(func):
 @copymove
 def copy(path: str, dest: str, overwrite: bool = False) -> str:
     '''
-    - Copies file or directory and all contents, creating destination if nonexistent
-    - Adds some extra safety to `shutil` functions with Exceptions
-    - Input:
-        - `path` (`str`): path to desired file/directory
-        - `dest` (`str`): path to destination parent directory (where we're going into)
-        - `overwrite` (`bool`): whether to overwrite an existing file/directory
-            - Merges directories, but overwrites files if they exist
-            - Default: `False`
-    - Return: `str` with path to copied file/directory
+    - copies file/folder and all contents, creating destination if nonexistent
+
+    Parameters
+    ----------
+    path: str
+        - path to desired file/folder
+    dest: str
+        - path to destination folder (where we're copying into)
+    overwrite: bool
+        - whether to overwrite an existing file/folder
+        - merges directories, but overwrites files if they exist
+        - default: False
+
+    Returns
+    -------
+    str
+        - path to copied file/folder
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
@@ -355,11 +395,15 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
 
 def delete(path: str, force: bool = False) -> None:
     '''
-    - Deletes file or directory
-    - Input:
-        - `path` (`str`): path to file or directory
-        - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory and its contents
-            - Default: `False`
+    - deletes file/folder
+
+    Parameters
+    ----------
+    path: str
+        - path to file/folder
+    force: bool
+        - whether to try `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_ to delete a folder and its contents
+        - default: False
     '''
     path = getpath(path)
     force = bool(force)
@@ -376,10 +420,18 @@ def delete(path: str, force: bool = False) -> None:
 
 def forslash(path: str) -> str:
     '''
-    - Replaces `\\` in paths with `/`
-    - Used to unify path formatting between OS types
-    - Input: `path` (`str`): path string
-    - Return: `str` with path
+    - replaces backslashes in paths with forward slashes
+    - used to unify path formatting between OS types
+
+    Parameters
+    ----------
+    path: str
+        - path string
+
+    Returns
+    -------
+    str
+        - path with forward slashes
     '''
     if gettype(path) != 'str':
         raise TypeError(f'input must be a string; invalid: {path}')
@@ -388,19 +440,31 @@ def forslash(path: str) -> str:
 
 def getcwd() -> str:
     '''
-    - Wrapper for `os.getcwd()`
-    - Gets the current working directory
-    - Return: `str` with path
+    - gets the current working directory
+    - wraps `os.getcwd() <https://docs.python.org/3/library/os.html#os.getcwd>`_
+
+    Returns
+    -------
+    str
+        - path to current working directory
     '''
     return forslash(os.getcwd())
 
 
 def getpath(path: str) -> str:
     '''
-    - Gets the full path of something
-    - Input: `path` (`str`): absolute or relative path
-        - If relative, we assume it's in the current working directory
-    - Return: `str` with path
+    - gets the full path of something, resolving most relative paths
+
+    Parameters
+    ----------
+    path: str
+        - absolute or relative path
+        - if relative, we assume it's in the current working directory
+
+    Returns
+    -------
+    str
+        - absolute path
     '''
     parts = list(splitpath(path))
     if parts == ['']:  # special case
@@ -418,10 +482,18 @@ def getpath(path: str) -> str:
 
 def joinpath(*parts) -> str:
     '''
-    - Imitator for `os.path.join()`
-    - Joins parts of a path together in the order they were received
-    - Input: `parts` (iterable): directories/file to join together
-    - Return: `str` with path
+    - joins parts of a path together in the order they were received
+
+    Parameters
+    ----------
+    parts: iterable
+        - folder/file names to join together
+        - iterable may be single or nested lists or tuples
+
+    Returns
+    -------
+    str
+        - joined path
     '''
     parts = list(unpack([list(splitpath(part)) for part in unpack(parts)]))  # split elements if partial paths
     if parts == ['/', '/']:  # special case
@@ -446,16 +518,25 @@ def joinpath(*parts) -> str:
 
 def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     '''
-    - Wrapper for `os.listdir()`
-    - Lists directories/files within a directory
-    - Input:
-        - `path` (`str`): directory path to search in
-            - Default: current working directory
-        - `dirs` (`bool`): whether to list directories
-            - Default: `True`
-        - `files` (`bool`): whether to list files
-            - Default: `True`
-    - Return: `tuple` of `str` with paths
+    - lists files/folders within a folder
+    - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
+
+    Parameters
+    ----------
+    path: str
+        - folder to search in
+        - default: current working directory
+    dirs: bool
+        - whether to list folders
+        - default: True
+    files: bool
+        - whether to list files
+        - default: True
+
+    Returns
+    -------
+    tuple[str]
+        - absolute paths
     '''
     path = getpath(path)
     dirs = bool(dirs)
@@ -474,15 +555,21 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
 
 def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0)) -> None:
     '''
-    - Logs to file with current timestamp
-    - Creates file and its parent directory if nonexistent
-    - Input:
-        - `path` (`str`): path to desired log file
-        - `msg` (`str`): message to log
-        - `ts` (`bool`): whether to include timestamp
-            - Default: `True`
-        - `ts_args` (`list`/`tuple`): arguments to pass to `py416.timestamp()`
-            - Default example: [2022-08-19 13:24:54 -06:00]
+    - logs to file with current timestamp
+    - creates file and its parent folder if nonexistent
+
+    Parameters
+    ----------
+    path: str
+        - path to desired log file
+    msg: str
+        - message to log
+    ts: bool
+        - whether to include timestamp
+        - default: True
+    ts_args: iterable
+        - arguments to pass to :func:`py416.timestamp`
+        - default return example: [2022-08-19 13:24:54 -06:00]
     '''
     path = getpath(path)
     if gettype(msg) != 'str':
@@ -505,16 +592,23 @@ def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0
 
 def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     '''
-    - Wrapper for `os.makedirs()`
-    - Creates directories if nonexistent
-    - Input:
-        - `dirs`:
-            - `str` directory path
-            - Nestings of `list`/`tuple` objects with `str` directory path base elements
-        - `ignore_errors` (`bool`): whether to catch all Exceptions in the process
-            - Useful to create as many of the requested directories as possible
-            - Default: `True`
-    - Return: `tuple` of directories we failed to create
+    - creates directories if nonexistent
+    - wraps `os.makedirs() <https://docs.python.org/3/library/os.html#os.makedirs>`_
+
+    Parameters
+    ----------
+    dirs
+        - str: path to folder
+        - iterable: nestings of lists and tuples with folder paths
+    ignore_errors: bool
+        - whether to catch all Exceptions from :func:`os.makedirs()`
+        - useful to create as many of the requested folders as possible
+        - default: True
+
+    Returns
+    -------
+    tuple
+        - folders we failed to create
     '''
     if gettype(dirs) not in ('list', 'str', 'tuple'):
         raise TypeError(f'input must be a string/list/tuple; invalid: {dirs}')
@@ -537,15 +631,24 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
 
 def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
     '''
-    - Wrapper for `open()`
-    - Creates a new file
-    - Input:
-        - `path` (`str`): full path of desired new file
-        - `msg` (`str`): text to put in the file
-            - Default: nothing
-        - `overwrite` (`bool`): whether to overwrite a file if it already exists
-            - Default: `False`
-    - Return: `str` with path to new file
+    - creates a new file
+    - wraps `open() <https://docs.python.org/3/library/functions.html#open>`_
+
+    Parameters
+    ----------
+    path: str
+        - path to desired new file
+    msg: str
+        - text to put in the file
+        - default: nothing
+    overwrite: bool
+        - whether to overwrite a file if it already exists
+        - default: False
+
+    Returns
+    -------
+    str
+        - path to new file
     '''
     path = getpath(path)
     if gettype(msg) != 'str':
@@ -566,15 +669,23 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
 @copymove
 def move(path: str, dest: str, overwrite: bool = False) -> str:
     '''
-    - Moves file or directory and all contents, creating destination if nonexistent
-    - Adds some extra safety to `shutil` functions with Exceptions
-    - Input:
-        - `path` (`str`): path to desired file/directory
-        - `dest` (`str`): path to destination parent directory (where we're going into)
-        - `overwrite` (`bool`): whether to overwrite an existing file/directory
-            - Overwrites files if they exist
-            - Default: `False`
-    - Return: `str` with path to moved file/directory
+    - moves file/folder and all contents, creating destination if nonexistent
+
+    Parameters
+    ----------
+    path: str
+        - path to desired file/folder
+    dest: str
+        - path to destination folder (where we're moving into)
+    overwrite: bool
+        - whether to overwrite an existing file/folder
+        - merges directories, but overwrites files if they exist
+        - default: False
+
+    Returns
+    -------
+    str
+        - path to moved file/folder
     '''
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
@@ -593,9 +704,17 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
 
 def parent(path: str) -> str:
     '''
-    - Gets the directory containing something
-    - Input: `path` (`str`): path to find the parent of
-    - Return: `str` with path
+    - gets the folder containing something
+
+    Parameters
+    ----------
+    path: str
+        - path to find the parent of
+
+    Returns
+    -------
+    str
+        - parent path
     '''
     path = getpath(path)
     if not path:
@@ -609,12 +728,20 @@ def parent(path: str) -> str:
 
 def rename(path: str, name: str) -> str:
     '''
-    - Wrapper for `os.rename()`
-    - Renames file without moving it
-    - Input:
-        - `path` (`str`): path to file/directory to be renamed
-        - `name` (`str`): new basename for file (not path)
-    - Return: `str` with new path
+    - renames file/folder without moving it
+    - wraps `os.rename() <https://docs.python.org/3/library/os.html#os.rename>`_
+
+    Parameters
+    ----------
+    path: str
+        - path to file/folder to be renamed
+    name: str
+        - new basename for file/folder (not path)
+
+    Returns
+    -------
+    str
+        - new path to file/folder
     '''
     path = getpath(path)
     if gettype(name) != 'str':
@@ -628,13 +755,21 @@ def rename(path: str, name: str) -> str:
 
 def rmdir(path: str, delroot: bool = True) -> int:
     '''
-    - Wrapper for `os.rmdir()`
-    - Recursively deletes empty directories
-    - Input:
-        - `dirpath` (`str`): directory path to delete within
-        - `delroot` (`bool`): whether to delete `path` as well
-            - Default: `True`
-    - Return: `int` with number of deleted directories
+    - recursively deletes empty directories
+    - wraps `os.rmdir() <https://docs.python.org/3/library/os.html#os.rmdir>`_
+
+    Parameters
+    ----------
+    path: str
+        - folder path to delete within
+    delroot: bool
+        - whether to delete the folder specified as well
+        - default: True
+
+    Returns
+    -------
+    int
+        - number of deleted folders
     '''
     path = getpath(path)
     delroot = bool(delroot)
@@ -656,9 +791,18 @@ def rmdir(path: str, delroot: bool = True) -> int:
 
 def splitpath(path: str) -> tuple:
     '''
-    - Splits a path string into its parts
-    - Input: `path` (`str`): path
-    - Return: `tuple` of directories/file
+    - splits a path string into its parts
+    
+    Parameters
+    ----------
+    path: str
+        - path
+        - can be absolute or relative
+    
+    Returns
+    -------
+    tuple[str]
+        - folders/file
     '''
     if not path:
         return '',
@@ -701,12 +845,15 @@ def splitpath(path: str) -> tuple:
 
 def unzip(path: str, remove: bool = False) -> None:
     '''
-    - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
-    - Imports `py7zr` if a file ends with .7z
-    - Input:
-        - `path` (`str`): path to archive file
-        - `remove` (`bool`): whether to delete archive after unzipping
-            - Default: `False`
+    - unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
+    
+    Parameters
+    ----------
+    path: str
+        - path to archive file
+    remove: bool
+        - whether to delete archive after unzipping
+        - default: False
     '''
     path = getpath(path)
     remove = bool(remove)
@@ -714,7 +861,6 @@ def unzip(path: str, remove: bool = False) -> None:
         raise FileNotFoundError(f'not found: {path}')
     fparent = parent(path)
     if path.endswith('.7z'):
-        from py7zr import unpack_7zarchive
         unpack_7zarchive(path, fparent)
         if remove:
             delete(path)
@@ -728,16 +874,23 @@ def unzip(path: str, remove: bool = False) -> None:
 
 def unzipdir(path: str, ignore_errors: bool = True) -> int:
     '''
-    - Unzips all archives in a directory (only 1st level) until it is unable to continue
-    - Deletes all archives as it unzips
-    - Supports archives of type: (.7z, .gz, .rar, .tar, .zip)
-    - Imports `py7zr` if a file ends with .7z
-    - Input:
-        - `path` (`str`): directory containing archive files
-        - `ignore_errors` (`bool`): whether to catch all Exceptions in unzipping
-            - Useful to unzip everything possible in the directory
-            - Default: `True`
-    - Return: `int` with number of unzipped archives
+    - unzips all archives in a folder (only 1st level) until it is unable to continue
+    - deletes all archives as it unzips
+    - supports archives of type: (.7z, .gz, .rar, .tar, .zip)
+    
+    Parameters
+    ----------
+    path: str
+        - folder containing archive files
+    ignore_errors: bool
+        - whether to catch all Exceptions in unzipping
+        - useful to unzip everything possible in the directory
+        - default: True
+    
+    Returns
+    -------
+    int
+        - number of unzipped archives
     '''
     path = getpath(path)
     ignore_errors = bool(ignore_errors)
