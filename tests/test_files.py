@@ -163,7 +163,9 @@ def test_makedirs(tmp_path):
     dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
     os.chdir(str_path)
     bad = p4f.makedirs(dirs)
-    check.equal(os.listdir().sort(), ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx', 'yz'])
+    tmp = os.listdir()
+    tmp.sort()
+    check.equal(tmp, ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx', 'yz'])
     os.chdir('stu/sub')
     os.chdir('../..')
     os.chdir('vwx/sub/sub')
