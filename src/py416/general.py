@@ -4,7 +4,7 @@
 | Updated: 2022-09-26
 
 - Functions for various things
-- These are all imported to py416 directly, so just call them like: :func:`py416.gettype(object)`
+- These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
 '''
 from datetime import datetime as dt
 
@@ -13,12 +13,12 @@ def gettype(thing) -> str:
     '''
     - gets the type of an object
     - wraps `type() <https://docs.python.org/3/library/functions.html#type>`_
-    
+
     Parameters
     ----------
     thing
         - object of any type
-    
+
     Returns
     -------
     str
@@ -30,12 +30,12 @@ def gettype(thing) -> str:
 def month2num(month_word: str) -> str:
     '''
     - converts month names to their 2-digit number
-    
+
     Parameters
     ----------
     month_word: str
         - full month name
-    
+
     Returns
     -------
     str
@@ -58,15 +58,16 @@ def secmod(seconds: float, sep: str = '') -> tuple:
     '''
     - formats a number of seconds nicely, split by days, hours, minutes, and seconds
     - takes the absolute value of the input so the result is always positive
-    
+
     Parameters
     ----------
     seconds: int | float
         - number to convert
+
     sep: str
         - separator between values
         - default: nothing
-    
+
     Returns
     -------
     tuple [str | int]
@@ -99,28 +100,33 @@ def timestamp(brackets: bool = True, micro: bool = False, offset: bool = True, r
     '''
     - creates a timestamp in ISO format with additional formatting
     - default example: [2022-07-06T13:57:12-06:00]
-    
+
     Parameters
     ----------
     brackets: bool
         - whether to surround timestamp in square brackets
         - default: True
+
     micro: bool
         - whether to include microseconds
         - default: False
+
     offset: bool
         - whether to include offset from UTC, e.g. timezone
         - default: True
+
     readable: bool
         - whether to internal whitespace for legibility
         - default: False
+
     seconds: bool
         - whether to include seconds
         - default: True
+
     utc: bool
         - current UTC time
         - default: False
-    
+
     Returns
     -------
     str
@@ -153,12 +159,12 @@ def timestamp(brackets: bool = True, micro: bool = False, offset: bool = True, r
 def unpack(iterable) -> tuple:
     '''
     - recursively retrieves items from some iterable types
-    
+
     Parameters
     ----------
     iterable: list | tuple
         - thing to unpack
-    
+
     Returns
     -------
     tuple

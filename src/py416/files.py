@@ -32,7 +32,7 @@ class File():
 
     Parameters
     ----------
-    path : str
+    path: str
         - path to the file/folder we wish to track
     '''
     def __init__(self, path):
@@ -186,10 +186,18 @@ class File():
 
     @property
     def stem(self) -> str:
+        '''
+        - the basename of the file/folder without the extension
+        - i.e. 'file' instead of 'file.txt'
+        '''
         return self.name if self.isdir else self.name.split('.')[0]
 
     @property
     def suffix(self) -> str:
+        '''
+        - the extension of the file, or blank if a folder
+        - i.e. '.txt'
+        '''
         return '.' + self.name.split('.')[-1] if not self.isdir else ''
 
     def copy(self, dest: str, overwrite: bool = False) -> object:
@@ -201,6 +209,7 @@ class File():
         ----------
         dest: str
             - folder to copy file/folder into
+
         overwrite: bool
             - whether to overwrite if the destination file/folder already exists
             - default: False
@@ -231,6 +240,7 @@ class File():
         ----------
         dest: str
             - folder to move file/folder into
+
         overwrite: bool
             - whether to overwrite if the destination file/folder already exists
             - default: False
@@ -314,6 +324,7 @@ def checkzip(path: str) -> bool:
     -------
     True
         - file exists and is valid
+
     False
         - file doesn't exist, possibly because we deleted it due to corruption
     '''
@@ -368,8 +379,10 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
     ----------
     path: str
         - path to desired file/folder
+
     dest: str
         - path to destination folder (where we're copying into)
+
     overwrite: bool
         - whether to overwrite an existing file/folder
         - merges directories, but overwrites files if they exist
@@ -401,6 +414,7 @@ def delete(path: str, force: bool = False) -> None:
     ----------
     path: str
         - path to file/folder
+
     force: bool
         - whether to try `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_ to delete a folder and its contents
         - default: False
@@ -526,9 +540,11 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     path: str
         - folder to search in
         - default: current working directory
+
     dirs: bool
         - whether to list folders
         - default: True
+
     files: bool
         - whether to list files
         - default: True
@@ -562,11 +578,14 @@ def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0
     ----------
     path: str
         - path to desired log file
+
     msg: str
         - message to log
+
     ts: bool
         - whether to include timestamp
         - default: True
+
     ts_args: iterable
         - arguments to pass to :func:`py416.timestamp`
         - default return example: [2022-08-19 13:24:54 -06:00]
@@ -600,6 +619,7 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     dirs
         - str: path to folder
         - iterable: nestings of lists and tuples with folder paths
+
     ignore_errors: bool
         - whether to catch all Exceptions from :func:`os.makedirs()`
         - useful to create as many of the requested folders as possible
@@ -638,9 +658,11 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
     ----------
     path: str
         - path to desired new file
+
     msg: str
         - text to put in the file
         - default: nothing
+
     overwrite: bool
         - whether to overwrite a file if it already exists
         - default: False
@@ -675,8 +697,10 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
     ----------
     path: str
         - path to desired file/folder
+
     dest: str
         - path to destination folder (where we're moving into)
+
     overwrite: bool
         - whether to overwrite an existing file/folder
         - merges directories, but overwrites files if they exist
@@ -735,6 +759,7 @@ def rename(path: str, name: str) -> str:
     ----------
     path: str
         - path to file/folder to be renamed
+
     name: str
         - new basename for file/folder (not path)
 
@@ -762,6 +787,7 @@ def rmdir(path: str, delroot: bool = True) -> int:
     ----------
     path: str
         - folder path to delete within
+
     delroot: bool
         - whether to delete the folder specified as well
         - default: True
@@ -792,13 +818,13 @@ def rmdir(path: str, delroot: bool = True) -> int:
 def splitpath(path: str) -> tuple:
     '''
     - splits a path string into its parts
-    
+
     Parameters
     ----------
     path: str
         - path
         - can be absolute or relative
-    
+
     Returns
     -------
     tuple[str]
@@ -846,11 +872,12 @@ def splitpath(path: str) -> tuple:
 def unzip(path: str, remove: bool = False) -> None:
     '''
     - unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)
-    
+
     Parameters
     ----------
     path: str
         - path to archive file
+
     remove: bool
         - whether to delete archive after unzipping
         - default: False
@@ -877,16 +904,17 @@ def unzipdir(path: str, ignore_errors: bool = True) -> int:
     - unzips all archives in a folder (only 1st level) until it is unable to continue
     - deletes all archives as it unzips
     - supports archives of type: (.7z, .gz, .rar, .tar, .zip)
-    
+
     Parameters
     ----------
     path: str
         - folder containing archive files
+
     ignore_errors: bool
         - whether to catch all Exceptions in unzipping
         - useful to unzip everything possible in the directory
         - default: True
-    
+
     Returns
     -------
     int

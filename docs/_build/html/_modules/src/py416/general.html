@@ -147,12 +147,12 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - gets the type of an object</span>
 <span class="sd">    - wraps `type() &lt;https://docs.python.org/3/library/functions.html#type&gt;`_</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    thing</span>
 <span class="sd">        - object of any type</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
@@ -164,12 +164,12 @@
 <div class="viewcode-block" id="month2num"><a class="viewcode-back" href="../../../general.html#src.py416.general.month2num">[docs]</a><span class="k">def</span> <span class="nf">month2num</span><span class="p">(</span><span class="n">month_word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - converts month names to their 2-digit number</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    month_word: str</span>
 <span class="sd">        - full month name</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
@@ -192,15 +192,16 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - formats a number of seconds nicely, split by days, hours, minutes, and seconds</span>
 <span class="sd">    - takes the absolute value of the input so the result is always positive</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    seconds: int | float</span>
 <span class="sd">        - number to convert</span>
+
 <span class="sd">    sep: str</span>
 <span class="sd">        - separator between values</span>
 <span class="sd">        - default: nothing</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple [str | int]</span>
@@ -233,28 +234,33 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - creates a timestamp in ISO format with additional formatting</span>
 <span class="sd">    - default example: [2022-07-06T13:57:12-06:00]</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    brackets: bool</span>
 <span class="sd">        - whether to surround timestamp in square brackets</span>
 <span class="sd">        - default: True</span>
+
 <span class="sd">    micro: bool</span>
 <span class="sd">        - whether to include microseconds</span>
 <span class="sd">        - default: False</span>
+
 <span class="sd">    offset: bool</span>
 <span class="sd">        - whether to include offset from UTC, e.g. timezone</span>
 <span class="sd">        - default: True</span>
+
 <span class="sd">    readable: bool</span>
 <span class="sd">        - whether to internal whitespace for legibility</span>
 <span class="sd">        - default: False</span>
+
 <span class="sd">    seconds: bool</span>
 <span class="sd">        - whether to include seconds</span>
 <span class="sd">        - default: True</span>
+
 <span class="sd">    utc: bool</span>
 <span class="sd">        - current UTC time</span>
 <span class="sd">        - default: False</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
@@ -287,12 +293,12 @@
 <div class="viewcode-block" id="unpack"><a class="viewcode-back" href="../../../general.html#src.py416.general.unpack">[docs]</a><span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - recursively retrieves items from some iterable types</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    iterable: list | tuple</span>
 <span class="sd">        - thing to unpack</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple</span>

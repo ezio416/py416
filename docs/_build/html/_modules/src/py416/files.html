@@ -166,7 +166,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    path : str</span>
+<span class="sd">    path: str</span>
 <span class="sd">        - path to the file/folder we wish to track</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
@@ -320,10 +320,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">stem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the basename of the file/folder without the extension</span>
+<span class="sd">        - i.e. &#39;file&#39; instead of &#39;file.txt&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isdir</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the extension of the file, or blank if a folder</span>
+<span class="sd">        - i.e. &#39;.txt&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isdir</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
 
 <div class="viewcode-block" id="File.copy"><a class="viewcode-back" href="../../../files.html#src.py416.files.File.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
@@ -335,6 +343,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        dest: str</span>
 <span class="sd">            - folder to copy file/folder into</span>
+
 <span class="sd">        overwrite: bool</span>
 <span class="sd">            - whether to overwrite if the destination file/folder already exists</span>
 <span class="sd">            - default: False</span>
@@ -365,6 +374,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        dest: str</span>
 <span class="sd">            - folder to move file/folder into</span>
+
 <span class="sd">        overwrite: bool</span>
 <span class="sd">            - whether to overwrite if the destination file/folder already exists</span>
 <span class="sd">            - default: False</span>
@@ -448,6 +458,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    True</span>
 <span class="sd">        - file exists and is valid</span>
+
 <span class="sd">    False</span>
 <span class="sd">        - file doesn&#39;t exist, possibly because we deleted it due to corruption</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -502,8 +513,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to desired file/folder</span>
+
 <span class="sd">    dest: str</span>
 <span class="sd">        - path to destination folder (where we&#39;re copying into)</span>
+
 <span class="sd">    overwrite: bool</span>
 <span class="sd">        - whether to overwrite an existing file/folder</span>
 <span class="sd">        - merges directories, but overwrites files if they exist</span>
@@ -535,6 +548,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to file/folder</span>
+
 <span class="sd">    force: bool</span>
 <span class="sd">        - whether to try `shutil.rmtree() &lt;https://docs.python.org/3/library/shutil.html#shutil.rmtree&gt;`_ to delete a folder and its contents</span>
 <span class="sd">        - default: False</span>
@@ -660,9 +674,11 @@
 <span class="sd">    path: str</span>
 <span class="sd">        - folder to search in</span>
 <span class="sd">        - default: current working directory</span>
+
 <span class="sd">    dirs: bool</span>
 <span class="sd">        - whether to list folders</span>
 <span class="sd">        - default: True</span>
+
 <span class="sd">    files: bool</span>
 <span class="sd">        - whether to list files</span>
 <span class="sd">        - default: True</span>
@@ -696,11 +712,14 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to desired log file</span>
+
 <span class="sd">    msg: str</span>
 <span class="sd">        - message to log</span>
+
 <span class="sd">    ts: bool</span>
 <span class="sd">        - whether to include timestamp</span>
 <span class="sd">        - default: True</span>
+
 <span class="sd">    ts_args: iterable</span>
 <span class="sd">        - arguments to pass to :func:`py416.timestamp`</span>
 <span class="sd">        - default return example: [2022-08-19 13:24:54 -06:00]</span>
@@ -734,6 +753,7 @@
 <span class="sd">    dirs</span>
 <span class="sd">        - str: path to folder</span>
 <span class="sd">        - iterable: nestings of lists and tuples with folder paths</span>
+
 <span class="sd">    ignore_errors: bool</span>
 <span class="sd">        - whether to catch all Exceptions from :func:`os.makedirs()`</span>
 <span class="sd">        - useful to create as many of the requested folders as possible</span>
@@ -772,9 +792,11 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to desired new file</span>
+
 <span class="sd">    msg: str</span>
 <span class="sd">        - text to put in the file</span>
 <span class="sd">        - default: nothing</span>
+
 <span class="sd">    overwrite: bool</span>
 <span class="sd">        - whether to overwrite a file if it already exists</span>
 <span class="sd">        - default: False</span>
@@ -809,8 +831,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to desired file/folder</span>
+
 <span class="sd">    dest: str</span>
 <span class="sd">        - path to destination folder (where we&#39;re moving into)</span>
+
 <span class="sd">    overwrite: bool</span>
 <span class="sd">        - whether to overwrite an existing file/folder</span>
 <span class="sd">        - merges directories, but overwrites files if they exist</span>
@@ -869,6 +893,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to file/folder to be renamed</span>
+
 <span class="sd">    name: str</span>
 <span class="sd">        - new basename for file/folder (not path)</span>
 
@@ -896,6 +921,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - folder path to delete within</span>
+
 <span class="sd">    delroot: bool</span>
 <span class="sd">        - whether to delete the folder specified as well</span>
 <span class="sd">        - default: True</span>
@@ -926,13 +952,13 @@
 <div class="viewcode-block" id="splitpath"><a class="viewcode-back" href="../../../files.html#src.py416.files.splitpath">[docs]</a><span class="k">def</span> <span class="nf">splitpath</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - splits a path string into its parts</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path</span>
 <span class="sd">        - can be absolute or relative</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple[str]</span>
@@ -980,11 +1006,12 @@
 <div class="viewcode-block" id="unzip"><a class="viewcode-back" href="../../../files.html#src.py416.files.unzip">[docs]</a><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    - unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - path to archive file</span>
+
 <span class="sd">    remove: bool</span>
 <span class="sd">        - whether to delete archive after unzipping</span>
 <span class="sd">        - default: False</span>
@@ -1011,16 +1038,17 @@
 <span class="sd">    - unzips all archives in a folder (only 1st level) until it is unable to continue</span>
 <span class="sd">    - deletes all archives as it unzips</span>
 <span class="sd">    - supports archives of type: (.7z, .gz, .rar, .tar, .zip)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    path: str</span>
 <span class="sd">        - folder containing archive files</span>
+
 <span class="sd">    ignore_errors: bool</span>
 <span class="sd">        - whether to catch all Exceptions in unzipping</span>
 <span class="sd">        - useful to unzip everything possible in the directory</span>
 <span class="sd">        - default: True</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    int</span>
