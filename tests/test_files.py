@@ -229,8 +229,29 @@ def test_makedirs(tmp_path):
 def test_parent(i, o):
     assert p4f.parent(i) == o
 
-# def test_rename(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
+def test_rename(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    os.chdir(str_path)
+    dname = 'dir'
+    dname2 = 'anotherdir'
+    fname = 'file.txt'
+    fname2 = 'somefile.csv'
+    msg = 'message'
+    os.makedirs(dname)
+    with open(fname, 'a') as file:
+        file.write(msg)
+    tmp = os.listdir()
+    check.is_in(dname, tmp)
+    check.is_not_in(dname2, tmp)
+    check.is_in(fname, tmp)
+    check.is_not_in(fname2, tmp)
+    p4f.rename(dname, dname2)
+    p4f.rename(fname, fname2)
+    tmp = os.listdir()
+    check.is_in(dname2, tmp)
+    check.is_not_in(dname, tmp)
+    check.is_in(fname2, tmp)
+    check.is_not_in(fname, tmp)
 
 # def test_rmdir():
 #     pass
