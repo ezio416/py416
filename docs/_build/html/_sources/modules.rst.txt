@@ -1,7 +1,8 @@
-src
-===
-
 .. toctree::
-   :maxdepth: 4
+   :caption: Modules
+   :maxdepth: 1
+   :hidden:
 
-   py416
+   files
+   general
+   variables

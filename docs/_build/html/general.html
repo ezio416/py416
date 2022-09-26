@@ -4,8 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; py416  documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>general &#8212; py416  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/basic_mod.css?v=0.7.0-1" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,8 +16,10 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <script src="_static/js/petite-vue.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="variables" href="variables.html" />
+    <link rel="prev" title="files" href="files.html" /> 
   </head><body>
 
 <div id="top_nav">
@@ -115,9 +118,9 @@
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="files.html">files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="general.html">general</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">general</a></li>
 <li class="toctree-l1"><a class="reference internal" href="variables.html">variables</a></li>
 </ul>
 
@@ -130,12 +133,185 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <section id="general">
+<h1>general<a class="headerlink" href="#general" title="Permalink to this heading">¶</a></h1>
+<div class="line-block">
+<div class="line">Author:  Ezio416</div>
+<div class="line">Created: 2022-08-18</div>
+<div class="line">Updated: 2022-09-26</div>
 </div>
+<ul class="simple">
+<li><p>Functions for various things</p></li>
+<li><p>These are all imported to py416 directly, so just call them like: <code class="xref py py-func docutils literal notranslate"><span class="pre">py416.gettype(object)()</span></code></p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">gettype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#gettype"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><ul class="simple">
+<li><p>gets the type of an object</p></li>
+<li><p>wraps <a class="reference external" href="https://docs.python.org/3/library/functions.html#type">type()</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>thing</strong> – <ul class="simple">
+<li><p>object of any type</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>type of object</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">month2num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month_word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#month2num"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><ul class="simple">
+<li><p>converts month names to their 2-digit number</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>month_word</strong> (<em>str</em>) – <ul class="simple">
+<li><p>full month name</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>zero-padded 2-digit number</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">secmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#secmod"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><ul class="simple">
+<li><p>formats a number of seconds nicely, split by days, hours, minutes, and seconds</p></li>
+<li><p>takes the absolute value of the input so the result is always positive</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seconds</strong> (<em>int</em><em> | </em><em>float</em>) – <ul>
+<li><p>number to convert</p></li>
+</ul>
+</p></li>
+<li><p><strong>sep</strong> (<em>str</em>) – <ul>
+<li><p>separator between values</p></li>
+<li><p>default: nothing</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>string in format and individual values</p></li>
+<li><p>i.e. (‘04d16h47m09s’, 9, 47, 16, 4)</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple [str | int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brackets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micro</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><ul class="simple">
+<li><p>creates a timestamp in ISO format with additional formatting</p></li>
+<li><p>default example: [2022-07-06T13:57:12-06:00]</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>brackets</strong> (<em>bool</em>) – <ul>
+<li><p>whether to surround timestamp in square brackets</p></li>
+<li><p>default: True</p></li>
+</ul>
+</p></li>
+<li><p><strong>micro</strong> (<em>bool</em>) – <ul>
+<li><p>whether to include microseconds</p></li>
+<li><p>default: False</p></li>
+</ul>
+</p></li>
+<li><p><strong>offset</strong> (<em>bool</em>) – <ul>
+<li><p>whether to include offset from UTC, e.g. timezone</p></li>
+<li><p>default: True</p></li>
+</ul>
+</p></li>
+<li><p><strong>readable</strong> (<em>bool</em>) – <ul>
+<li><p>whether to internal whitespace for legibility</p></li>
+<li><p>default: False</p></li>
+</ul>
+</p></li>
+<li><p><strong>seconds</strong> (<em>bool</em>) – <ul>
+<li><p>whether to include seconds</p></li>
+<li><p>default: True</p></li>
+</ul>
+</p></li>
+<li><p><strong>utc</strong> (<em>bool</em>) – <ul>
+<li><p>current UTC time</p></li>
+<li><p>default: False</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>current timestamp with chosen formatting</p></li>
+<li><p>i.e. [2022-08-18 07:15:43.962 +00:00]</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/src/py416/general.html#unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><ul class="simple">
+<li><p>recursively retrieves items from some iterable types</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>iterable</strong> (<em>list</em><em> | </em><em>tuple</em>) – <ul class="simple">
+<li><p>thing to unpack</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple</em> –</p>
+<ul>
+<li><p>all retrieved items</p></li>
+</ul>
+</li>
+<li><p><cite>iterable</cite> itself if not a list or tuple</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 
 
             <div class="clearer"></div>
@@ -150,9 +326,14 @@
         <div class="button_nav">
             <div class="left">
                 
+                <a href="files.html">
+                    <span class="icon"><</span><span>files</span></a>
+                
             </div>
 
             <div class="right">
+                
+                    <a href="variables.html"><span>variables</span><span class="icon">></span></a>
                 
             </div>
         </div>
