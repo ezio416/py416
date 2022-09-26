@@ -8,11 +8,12 @@ import pytest_check as check
 from rich.traceback import install
 install()
 
-sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/..')
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import src.py416.files as p4f
 
-# def test_File():
-#     pass
+# def test_File(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
 
 def test_cd(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -34,8 +35,9 @@ def test_cd(tmp_path):
 def test_checkwindrive(i, o):
     assert p4f.checkwindrive(i) == o
 
-# def test_checkzip():
-#     pass
+# def test_checkzip(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
 
 def test_copy(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -160,8 +162,9 @@ def test_listdir(tmp_path):
     check.is_in(f2, p4f.listdir(d1))
     check.is_in(f2, p4f.listdir(d1, dirs=False))
 
-# def test_log():
-#     pass
+# def test_log(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
 
 def test_makefile(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -200,9 +203,47 @@ def test_makedirs(tmp_path):
     os.chdir('../../..')
     os.chdir('yz/a/b/c/d/e/f/g')
 
-# def test_move():
-#     pass
-
+def test_move(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    os.chdir(str_path)
+    dname = 'dir'
+    dname2 = 'dir2'
+    fname = 'file.txt'
+    msg = 'message'
+    msg2 = '\nmore text'
+    with open(fname, 'a') as file:
+        file.write(msg)
+    tmp = os.listdir()
+    check.is_not_in(dname, tmp)
+    check.is_in(fname, tmp)
+    p4f.move(fname, dname)  # move file
+    tmp = os.listdir()
+    check.is_not_in(fname, tmp)
+    tmp = os.listdir(dname)
+    check.is_in(fname, tmp)
+    with open(fname, 'a') as file:
+        file.write(msg2)
+    p4f.move(fname, dname, overwrite=True)  # overwrite file
+    tmp = os.listdir()
+    check.is_not_in(fname, tmp)
+    with open(f'{dname}/{fname}', 'r') as file:
+        tmp = file.read()
+    check.equal(tmp, msg2)
+    p4f.move(dname, dname2)  # move dir
+    tmp = os.listdir()
+    check.is_in(dname2, tmp)
+    check.is_not_in(dname, tmp)
+    check.is_in(dname, os.listdir(dname2))
+    os.makedirs(dname)
+    with open(f'{dname}/{fname}', 'a') as file:
+        file.write(msg)
+    p4f.move(dname, dname2, overwrite=True)  # overwrite dir
+    tmp = os.listdir()
+    check.is_not_in(dname, tmp)
+    with open(f'{dname2}/{dname}/{fname}', 'r') as file:
+        tmp = file.read()
+    check.equal(tmp, msg)
+    
 @pytest.mark.parametrize('i,o', [
     # Unix
     ('/', '/'),
@@ -253,8 +294,9 @@ def test_rename(tmp_path):
     check.is_in(fname2, tmp)
     check.is_not_in(fname, tmp)
 
-# def test_rmdir():
-#     pass
+# def test_rmdir(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
 
 @pytest.mark.parametrize('i,o', [
     # Unix
@@ -282,8 +324,10 @@ def test_rename(tmp_path):
 def test_splitpath(i, o):
     assert p4f.splitpath(i) == o
 
-# def test_unzip():
-#     pass
+# def test_unzip(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
 
-# def test_unzipdir():
-#     pass
+# def test_unzipdir(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
