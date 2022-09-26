@@ -156,9 +156,17 @@ def test_makefile(tmp_path):
         tmp3 = file.read()
     check.equal(tmp3, '')    
 
-def test_makedirs():
+def test_makedirs(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
     dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
+    os.chdir(str_path)
     bad = p4f.makedirs(dirs)
+    check.equal(os.listdir(), ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx', 'yz'])
+    os.chdir('stu/sub')
+    os.chdir('../..')
+    os.chdir('vwx/sub/sub')
+    os.chdir('../../..')
+    os.chdir('yz/a/b/c/d/e/f/g')
 
 # def test_move():
 #     pass
