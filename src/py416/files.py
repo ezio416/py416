@@ -558,7 +558,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     dirs = bool(dirs)
     files = bool(files)
     if not os.path.exists(path):
-        raise FileNotFoundError(f'not found: {path}')
+        return '',
     result = []
     for child in os.listdir(path):
         child = joinpath(path, child)
