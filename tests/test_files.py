@@ -133,8 +133,28 @@ def test_listdir(tmp_path):
 # def test_log():
 #     pass
 
-# def test_makefile():
-#     pass
+def test_makefile(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    fname = 'test.txt'
+    fpath = f'{str_path}/{fname}'
+    p4f.makefile(fpath, 'message')
+    check.equal(os.listdir(str_path), [fname])
+    with open(fpath, 'r') as file:
+        tmp = file.read()
+    check.equal(tmp, 'message')
+    try:
+        p4f.makefile(fpath, 'message2')
+        raise Exception('that should\'ve failed')
+    except FileExistsError:
+        pass
+    p4f.makefile(fpath, 'message3', overwrite=True)
+    with open(fpath, 'r') as file:
+        tmp3 = file.read()
+    check.equal(tmp3, 'message3')
+    p4f.makefile(fpath, overwrite=True)
+    with open(fpath, 'r') as file:
+        tmp3 = file.read()
+    check.equal(tmp3, '')    
 
 # def test_makedirs():
 #     pass
@@ -171,7 +191,6 @@ def test_parent(i, o):
 # def test_rename(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
     
-
 # def test_rmdir():
 #     pass
 
