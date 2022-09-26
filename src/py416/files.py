@@ -385,7 +385,7 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
 
     overwrite: bool
         - whether to overwrite an existing file/folder
-        - merges directories, but overwrites files if they exist
+        - merges folders, but overwrites files if they exist
         - default: False
 
     Returns
@@ -399,11 +399,11 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
         if new_path_exists and not overwrite:
             raise FileExistsError(f'destination file already exists: {new_path}')
         return sh.copy2(path, new_path)
-    if new_path_exists:  # copying directory
+    if new_path_exists:  # copying folder
         if overwrite:
-            return sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest dir
-        raise FileExistsError(f'destination directory already exists: {new_path}')
-    return sh.copytree(path, new_path)  # dest dir doesn't exist, good
+            return sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
+        raise FileExistsError(f'destination folder already exists: {new_path}')
+    return sh.copytree(path, new_path)  # dest folder doesn't exist, good
 
 
 def delete(path: str, force: bool = False) -> None:
@@ -703,7 +703,7 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
 
     overwrite: bool
         - whether to overwrite an existing file/folder
-        - merges directories, but overwrites files if they exist
+        - merges folders, but overwrites files if they exist
         - default: False
 
     Returns
@@ -714,16 +714,18 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
     new_path = f'{dest}/{os.path.basename(path)}'
     new_path_exists = os.path.exists(new_path)
     if os.path.isfile(path):  # moving file
-        if new_path_exists and not overwrite:
-            raise FileExistsError(f'destination file already exists: {new_path}')
+        if new_path_exists:
+            if not overwrite:
+                raise FileExistsError(f'destination file already exists: {new_path}')
+            delete(new_path)  # deleting dest file to overwrite it
         return sh.move(path, dest)
-    if new_path_exists:  # moving directory
+    if new_path_exists:  # moving folder
         if overwrite:
-            result = sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest dir
+            result = sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
             delete(path, force=True)  # deleting original (we're doing copy->delete manually)
             return result
-        raise FileExistsError(f'destination directory already exists: {new_path}')
-    return sh.move(path, dest)  # dest dir doesn't exist, good
+        raise FileExistsError(f'destination folder already exists: {new_path}')
+    return sh.move(path, dest)  # dest folder doesn't exist, good
 
 
 def parent(path: str) -> str:
