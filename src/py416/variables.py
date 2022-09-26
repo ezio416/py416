@@ -1,11 +1,9 @@
 '''
-Name:    py416.variables
-Author:  Ezio416
-Created: 2022-08-06
-Updated: 2022-08-16
+| Author:  Ezio416
+| Created: 2022-08-06
+| Updated: 2022-09-26
 
-A collection of useful variables
-There should be no calculation done in here
+- A collection of useful variables
 '''
 
 # Seconds in _____ amount of time
