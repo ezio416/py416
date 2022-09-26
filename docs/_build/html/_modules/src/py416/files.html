@@ -1,157 +1,320 @@
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>src.py416.files &mdash; py416  documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.py416.files &#8212; py416  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic_mod.css?v=0.7.0-1" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
+    <script src="../../../_static/js/petite-vue.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-</head>
+  </head><body>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> py416
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<div id="top_nav">
+    
+
+    <nav>
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../../../index.html" title="Go to homepage">py416  documentation</a></h1>
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../../../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../files.html">files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general.html">general</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../variables.html">variables</a></li>
+</ul>
+
         </div>
       </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">py416</a>
-      </nav>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>src.py416.files</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
   <h1>Source code for src.py416.files</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">- Name:    py416.files</span>
-<span class="sd">- Author:  Ezio416</span>
-<span class="sd">- Created: 2022-08-16</span>
-<span class="sd">- Updated: 2022-09-22</span>
+<span class="sd">| Author:  Ezio416</span>
+<span class="sd">| Created: 2022-08-16</span>
+<span class="sd">| Updated: 2022-09-26</span>
 
-<span class="sd">- Functions for file system manipulation</span>
-<span class="sd">- OS-agnostic (Windows/Unix) - Windows paths will always have forward slashes</span>
-<span class="sd">- Basically everything here takes strings, so pass strings</span>
+<span class="sd">- Functions for filesystem and path string manipulation</span>
+
+<span class="sd">    - OS-agnostic (Windows/Unix) - we always return Windows paths with forward slashes</span>
+<span class="sd">    - supports absolute and relative paths</span>
+
+<span class="sd">- Does not yet support any paths that:</span>
+
+<span class="sd">    - are not strings</span>
+<span class="sd">    - contain multiple single or double-dots ( . | .. )</span>
+<span class="sd">    - contain single or double-dots in the beginning/middle</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span> <span class="k">as</span> <span class="nn">sh</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">BadZipFile</span><span class="p">,</span> <span class="n">ZipFile</span>
+
+<span class="kn">from</span> <span class="nn">py7zr</span> <span class="kn">import</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">SevenZipFile</span><span class="p">,</span> <span class="n">unpack_7zarchive</span>
 
 <span class="kn">from</span> <span class="nn">.general</span> <span class="kn">import</span> <span class="n">gettype</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">unpack</span>
 
 
-<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../py416.html#src.py416.files.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">():</span>
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../files.html#src.py416.files.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    - class for keeping track of a file/folder and performing actions on it</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        - path to the file/folder we wish to track</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;py416.files.File(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">atime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the last time the file/folder was accessed</span>
+<span class="sd">        - wraps `os.path.getatime() &lt;https://docs.python.org/3/library/os.path.html#os.path.getatime&gt;`_</span>
+<span class="sd">        - given in `Unix time &lt;https://www.unixtimestamp.com&gt;`_ as a float</span>
+<span class="sd">        - i.e. 1663948504.5217497</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getatime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">atimes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the last time the file/folder was accessed</span>
+<span class="sd">        - given as a tuple[int], starting with year and ending with microseconds</span>
+<span class="sd">        - i.e. (2022, 09, 23, 10, 01, 43, 544875)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atime</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y,%m,</span><span class="si">%d</span><span class="s1">,%H,%M,%S,</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - tuple of full paths for everything inside the folder</span>
+<span class="sd">        - if path is empty or not a folder, returns an empty tuple</span>
+<span class="sd">        - i.e. (&#39;C:/thisfolder/file1.txt&#39;, &#39;C:/thisfolder/file2.csv&#39;) or ( )</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isdir</span> <span class="k">else</span> <span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ctime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the time the file/folder was created</span>
+<span class="sd">        - wraps `os.path.getctime() &lt;https://docs.python.org/3/library/os.path.html#os.path.getctime&gt;`_</span>
+<span class="sd">        - given in `Unix time &lt;https://www.unixtimestamp.com&gt;`_ as a float</span>
+<span class="sd">        - i.e. 1663948504.5217497</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ctimes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the time the file/folder was created</span>
+<span class="sd">        - given as a tuple[int], starting with year and ending with microseconds</span>
+<span class="sd">        - i.e. (2022, 09, 23, 10, 01, 43, 544875)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctime</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y,%m,</span><span class="si">%d</span><span class="s1">,%H,%M,%S,</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - whether the file/folder exists</span>
+<span class="sd">        - wraps `os.path.exists() &lt;https://docs.python.org/3/library/os.path.html#os.path.exists&gt;`_</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">isdir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - whether the file/folder exists and is a folder</span>
+<span class="sd">        - wraps `os.path.isdir() &lt;https://docs.python.org/3/library/os.path.html#os.path.isdir&gt;`_</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">isfile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - whether the file/folder exists and is a file</span>
+<span class="sd">        - wraps `os.path.isfile() &lt;https://docs.python.org/3/library/os.path.html#os.path.isfile&gt;`_</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">isroot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - whether the folder is a root directory</span>
+<span class="sd">            - on Unix, this is always a single forward slash ( / )</span>
+<span class="sd">            - on Windows, these are drive letters ( C:/ ) or network locations ( //netloc )</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the last time the file/folder was modified</span>
+<span class="sd">        - wraps `os.path.getmtime() &lt;https://docs.python.org/3/library/os.path.html#os.path.getmtime&gt;`_</span>
+<span class="sd">        - given in `Unix time &lt;https://www.unixtimestamp.com&gt;`_ as a float</span>
+<span class="sd">        - i.e. 1663948504.5217497</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mtimes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the last time the file/folder was modified</span>
+<span class="sd">        - given as a tuple[int], starting with year and ending with microseconds</span>
+<span class="sd">        - i.e. (2022, 09, 23, 10, 01, 43, 544875)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mtime</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y,%m,</span><span class="si">%d</span><span class="s1">,%H,%M,%S,</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isroot</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the basename of the file/folder</span>
+<span class="sd">        - i.e. &#39;file.txt&#39; or &#39;foldername&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the parent path of the file/folder</span>
+<span class="sd">        - creates a new File instance for the parent path</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">File</span><span class="p">(</span><span class="n">parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the parts of the file/folder&#39;s path</span>
+<span class="sd">        - given as a tuple[str]</span>
+<span class="sd">        - i.e. (&#39;C:/&#39;, &#39;folder&#39;, &#39;file.txt&#39;)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">splitpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the root of the file/folder&#39;s path</span>
+<span class="sd">        - i.e. &#39;C:/&#39; or &#39;//netloc&#39; or &#39;/&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        - the size of the file/folder in bytes</span>
+<span class="sd">        - wraps `os.path.getsize() &lt;https://docs.python.org/3/library/os.path.html#os.path.getsize&gt;`_</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -162,50 +325,81 @@
     <span class="k">def</span> <span class="nf">suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isdir</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
 
-<div class="viewcode-block" id="File.copy"><a class="viewcode-back" href="../../../py416.html#src.py416.files.File.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="File.copy"><a class="viewcode-back" href="../../../files.html#src.py416.files.File.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        - Copies file/directory</span>
-<span class="sd">        - Input: `dest` (`str`): directory to copy file into</span>
-<span class="sd">        - The copy is not tracked</span>
+<span class="sd">        - copies file/folder without tracking the created copy</span>
+<span class="sd">        - in-place operation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dest: str</span>
+<span class="sd">            - folder to copy file/folder into</span>
+<span class="sd">        overwrite: bool</span>
+<span class="sd">            - whether to overwrite if the destination file/folder already exists</span>
+<span class="sd">            - default: False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="File.delete"><a class="viewcode-back" href="../../../py416.html#src.py416.files.File.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="File.delete"><a class="viewcode-back" href="../../../files.html#src.py416.files.File.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        - Deletes file/directory</span>
-<span class="sd">        - If the object is a directory and all subdirs are empty, recursively deletes them</span>
-<span class="sd">        - Input: `force` (`bool`): whether to force deletion with `shutil.rmtree()`</span>
+<span class="sd">        - deletes file/folder, attempting to recursively delete empty subfolders</span>
+<span class="sd">        - in-place operation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        force: bool</span>
+<span class="sd">            - whether to force deletion with `shutil.rmtree() &lt;https://docs.python.org/3/library/shutil.html#shutil.rmtree&gt;`_</span>
+<span class="sd">            - default: False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">force</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
         <span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="File.move"><a class="viewcode-back" href="../../../py416.html#src.py416.files.File.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="File.move"><a class="viewcode-back" href="../../../files.html#src.py416.files.File.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        - Moves file/directory</span>
-<span class="sd">        - Input: `dest` (`str`): directory to move file into</span>
+<span class="sd">        - moves file/folder, maintaining tracking at the new location</span>
+<span class="sd">        - in-place operation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dest: str</span>
+<span class="sd">            - folder to move file/folder into</span>
+<span class="sd">        overwrite: bool</span>
+<span class="sd">            - whether to overwrite if the destination file/folder already exists</span>
+<span class="sd">            - default: False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="File.rename"><a class="viewcode-back" href="../../../py416.html#src.py416.files.File.rename">[docs]</a>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="File.rename"><a class="viewcode-back" href="../../../files.html#src.py416.files.File.rename">[docs]</a>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        - Renames file, keeping in same directory</span>
-<span class="sd">        - Input: `new_name` (`str`): new file name</span>
+<span class="sd">        - renames file/folder without moving it</span>
+<span class="sd">        - in-place operation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            - new basename for the file/folder</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">newname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div></div>
 
 
-<div class="viewcode-block" id="cd"><a class="viewcode-back" href="../../../py416.html#src.py416.files.cd">[docs]</a><span class="k">def</span> <span class="nf">cd</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="cd"><a class="viewcode-back" href="../../../files.html#src.py416.files.cd">[docs]</a><span class="k">def</span> <span class="nf">cd</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.chdir()`</span>
-<span class="sd">    - Changes current working directory</span>
-<span class="sd">    - Creates destination if nonexistent</span>
-<span class="sd">    - Input: `dir` (`str`): directory path</span>
-<span class="sd">        - Default: up a directory</span>
-<span class="sd">    - Return: `str` with current working directory</span>
+<span class="sd">    - changes the current working directory, creating it if nonexistent</span>
+<span class="sd">    - wraps `os.chdir() &lt;https://docs.python.org/3/library/os.html#os.chdir&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to folder we want to go in</span>
+<span class="sd">        - default: parent (up a folder)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path to new current working directory</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -213,11 +407,19 @@
     <span class="k">return</span> <span class="n">path</span></div>
 
 
-<div class="viewcode-block" id="checkwindrive"><a class="viewcode-back" href="../../../py416.html#src.py416.files.checkwindrive">[docs]</a><span class="k">def</span> <span class="nf">checkwindrive</span><span class="p">(</span><span class="n">drive</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="checkwindrive"><a class="viewcode-back" href="../../../files.html#src.py416.files.checkwindrive">[docs]</a><span class="k">def</span> <span class="nf">checkwindrive</span><span class="p">(</span><span class="n">drive</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Checks if a given string is a Windows drive letter (i.e. &#39;C:&#39;, &#39;D:\\\\&#39;, &#39;E:/&#39;)</span>
-<span class="sd">    - Input: `drive` (`str`): string to check</span>
-<span class="sd">    - Return: `str` with drive</span>
+<span class="sd">    - checks if a given string is a Windows drive letter (i.e. &#39;C:&#39;, &#39;D:\\\\&#39;, &#39;E:/&#39;)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    drive: str</span>
+<span class="sd">        - string to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - normalized root path ( &#39;C:/&#39; ) if valid, else an empty string</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">drive</span> <span class="o">=</span> <span class="n">forslash</span><span class="p">(</span><span class="n">drive</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">drive</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
@@ -231,20 +433,26 @@
     <span class="k">return</span> <span class="n">drive</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span></div>
 
 
-<div class="viewcode-block" id="checkzip"><a class="viewcode-back" href="../../../py416.html#src.py416.files.checkzip">[docs]</a><span class="k">def</span> <span class="nf">checkzip</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="checkzip"><a class="viewcode-back" href="../../../files.html#src.py416.files.checkzip">[docs]</a><span class="k">def</span> <span class="nf">checkzip</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Checks if an archive file (.7z or .zip) exists and is valid</span>
-<span class="sd">    - Imports `py7zr` if `path` ends with .7z</span>
-<span class="sd">    - Deletes file if invalid or incomplete</span>
-<span class="sd">    - Input: `path` (`str`): path to the archive file</span>
-<span class="sd">    - Return:</span>
-<span class="sd">        - `True`: file exists and is valid</span>
-<span class="sd">        - `False`: file doesn&#39;t exist, possibly because we deleted it due to corruption</span>
+<span class="sd">    - checks if an archive file (.7z or .zip) exists and is valid</span>
+<span class="sd">    - deletes file if invalid or incomplete</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to the archive file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    True</span>
+<span class="sd">        - file exists and is valid</span>
+<span class="sd">    False</span>
+<span class="sd">        - file doesn&#39;t exist, possibly because we deleted it due to corruption</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.7z&#39;</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">py7zr</span> <span class="kn">import</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">SevenZipFile</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">SevenZipFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">):</span>
                     <span class="k">pass</span>
@@ -253,7 +461,6 @@
                 <span class="n">delete</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.zip&#39;</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">BadZipFile</span><span class="p">,</span> <span class="n">ZipFile</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
                     <span class="k">pass</span>
@@ -265,11 +472,11 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="copymove"><a class="viewcode-back" href="../../../py416.html#src.py416.files.copymove">[docs]</a><span class="k">def</span> <span class="nf">copymove</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<div class="viewcode-block" id="copymove"><a class="viewcode-back" href="../../../files.html#src.py416.files.copymove">[docs]</a><span class="k">def</span> <span class="nf">copymove</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `py416.files.copy()` and `py416.files.move()`</span>
-<span class="sd">    - Copy and move are very similar, so this handles some of what they share</span>
+<span class="sd">    - wrapper for :func:`py416.files.copy` and :func:`py416.files.move`, which are very similar, so this handles some of what they share</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_copymove</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="n">dest</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
@@ -285,18 +492,26 @@
     <span class="k">return</span> <span class="n">_copymove</span></div>
 
 
-<div class="viewcode-block" id="copy"><a class="viewcode-back" href="../../../py416.html#src.py416.files.copy">[docs]</a><span class="nd">@copymove</span>
+<div class="viewcode-block" id="copy"><a class="viewcode-back" href="../../../files.html#src.py416.files.copy">[docs]</a><span class="nd">@copymove</span>
 <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Copies file or directory and all contents, creating destination if nonexistent</span>
-<span class="sd">    - Adds some extra safety to `shutil` functions with Exceptions</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to desired file/directory</span>
-<span class="sd">        - `dest` (`str`): path to destination parent directory (where we&#39;re going into)</span>
-<span class="sd">        - `overwrite` (`bool`): whether to overwrite an existing file/directory</span>
-<span class="sd">            - Merges directories, but overwrites files if they exist</span>
-<span class="sd">            - Default: `False`</span>
-<span class="sd">    - Return: `str` with path to copied file/directory</span>
+<span class="sd">    - copies file/folder and all contents, creating destination if nonexistent</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to desired file/folder</span>
+<span class="sd">    dest: str</span>
+<span class="sd">        - path to destination folder (where we&#39;re copying into)</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        - whether to overwrite an existing file/folder</span>
+<span class="sd">        - merges directories, but overwrites files if they exist</span>
+<span class="sd">        - default: False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path to copied file/folder</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">new_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="n">new_path_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
@@ -311,13 +526,17 @@
     <span class="k">return</span> <span class="n">sh</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_path</span><span class="p">)</span>  <span class="c1"># dest dir doesn&#39;t exist, good</span></div>
 
 
-<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../py416.html#src.py416.files.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../files.html#src.py416.files.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Deletes file or directory</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to file or directory</span>
-<span class="sd">        - `force` (`bool`): whether to try `shutil.rmtree()` to delete a directory and its contents</span>
-<span class="sd">            - Default: `False`</span>
+<span class="sd">    - deletes file/folder</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to file/folder</span>
+<span class="sd">    force: bool</span>
+<span class="sd">        - whether to try `shutil.rmtree() &lt;https://docs.python.org/3/library/shutil.html#shutil.rmtree&gt;`_ to delete a folder and its contents</span>
+<span class="sd">        - default: False</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">force</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
@@ -332,33 +551,53 @@
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="forslash"><a class="viewcode-back" href="../../../py416.html#src.py416.files.forslash">[docs]</a><span class="k">def</span> <span class="nf">forslash</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="forslash"><a class="viewcode-back" href="../../../files.html#src.py416.files.forslash">[docs]</a><span class="k">def</span> <span class="nf">forslash</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Replaces `\\` in paths with `/`</span>
-<span class="sd">    - Used to unify path formatting between OS types</span>
-<span class="sd">    - Input: `path` (`str`): path string</span>
-<span class="sd">    - Return: `str` with path</span>
+<span class="sd">    - replaces backslashes in paths with forward slashes</span>
+<span class="sd">    - used to unify path formatting between OS types</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path string</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path with forward slashes</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;input must be a string; invalid: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="getcwd"><a class="viewcode-back" href="../../../py416.html#src.py416.files.getcwd">[docs]</a><span class="k">def</span> <span class="nf">getcwd</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="getcwd"><a class="viewcode-back" href="../../../files.html#src.py416.files.getcwd">[docs]</a><span class="k">def</span> <span class="nf">getcwd</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.getcwd()`</span>
-<span class="sd">    - Gets the current working directory</span>
-<span class="sd">    - Return: `str` with path</span>
+<span class="sd">    - gets the current working directory</span>
+<span class="sd">    - wraps `os.getcwd() &lt;https://docs.python.org/3/library/os.html#os.getcwd&gt;`_</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path to current working directory</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">forslash</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="getpath"><a class="viewcode-back" href="../../../py416.html#src.py416.files.getpath">[docs]</a><span class="k">def</span> <span class="nf">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="getpath"><a class="viewcode-back" href="../../../files.html#src.py416.files.getpath">[docs]</a><span class="k">def</span> <span class="nf">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Gets the full path of something</span>
-<span class="sd">    - Input: `path` (`str`): absolute or relative path</span>
-<span class="sd">        - If relative, we assume it&#39;s in the current working directory</span>
-<span class="sd">    - Return: `str` with path</span>
+<span class="sd">    - gets the full path of something, resolving most relative paths</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - absolute or relative path</span>
+<span class="sd">        - if relative, we assume it&#39;s in the current working directory</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - absolute path</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">parts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">splitpath</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">parts</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]:</span>  <span class="c1"># special case</span>
@@ -374,12 +613,20 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span></div>
 
 
-<div class="viewcode-block" id="joinpath"><a class="viewcode-back" href="../../../py416.html#src.py416.files.joinpath">[docs]</a><span class="k">def</span> <span class="nf">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="joinpath"><a class="viewcode-back" href="../../../files.html#src.py416.files.joinpath">[docs]</a><span class="k">def</span> <span class="nf">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Imitator for `os.path.join()`</span>
-<span class="sd">    - Joins parts of a path together in the order they were received</span>
-<span class="sd">    - Input: `parts` (iterable): directories/file to join together</span>
-<span class="sd">    - Return: `str` with path</span>
+<span class="sd">    - joins parts of a path together in the order they were received</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parts: iterable</span>
+<span class="sd">        - folder/file names to join together</span>
+<span class="sd">        - iterable may be single or nested lists or tuples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - joined path</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">parts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unpack</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">splitpath</span><span class="p">(</span><span class="n">part</span><span class="p">))</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">unpack</span><span class="p">(</span><span class="n">parts</span><span class="p">)]))</span>  <span class="c1"># split elements if partial paths</span>
     <span class="k">if</span> <span class="n">parts</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">]:</span>  <span class="c1"># special case</span>
@@ -402,18 +649,27 @@
     <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="listdir"><a class="viewcode-back" href="../../../py416.html#src.py416.files.listdir">[docs]</a><span class="k">def</span> <span class="nf">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">dirs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">files</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<div class="viewcode-block" id="listdir"><a class="viewcode-back" href="../../../files.html#src.py416.files.listdir">[docs]</a><span class="k">def</span> <span class="nf">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">dirs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">files</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.listdir()`</span>
-<span class="sd">    - Lists directories/files within a directory</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): directory path to search in</span>
-<span class="sd">            - Default: current working directory</span>
-<span class="sd">        - `dirs` (`bool`): whether to list directories</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">        - `files` (`bool`): whether to list files</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">    - Return: `tuple` of `str` with paths</span>
+<span class="sd">    - lists files/folders within a folder</span>
+<span class="sd">    - wraps `os.listdir() &lt;https://docs.python.org/3/library/os.html#os.listdir&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - folder to search in</span>
+<span class="sd">        - default: current working directory</span>
+<span class="sd">    dirs: bool</span>
+<span class="sd">        - whether to list folders</span>
+<span class="sd">        - default: True</span>
+<span class="sd">    files: bool</span>
+<span class="sd">        - whether to list files</span>
+<span class="sd">        - default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[str]</span>
+<span class="sd">        - absolute paths</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">dirs</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span>
@@ -430,17 +686,23 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="log"><a class="viewcode-back" href="../../../py416.html#src.py416.files.log">[docs]</a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ts_args</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="log"><a class="viewcode-back" href="../../../files.html#src.py416.files.log">[docs]</a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ts_args</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Logs to file with current timestamp</span>
-<span class="sd">    - Creates file and its parent directory if nonexistent</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to desired log file</span>
-<span class="sd">        - `msg` (`str`): message to log</span>
-<span class="sd">        - `ts` (`bool`): whether to include timestamp</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">        - `ts_args` (`list`/`tuple`): arguments to pass to `py416.timestamp()`</span>
-<span class="sd">            - Default example: [2022-08-19 13:24:54 -06:00]</span>
+<span class="sd">    - logs to file with current timestamp</span>
+<span class="sd">    - creates file and its parent folder if nonexistent</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to desired log file</span>
+<span class="sd">    msg: str</span>
+<span class="sd">        - message to log</span>
+<span class="sd">    ts: bool</span>
+<span class="sd">        - whether to include timestamp</span>
+<span class="sd">        - default: True</span>
+<span class="sd">    ts_args: iterable</span>
+<span class="sd">        - arguments to pass to :func:`py416.timestamp`</span>
+<span class="sd">        - default return example: [2022-08-19 13:24:54 -06:00]</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
@@ -461,18 +723,25 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">orig_stdout</span></div>
 
 
-<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../py416.html#src.py416.files.makedirs">[docs]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">(</span><span class="o">*</span><span class="n">dirs</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../files.html#src.py416.files.makedirs">[docs]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">(</span><span class="o">*</span><span class="n">dirs</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.makedirs()`</span>
-<span class="sd">    - Creates directories if nonexistent</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `dirs`:</span>
-<span class="sd">            - `str` directory path</span>
-<span class="sd">            - Nestings of `list`/`tuple` objects with `str` directory path base elements</span>
-<span class="sd">        - `ignore_errors` (`bool`): whether to catch all Exceptions in the process</span>
-<span class="sd">            - Useful to create as many of the requested directories as possible</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">    - Return: `tuple` of directories we failed to create</span>
+<span class="sd">    - creates directories if nonexistent</span>
+<span class="sd">    - wraps `os.makedirs() &lt;https://docs.python.org/3/library/os.html#os.makedirs&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dirs</span>
+<span class="sd">        - str: path to folder</span>
+<span class="sd">        - iterable: nestings of lists and tuples with folder paths</span>
+<span class="sd">    ignore_errors: bool</span>
+<span class="sd">        - whether to catch all Exceptions from :func:`os.makedirs()`</span>
+<span class="sd">        - useful to create as many of the requested folders as possible</span>
+<span class="sd">        - default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        - folders we failed to create</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;tuple&#39;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;input must be a string/list/tuple; invalid: </span><span class="si">{</span><span class="n">dirs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -493,17 +762,26 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">errored</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="makefile"><a class="viewcode-back" href="../../../py416.html#src.py416.files.makefile">[docs]</a><span class="k">def</span> <span class="nf">makefile</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="makefile"><a class="viewcode-back" href="../../../files.html#src.py416.files.makefile">[docs]</a><span class="k">def</span> <span class="nf">makefile</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `open()`</span>
-<span class="sd">    - Creates a new file</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): full path of desired new file</span>
-<span class="sd">        - `msg` (`str`): text to put in the file</span>
-<span class="sd">            - Default: nothing</span>
-<span class="sd">        - `overwrite` (`bool`): whether to overwrite a file if it already exists</span>
-<span class="sd">            - Default: `False`</span>
-<span class="sd">    - Return: `str` with path to new file</span>
+<span class="sd">    - creates a new file</span>
+<span class="sd">    - wraps `open() &lt;https://docs.python.org/3/library/functions.html#open&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to desired new file</span>
+<span class="sd">    msg: str</span>
+<span class="sd">        - text to put in the file</span>
+<span class="sd">        - default: nothing</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        - whether to overwrite a file if it already exists</span>
+<span class="sd">        - default: False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path to new file</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
@@ -521,18 +799,26 @@
     <span class="k">return</span> <span class="n">path</span></div>
 
 
-<div class="viewcode-block" id="move"><a class="viewcode-back" href="../../../py416.html#src.py416.files.move">[docs]</a><span class="nd">@copymove</span>
+<div class="viewcode-block" id="move"><a class="viewcode-back" href="../../../files.html#src.py416.files.move">[docs]</a><span class="nd">@copymove</span>
 <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Moves file or directory and all contents, creating destination if nonexistent</span>
-<span class="sd">    - Adds some extra safety to `shutil` functions with Exceptions</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to desired file/directory</span>
-<span class="sd">        - `dest` (`str`): path to destination parent directory (where we&#39;re going into)</span>
-<span class="sd">        - `overwrite` (`bool`): whether to overwrite an existing file/directory</span>
-<span class="sd">            - Overwrites files if they exist</span>
-<span class="sd">            - Default: `False`</span>
-<span class="sd">    - Return: `str` with path to moved file/directory</span>
+<span class="sd">    - moves file/folder and all contents, creating destination if nonexistent</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to desired file/folder</span>
+<span class="sd">    dest: str</span>
+<span class="sd">        - path to destination folder (where we&#39;re moving into)</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        - whether to overwrite an existing file/folder</span>
+<span class="sd">        - merges directories, but overwrites files if they exist</span>
+<span class="sd">        - default: False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - path to moved file/folder</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">new_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="n">new_path_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
@@ -549,11 +835,19 @@
     <span class="k">return</span> <span class="n">sh</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>  <span class="c1"># dest dir doesn&#39;t exist, good</span></div>
 
 
-<div class="viewcode-block" id="parent"><a class="viewcode-back" href="../../../py416.html#src.py416.files.parent">[docs]</a><span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="parent"><a class="viewcode-back" href="../../../files.html#src.py416.files.parent">[docs]</a><span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Gets the directory containing something</span>
-<span class="sd">    - Input: `path` (`str`): path to find the parent of</span>
-<span class="sd">    - Return: `str` with path</span>
+<span class="sd">    - gets the folder containing something</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to find the parent of</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - parent path</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
@@ -565,14 +859,22 @@
     <span class="k">return</span> <span class="n">getpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/..&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rename"><a class="viewcode-back" href="../../../py416.html#src.py416.files.rename">[docs]</a><span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="rename"><a class="viewcode-back" href="../../../files.html#src.py416.files.rename">[docs]</a><span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.rename()`</span>
-<span class="sd">    - Renames file without moving it</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to file/directory to be renamed</span>
-<span class="sd">        - `name` (`str`): new basename for file (not path)</span>
-<span class="sd">    - Return: `str` with new path</span>
+<span class="sd">    - renames file/folder without moving it</span>
+<span class="sd">    - wraps `os.rename() &lt;https://docs.python.org/3/library/os.html#os.rename&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to file/folder to be renamed</span>
+<span class="sd">    name: str</span>
+<span class="sd">        - new basename for file/folder (not path)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        - new path to file/folder</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">gettype</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
@@ -584,15 +886,23 @@
     <span class="k">return</span> <span class="n">newpath</span></div>
 
 
-<div class="viewcode-block" id="rmdir"><a class="viewcode-back" href="../../../py416.html#src.py416.files.rmdir">[docs]</a><span class="k">def</span> <span class="nf">rmdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delroot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="rmdir"><a class="viewcode-back" href="../../../files.html#src.py416.files.rmdir">[docs]</a><span class="k">def</span> <span class="nf">rmdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delroot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Wrapper for `os.rmdir()`</span>
-<span class="sd">    - Recursively deletes empty directories</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `dirpath` (`str`): directory path to delete within</span>
-<span class="sd">        - `delroot` (`bool`): whether to delete `path` as well</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">    - Return: `int` with number of deleted directories</span>
+<span class="sd">    - recursively deletes empty directories</span>
+<span class="sd">    - wraps `os.rmdir() &lt;https://docs.python.org/3/library/os.html#os.rmdir&gt;`_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - folder path to delete within</span>
+<span class="sd">    delroot: bool</span>
+<span class="sd">        - whether to delete the folder specified as well</span>
+<span class="sd">        - default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        - number of deleted folders</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">delroot</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">delroot</span><span class="p">)</span>
@@ -612,11 +922,20 @@
     <span class="k">return</span> <span class="n">count</span></div>
 
 
-<div class="viewcode-block" id="splitpath"><a class="viewcode-back" href="../../../py416.html#src.py416.files.splitpath">[docs]</a><span class="k">def</span> <span class="nf">splitpath</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<div class="viewcode-block" id="splitpath"><a class="viewcode-back" href="../../../files.html#src.py416.files.splitpath">[docs]</a><span class="k">def</span> <span class="nf">splitpath</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Splits a path string into its parts</span>
-<span class="sd">    - Input: `path` (`str`): path</span>
-<span class="sd">    - Return: `tuple` of directories/file</span>
+<span class="sd">    - splits a path string into its parts</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path</span>
+<span class="sd">        - can be absolute or relative</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[str]</span>
+<span class="sd">        - folders/file</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -657,14 +976,17 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="unzip"><a class="viewcode-back" href="../../../py416.html#src.py416.files.unzip">[docs]</a><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="unzip"><a class="viewcode-back" href="../../../files.html#src.py416.files.unzip">[docs]</a><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)</span>
-<span class="sd">    - Imports `py7zr` if a file ends with .7z</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): path to archive file</span>
-<span class="sd">        - `remove` (`bool`): whether to delete archive after unzipping</span>
-<span class="sd">            - Default: `False`</span>
+<span class="sd">    - unzips archive files of type: (.7z, .gz, .rar, .tar, .zip)</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - path to archive file</span>
+<span class="sd">    remove: bool</span>
+<span class="sd">        - whether to delete archive after unzipping</span>
+<span class="sd">        - default: False</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">remove</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">remove</span><span class="p">)</span>
@@ -672,7 +994,6 @@
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;not found: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">fparent</span> <span class="o">=</span> <span class="n">parent</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.7z&#39;</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">py7zr</span> <span class="kn">import</span> <span class="n">unpack_7zarchive</span>
         <span class="n">unpack_7zarchive</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fparent</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
             <span class="n">delete</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -684,18 +1005,25 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;unsupported archive format: </span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="unzipdir"><a class="viewcode-back" href="../../../py416.html#src.py416.files.unzipdir">[docs]</a><span class="k">def</span> <span class="nf">unzipdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="unzipdir"><a class="viewcode-back" href="../../../files.html#src.py416.files.unzipdir">[docs]</a><span class="k">def</span> <span class="nf">unzipdir</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    - Unzips all archives in a directory (only 1st level) until it is unable to continue</span>
-<span class="sd">    - Deletes all archives as it unzips</span>
-<span class="sd">    - Supports archives of type: (.7z, .gz, .rar, .tar, .zip)</span>
-<span class="sd">    - Imports `py7zr` if a file ends with .7z</span>
-<span class="sd">    - Input:</span>
-<span class="sd">        - `path` (`str`): directory containing archive files</span>
-<span class="sd">        - `ignore_errors` (`bool`): whether to catch all Exceptions in unzipping</span>
-<span class="sd">            - Useful to unzip everything possible in the directory</span>
-<span class="sd">            - Default: `True`</span>
-<span class="sd">    - Return: `int` with number of unzipped archives</span>
+<span class="sd">    - unzips all archives in a folder (only 1st level) until it is unable to continue</span>
+<span class="sd">    - deletes all archives as it unzips</span>
+<span class="sd">    - supports archives of type: (.7z, .gz, .rar, .tar, .zip)</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: str</span>
+<span class="sd">        - folder containing archive files</span>
+<span class="sd">    ignore_errors: bool</span>
+<span class="sd">        - whether to catch all Exceptions in unzipping</span>
+<span class="sd">        - useful to unzip everything possible in the directory</span>
+<span class="sd">        - default: True</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        - number of unzipped archives</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">getpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">ignore_errors</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">ignore_errors</span><span class="p">)</span>
@@ -719,31 +1047,32 @@
     <span class="k">return</span> <span class="n">unzipped</span></div>
 </pre></div>
 
-           </div>
+            <div class="clearer"></div>
           </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2022, Ezio416.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
         </div>
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    
 
-</body>
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+            </div>
+
+            <div class="right">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ezio416.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
 </html>

@@ -1,16 +1,17 @@
-.. py416 documentation master file, created by
-   sphinx-quickstart on Thu Sep 22 23:40:17 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Introduction
+============
 
-Welcome to py416's documentation!
-=================================
+What this Python package is and hopes to achieve
+------------------------------------------------
 
-.. include:: py416.rst
+This is a collection of various functions, mostly for my own personal use in writing scripts for work and other projects. I built this for the following reasons:
 
-Indices and tables
-==================
+- Learn Python
+- Greatly cut down on the amount copy-pasting of code between projects
+- Convenience of installing through pip
+- Feel good about producing something that looks professional and others can use
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+The bulk of this package deals with filesystem manipulation as that's what I need it for most.
+
+
+.. include:: modules.rst
