@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/..')
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import src.py416.general as g
 from src.py416.files import File
