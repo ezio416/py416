@@ -156,8 +156,9 @@ def test_makefile(tmp_path):
         tmp3 = file.read()
     check.equal(tmp3, '')    
 
-# def test_makedirs():
-#     pass
+def test_makedirs():
+    dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
+    bad = p4f.makedirs(dirs)
 
 # def test_move():
 #     pass

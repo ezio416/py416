@@ -135,16 +135,18 @@
             
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h1>
-<section id="what-this-python-package-is-and-hopes-to-achieve">
-<h2>What this Python package is and hopes to achieve<a class="headerlink" href="#what-this-python-package-is-and-hopes-to-achieve" title="Permalink to this heading">¶</a></h2>
+<section id="what-this-package-is-and-hopes-to-achieve">
+<h2>What this package is and hopes to achieve<a class="headerlink" href="#what-this-package-is-and-hopes-to-achieve" title="Permalink to this heading">¶</a></h2>
 <p>This is a collection of various functions, mostly for my own personal use in writing scripts for work and other projects. I built this for the following reasons:</p>
 <ul class="simple">
-<li><p>Learn Python</p></li>
-<li><p>Greatly cut down on the amount copy-pasting of code between projects</p></li>
+<li><p>Learn more advanced Python concepts</p></li>
 <li><p>Convenience of installing through pip</p></li>
-<li><p>Feel good about producing something that looks professional and others can use</p></li>
+<li><p>Greatly cut down on the amount copy-pasting of code between projects</p></li>
+<li><p>Produce something that looks professional and can be used by others</p></li>
+<li><p>I abhor Windows’ backslashes</p></li>
 </ul>
-<p>The bulk of this package deals with filesystem manipulation as that’s what I need it for most.</p>
+<p>The bulk of this package deals with filesystem manipulation as that’s what I need it for most. These functions often are a simple wrapper for basic os and shutil functions, but for some they offer extra safety and configurability. For example, by default, os.rename() overwrites a file or folder without warning. Yikes!</p>
+<p>This is built in Python 3.8.10 because that is the latest version available on Windows 8, which is required for my work. This is tested on macOS, Ubuntu, and Windows with Python versions 3.8, 3.9, and 3.10. I have no plans to test on older versions, nor to add new features that don’t work in 3.8.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -165,7 +167,7 @@
             <div class="page_toc">
                 <ul>
 <li><a class="reference internal" href="#">Introduction</a><ul>
-<li><a class="reference internal" href="#what-this-python-package-is-and-hopes-to-achieve">What this Python package is and hopes to achieve</a></li>
+<li><a class="reference internal" href="#what-this-package-is-and-hopes-to-achieve">What this package is and hopes to achieve</a></li>
 </ul>
 </li>
 </ul>
