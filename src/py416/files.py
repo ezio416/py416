@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-09-26
+| Updated: 2022-09-27
 
 - Functions for filesystem and path string manipulation
 
@@ -530,7 +530,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False) -> tuple:
     '''
     - lists files/folders within a folder
     - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
@@ -548,6 +548,11 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     files: bool
         - whether to list files
         - default: True
+    
+    recursive: bool
+        - whether to list all files and folders recursively
+        - if False, this will only list files/folders in the specified folder
+        - default: False
 
     Returns
     -------
@@ -557,14 +562,18 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True) -> tuple:
     path = getpath(path)
     dirs = bool(dirs)
     files = bool(files)
+    recursive = bool(recursive)
     if not os.path.exists(path):
         return ()
     result = []
     for child in os.listdir(path):
         child = joinpath(path, child)
-        if dirs and os.path.isdir(child):
-            result.append(child)
-        if files and not os.path.isdir(child):
+        if os.path.isdir(child):
+            if dirs:
+                result.append(child)
+            if recursive:
+                result += list(listdir(child, dirs=dirs, files=files, recursive=True))
+        elif files:
             result.append(child)
     return tuple(result)
 
