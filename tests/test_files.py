@@ -70,6 +70,10 @@ def test_copy(tmp_path):
         tmp = file.read()
     check.equal(tmp, f'{msg}{msg2}')
 
+# def test_delete(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
+
 @pytest.mark.parametrize('i,o', [
     ('', ''),
     ('/', '/'),
@@ -161,10 +165,29 @@ def test_listdir(tmp_path):
     check.is_in(f1, p4f.listdir(str_path, dirs=False))
     check.is_in(f2, p4f.listdir(d1))
     check.is_in(f2, p4f.listdir(d1, dirs=False))
+    tmp = p4f.listdir(str_path, recursive=True)
+    check.is_in(d1, tmp)
+    check.is_in(f1, tmp)
+    check.is_in(f2, tmp)
 
 # def test_log(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
 #     os.chdir(str_path)
+
+def test_makedirs(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
+    os.chdir(str_path)
+    bad = p4f.makedirs(dirs)
+    check.equal(bad, ())
+    tmp = os.listdir()
+    tmp.sort()
+    check.equal(tmp, ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx', 'yz'])
+    os.chdir('stu/sub')
+    os.chdir('../..')
+    os.chdir('vwx/sub/sub')
+    os.chdir('../../..')
+    os.chdir('yz/a/b/c/d/e/f/g')
 
 def test_makefile(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -188,20 +211,6 @@ def test_makefile(tmp_path):
     with open(fpath, 'r') as file:
         tmp3 = file.read()
     check.equal(tmp3, '')
-
-def test_makedirs(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
-    dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
-    os.chdir(str_path)
-    bad = p4f.makedirs(dirs)
-    tmp = os.listdir()
-    tmp.sort()
-    check.equal(tmp, ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr', 'stu', 'vwx', 'yz'])
-    os.chdir('stu/sub')
-    os.chdir('../..')
-    os.chdir('vwx/sub/sub')
-    os.chdir('../../..')
-    os.chdir('yz/a/b/c/d/e/f/g')
 
 def test_move(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -243,7 +252,7 @@ def test_move(tmp_path):
     with open(f'{dname2}/{dname}/{fname}', 'r') as file:
         tmp = file.read()
     check.equal(tmp, msg)
-    
+
 @pytest.mark.parametrize('i,o', [
     # Unix
     ('/', '/'),
