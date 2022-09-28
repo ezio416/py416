@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-09-27
+| Updated: 2022-09-28
 
 - Functions for filesystem and path string manipulation
 
@@ -24,7 +24,7 @@ from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
 
-from .general import gettype, timestamp, unpack
+from .general import gettype, secmod_inverse, timestamp, unpack
 
 
 class File():
@@ -531,7 +531,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, timeframe: str = '') -> tuple:
     '''
     - lists files/folders within a folder
     - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
@@ -549,21 +549,28 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     files: bool
         - whether to list files
         - default: True
-    
+
     recursive: bool
         - whether to list all files and folders recursively
         - if False, this will only list files/folders in the specified folder
         - default: False
-    
+
     search: str
-        - kind of like a glob, searches filenames for a specified pattern
+        - like a glob, searches filenames for a specified pattern
         - this does not search any files, rather the list of files we already gathered
         - accepts Unix wildcards ( * ? [...] [!...] )
         - default: nothing
-    
+
     case: bool
         - whether to exactly match capitalization of search term
+        - does nothing if `search` is not set
         - default: False
+
+    timeframe: str
+        - how old a file may be, so this only shows the most recently created/modified files
+        - must be formatted like the base output from :func::`secmod`, i.e. "3d16h5m47s"
+        - can be missing parts, i.e. "3D47S"
+        - capitalization is ignored
 
     Returns
     -------
