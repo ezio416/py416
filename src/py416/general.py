@@ -1,13 +1,14 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-09-26
+| Updated: 2022-09-28
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
 '''
 from datetime import datetime as dt
 
+from .variables import SEC_D, SEC_H, SEC_M
 
 def gettype(thing) -> str:
     '''
@@ -94,6 +95,44 @@ def secmod(seconds: float, sep: str = '') -> tuple:
         result += zf(s) + 's'
     result = result.rstrip(sep)
     return result, s, m, h, d
+
+
+def secmod_inverse(timestr: str) -> int:
+    '''
+    - does essentially the opposite of :func::`secmod`
+    - converts a string to a number of seconds
+
+    Parameters
+    ----------
+    timestr: str
+        - representation of time
+        - must be formatted like the base output from :func::`secmod`, i.e. "3d16h5m47s"
+        - can be missing parts, i.e. "3D47S"
+        - capitalization is ignored
+
+    Returns
+    -------
+    int
+        - number of seconds
+    '''
+    timestr = timestr.lower()
+    sec = 0
+    if 'd' in timestr:
+        tmp = timestr.split('d')
+        sec += (int(tmp[0]) * SEC_D)
+        timestr = tmp[-1]
+    if 'h' in timestr:
+        tmp = timestr.split('h')
+        sec += (int(tmp[0]) * SEC_H)
+        timestr = tmp[-1]
+    if 'm' in timestr:
+        tmp = timestr.split('m')
+        sec += (int(tmp[0]) * SEC_M)
+        timestr = tmp[-1]
+    if 's' in timestr:
+        tmp = timestr.split('s')
+        sec += int(tmp[0])
+    return sec
 
 
 def timestamp(brackets: bool = True, micro: bool = False, offset: bool = True, readable: bool = False, seconds: bool = True, utc: bool = False) -> str:
