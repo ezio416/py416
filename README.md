@@ -1,7 +1,9 @@
 # py416
 
-![tests](https://github.com/ezio416/py416/actions/workflows/tests.yml/badge.svg)
-![docs](https://readthedocs.org/projects/py416/badge/?version=latest)
+[![tests](https://github.com/ezio416/py416/actions/workflows/tests.yml/badge.svg)](https://github.com/ezio416/py416/actions)
+[![docs](https://readthedocs.org/projects/py416/badge/?version=latest)](https://py416.readthedocs.io/en/latest/)
+[![PyPI](https://badge.fury.io/py/py416.svg)](https://pypi.org/project/py416/)
+[![license](https://img.shields.io/badge/license-LGPL%20v2.1-red.svg)](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)
 
 What this package is and hopes to achieve
 -----------------------------------------
