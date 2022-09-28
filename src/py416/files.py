@@ -15,6 +15,7 @@
     - contain single or double-dots in the beginning/middle
 '''
 from datetime import datetime as dt
+from fnmatch import fnmatch, fnmatchcase
 from functools import wraps
 import os
 import shutil as sh
@@ -530,7 +531,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False) -> tuple:
     '''
     - lists files/folders within a folder
     - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
@@ -553,6 +554,16 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         - whether to list all files and folders recursively
         - if False, this will only list files/folders in the specified folder
         - default: False
+    
+    search: str
+        - kind of like a glob, searches filenames for a specified pattern
+        - this does not search any files, rather the list of files we already gathered
+        - accepts Unix wildcards ( * ? [...] [!...] )
+        - default: nothing
+    
+    case: bool
+        - whether to exactly match capitalization of search term
+        - default: False
 
     Returns
     -------
@@ -563,6 +574,8 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     dirs = bool(dirs)
     files = bool(files)
     recursive = bool(recursive)
+    if gettype(search) != 'str':
+        raise TypeError(f'input must be a string; invalid: {search}')
     if not os.path.exists(path):
         return ()
     result = []
@@ -575,6 +588,17 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
                 result += list(listdir(child, dirs=dirs, files=files, recursive=True))
         elif files:
             result.append(child)
+    if search:
+        result2 = []
+        for fpath in result:
+            name = os.path.basename(fpath)
+            if case:
+                if fnmatchcase(name, search):
+                    result2.append(fpath)
+                continue
+            if fnmatch(name, search):
+                result2.append(fpath)
+        return tuple(result2)
     return tuple(result)
 
 

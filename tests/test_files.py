@@ -170,6 +170,43 @@ def test_listdir(tmp_path):
     check.is_in(f1, tmp)
     check.is_in(f2, tmp)
 
+def test_listdir_search(tmp_path):
+    str_path = str(tmp_path).replace('\\', '/')
+    os.chdir(str_path)
+    dirs = 'a', 'b/1', 'c/1/2', 'd/1/2/3', 'e/1/2/3/a', 'f/1/2/3/b', 'g/1/2/3/c'
+    files = []
+    files2 = []
+    for i, dir in enumerate(dirs):
+        os.makedirs(dir)
+        files.append(f'{str_path}/{dir}/file{i}.txt')
+        files2.append(f'{str_path}/{dir}/letter{i}.txt')
+    for i, file in enumerate(files):
+        with open(file, 'a') as f:
+            f.write(f'msg {i}')
+    for i, file in enumerate(files2):
+        with open(file, 'a') as f:
+            f.write(f'msg {i}')
+    tree = p4f.listdir(recursive=True, search='*')
+    for file in files:
+        check.is_in(file, tree)
+    for file in files2:
+        check.is_in(file, tree)
+    tree = p4f.listdir(recursive=True, search='f*')
+    for file in files:
+        check.is_in(file, tree)
+    for file in files2:
+        check.is_not_in(file, tree)
+    tree = p4f.listdir(recursive=True, search='l*')
+    for file in files:
+        check.is_not_in(file, tree)
+    for file in files2:
+        check.is_in(file, tree)
+    tree = p4f.listdir(recursive=True, search='*le*')
+    for file in files:
+        check.is_in(file, tree)
+    for file in files2:
+        check.is_in(file, tree)
+
 # def test_log(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
 #     os.chdir(str_path)
