@@ -119,6 +119,12 @@ def test_month2num(i, o):
 def test_secmod(i, a, o):
     assert g.secmod(i, sep=a) == o
 
+@pytest.mark.parametrize('i,o', [
+    ('3d16h42m7s', 319327),
+])
+def test_secmod_inverse(i, o):
+    assert g.secmod_inverse(i) == o
+
 def test_timestamp():
     pass
 
