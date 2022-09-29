@@ -1,5 +1,6 @@
 # Directories
 __pycache__/
+_build/
 .pytest_cache/
 .tox/
 dist/
