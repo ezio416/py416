@@ -1,14 +1,16 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-09-28
+| Updated: 2022-09-30
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
 '''
 from datetime import datetime as dt
+from re import findall
 
 from .variables import SEC_D, SEC_H, SEC_M
+
 
 def gettype(thing) -> str:
     '''
@@ -107,32 +109,27 @@ def secmod_inverse(timestr: str) -> int:
     timestr: str
         - representation of time
         - must be formatted like the base output from :func::`secmod`, i.e. "3d16h5m47s"
-        - can be missing parts, i.e. "3D47S"
+        - can be missing parts, i.e. "3s47s"
         - capitalization is ignored
+        - if multiple of the same type of value are passed in the string, i.e. "4h16h", only the first value is grabbed
 
     Returns
     -------
     int
         - number of seconds
     '''
+    if gettype(timestr) != 'str':
+        raise TypeError(f'input must be a string; invalid: {timestr}')
     timestr = timestr.lower()
-    sec = 0
-    if 'd' in timestr:
-        tmp = timestr.split('d')
-        sec += (int(tmp[0]) * SEC_D)
-        timestr = tmp[-1]
-    if 'h' in timestr:
-        tmp = timestr.split('h')
-        sec += (int(tmp[0]) * SEC_H)
-        timestr = tmp[-1]
-    if 'm' in timestr:
-        tmp = timestr.split('m')
-        sec += (int(tmp[0]) * SEC_M)
-        timestr = tmp[-1]
-    if 's' in timestr:
-        tmp = timestr.split('s')
-        sec += int(tmp[0])
-    return sec
+    dy = findall(r'[\d]{1,}[d]{1}', timestr)
+    dy = int(dy[0].split('d')[0]) if dy else 0
+    hr = findall(r'[\d]{1,}[h]{1}', timestr)
+    hr = int(hr[0].split('h')[0]) if hr else 0
+    mn = findall(r'[\d]{1,}[m]{1}', timestr)
+    mn = int(mn[0].split('m')[0]) if mn else 0
+    sc = findall(r'[\d]{1,}[s]{1}', timestr)
+    sc = int(sc[0].split('s')[0]) if sc else 0
+    return dy * SEC_D + hr * SEC_H + mn * SEC_M + sc
 
 
 def timestamp(brackets: bool = True, micro: bool = False, offset: bool = True, readable: bool = False, seconds: bool = True, utc: bool = False) -> str:
