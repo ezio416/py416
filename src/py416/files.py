@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-09-28
+| Updated: 2022-09-30
 
 - Functions for filesystem and path string manipulation
 
@@ -20,6 +20,7 @@ from functools import wraps
 import os
 import shutil as sh
 import sys
+import time
 from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
@@ -531,9 +532,10 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, timeframe: str = '') -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency: str = '') -> tuple:
     '''
     - lists files/folders within a folder
+    - allows for some filtering by filename and create/modify date
     - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
 
     Parameters
@@ -566,11 +568,12 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         - does nothing if `search` is not set
         - default: False
 
-    timeframe: str
+    recency: str
         - how old a file may be, so this only shows the most recently created/modified files
         - must be formatted like the base output from :func::`secmod`, i.e. "3d16h5m47s"
-        - can be missing parts, i.e. "3D47S"
+        - can be missing parts, i.e. "3d47s"
         - capitalization is ignored
+        - if multiple of the same type of value are passed in the string, i.e. "4h16h", only the first value is grabbed
 
     Returns
     -------
@@ -583,6 +586,9 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     recursive = bool(recursive)
     if gettype(search) != 'str':
         raise TypeError(f'input must be a string; invalid: {search}')
+    case = bool(case)
+    if gettype(recency) != 'str':
+        raise TypeError(f'input must be a string; invalid: {recency}')
     if not os.path.exists(path):
         return ()
     result = []
@@ -605,7 +611,19 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
                 continue
             if fnmatch(name, search):
                 result2.append(fpath)
-        return tuple(result2)
+        result = result2
+    if recency:
+        result2 = []
+        now = time.time()
+        seconds = secmod_inverse(recency)
+        for fpath in result:
+            a = os.path.getctime(fpath)
+            if now - a < seconds:
+                result2.append(fpath)
+                continue
+            if now - os.path.getmtime(fpath) < seconds:
+                result2.append(fpath)
+        result = result2
     return tuple(result)
 
 
