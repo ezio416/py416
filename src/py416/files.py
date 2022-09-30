@@ -532,7 +532,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency = None) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=None) -> tuple:
     '''
     - lists files/folders within a folder
     - allows for some filtering by filename and create/modify date
