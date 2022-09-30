@@ -207,6 +207,10 @@ def test_listdir_search(tmp_path):
     for file in files2:
         check.is_in(file, tree)
 
+# def test_listdir_recency(tmp_path):
+#     str_path = str(tmp_path).replace('\\', '/')
+#     os.chdir(str_path)
+
 # def test_log(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
 #     os.chdir(str_path)
