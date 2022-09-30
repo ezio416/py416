@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py416"
-version = "0.43"
+version = "0.44"
 authors = [
   { name="Ezio416", email="ezezio416@gmail.com" },
 ]
@@ -13,9 +13,12 @@ readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.8"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "py7zr >= 0.20.0"
 ]
 
 [project.urls]
