@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-09-30
+| Updated: 2022-10-01
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
@@ -44,7 +44,7 @@ def month2num(month_word: str) -> str:
     str
         - zero-padded 2-digit number
     '''
-    if gettype(month_word) != 'str':
+    if type(month_word) is not str:
         raise TypeError(f'input must be a string; invalid: {month_word}')
     month_list = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
                   'august', 'september', 'october', 'november', 'december']
@@ -78,7 +78,7 @@ def secmod(seconds: float, sep: str = '') -> tuple:
         - i.e. ('04d16h47m09s', 9, 47, 16, 4)
     '''
     seconds = abs(int(seconds))
-    if gettype(sep) != 'str':
+    if type(sep) is not str:
         raise ValueError(f'input must be a string; invalid: {sep}')
     if not seconds:
         return ['0s', 0, 0, 0, 0]
@@ -118,7 +118,7 @@ def secmod_inverse(timestr: str) -> int:
     int
         - number of seconds
     '''
-    if gettype(timestr) != 'str':
+    if type(timestr) is not str:
         raise TypeError(f'input must be a string; invalid: {timestr}')
     timestr = timestr.lower()
     dy = findall(r'[\d]{1,}[d]{1}', timestr)
@@ -207,12 +207,12 @@ def unpack(iterable) -> tuple:
         - all retrieved items
     `iterable` itself if not a list or tuple
     '''
-    iterables = ('list', 'tuple')
-    if gettype(iterable) not in iterables:
+    iterables = (list, tuple)
+    if type(iterable) not in iterables:
         return iterable
     values = []
     for item in iterable:
-        if gettype(item) not in iterables:
+        if type(item) not in iterables:
             values.append(item)
         else:
             values += list(unpack(item))
