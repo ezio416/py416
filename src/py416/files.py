@@ -19,8 +19,7 @@ from fnmatch import fnmatch, fnmatchcase
 from functools import wraps
 import os
 from shutil import copy2, copytree, move as shmv, rmtree, unpack_archive
-import sys
-import time
+from time import time
 from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
@@ -330,48 +329,45 @@ def checkzip(path: str) -> bool:
         - file doesn't exist, because either:
             - we deleted it
             - it didn't exist before
-            - it has the wrong extension
     '''
-    path = getpath(path)
     try:
-        if path.lower().endswith('.7z'):
+        if (path := getpath(path)).lower().endswith('.7z'):
             try:
                 with SevenZipFile(path, 'r'):
                     pass
-                return True
+                return True  # 7z file is good
             except exceptions.Bad7zFile:
                 delete(path)
                 return False
-        if path.lower().endswith('.zip'):
+        elif path.lower().endswith('.zip'):
             try:
                 with ZipFile(path):
                     pass
-                return True
+                return True  # zip file is good
             except BadZipFile:
                 delete(path)
                 return False
-        return False  # wrong extension
+        else:
+            raise NotImplementedError(f'unsupported archive format: {path.split(".")[-1]}')
     except FileNotFoundError:
         return False
 
 
 def copymove(func):
     '''
-    - wrapper for :func:`py416.files.copy` and :func:`py416.files.move`, which are very similar, so this handles some of what they share
+    - wrapper for :func:`py416.files.copy` and :func:`py416.files.move`
+    - copy and move are nearly the same, so this handles some of what they share
     '''
     @wraps(func)
     def _copymove(path: str, dest: str, overwrite: bool = False):
-        path = getpath(path)
-        dest = getpath(dest)
-        overwrite = bool(overwrite)
-        if not os.path.exists(path):
+        if not os.path.exists(path := getpath(path)):
             raise FileNotFoundError(f'not found: {path}')
-        if path == dest:
+        if path == (dest := getpath(dest)):
             raise ValueError(f'you can\'t move something into itself: {path}')
         if os.path.exists(dest) and not os.path.isdir(dest):
             raise FileExistsError(f'you can\'t move something into a file: {dest}')
         makedirs(dest)
-        return forslash(func(path, dest, overwrite))
+        return forslash(func(path, dest, bool(overwrite)))
     return _copymove
 
 
@@ -398,8 +394,7 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
     str
         - path to copied file/folder
     '''
-    new_path = f'{dest}/{os.path.basename(path)}'
-    new_path_exists = os.path.exists(new_path)
+    new_path_exists = os.path.exists(new_path := f'{dest}/{os.path.basename(path)}')
     if os.path.isfile(path):  # copying file
         if new_path_exists and not overwrite:
             raise FileExistsError(f'destination file already exists: {new_path}')
@@ -424,12 +419,10 @@ def delete(path: str, force: bool = False) -> None:
         - whether to try `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_ to delete a folder and its contents
         - default: False
     '''
-    path = getpath(path)
-    force = bool(force)
-    if not os.path.exists(path):
-        raise FileNotFoundError(f'not found: {path}')
+    if not os.path.exists(path := getpath(path)):
+        return
     if os.path.isdir(path):
-        if force:
+        if bool(force):
             rmtree(path)
         else:
             rmdir(path)
@@ -485,15 +478,12 @@ def getpath(path: str) -> str:
     str
         - absolute path
     '''
-    parts = list(splitpath(path))
-    if parts == ['']:  # special case
+    if (parts := list(splitpath(path))) == ['']:  # special case
         return ''
     path = joinpath(parts)
-    root = parts[0]
-    if root.startswith('//') or root == '/':  # Windows network location or Unix root
+    if (root := parts[0]).startswith('//') or root == '/':  # Windows network location or Unix root
         return path
-    cwdrive = checkwindrive(root)
-    if cwdrive:  # Windows root
+    if (cwdrive := checkwindrive(root)):  # Windows root
         parts[0] = cwdrive
         return joinpath(parts)
     return f'{getcwd()}/{path}'
@@ -521,14 +511,13 @@ def joinpath(*parts) -> str:
         parts.remove('')  # special case, such as passing 'folder/..' to splitpath()
     if not len(parts):
         return ''  # nothing was passed, or it was cancelled out with '..'
-    if parts[0].startswith('//'):
-        return '/'.join(parts)  # Windows network location
     if parts == ['/']:
         return '/'  # Unix root, alone
     if parts[0] == '/':
         return '/' + '/'.join(parts[1:])  # Unix root, preceding
-    cwdrive = checkwindrive(parts[0])
-    if cwdrive:
+    if parts[0].startswith('//'):
+        return '/'.join(parts)  # Windows network location
+    if (cwdrive := checkwindrive(parts[0])):
         if len(parts) == 1:
             return cwdrive  # Windows drive root, alone
         return cwdrive + '/'.join(parts[1:])  # Windows drive root, preceding
@@ -538,7 +527,7 @@ def joinpath(*parts) -> str:
 def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0) -> tuple:
     '''
     - lists files/folders within a folder
-    - allows for some filtering by filename and create/modify date
+    - allows for some filtering by filename and modify date
     - wraps `os.listdir() <https://docs.python.org/3/library/os.html#os.listdir>`_
 
     Parameters
@@ -587,33 +576,27 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     tuple[str]
         - absolute paths
     '''
-    path = getpath(path)
-    dirs = bool(dirs)
-    files = bool(files)
-    recursive = bool(recursive)
+    if not os.path.exists(path := getpath(path)):
+        return ()
     if type(search) is not str:
         raise TypeError(f'input must be a string; invalid: {search}')
-    case = bool(case)
-    recency_type = type(recency)
-    if recency_type not in (float, int, str):
+    if (recency_type := type(recency)) not in (float, int, str):
         raise TypeError(f'input must be a number or string; invalid: {recency}')
-    if not os.path.exists(path):
-        return ()
     result = []
     for child in os.listdir(path):
         child = joinpath(path, child)
         if os.path.isdir(child):
-            if dirs:
+            if bool(dirs):
                 result.append(child)
-            if recursive:
+            if bool(recursive):
                 result += list(listdir(child, dirs=dirs, files=files, recursive=True))
-        elif files:
+        elif bool(files):
             result.append(child)
     if search:
         tmp = []
         for fpath in result:
             name = os.path.basename(fpath)
-            if case:
+            if bool(case):
                 if fnmatchcase(name, search):
                     tmp.append(fpath)
                 continue
@@ -622,8 +605,8 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         result = tmp
     if recency:
         tmp = []
-        now = time.time()
-        recency = secmod_inverse(recency) if type(recency) is str else float(recency)
+        recency = secmod_inverse(recency) if recency_type is str else float(recency)
+        now = time()
         for fpath in result:
             if now - os.path.getmtime(fpath) < recency:
                 tmp.append(fpath)
@@ -652,23 +635,13 @@ def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0
         - arguments to pass to :func:`py416.timestamp`
         - default return example: [2022-08-19 13:24:54 -06:00]
     '''
-    path = getpath(path)
     if type(msg) is not str:
         raise ValueError(f'input must be a string; invalid: {msg}')
-    ts = bool(ts)
     if type(ts_args) not in (list, tuple):
         raise ValueError(f'input must be a list/tuple; invalid: {ts_args}')
-    makedirs(parent(path))
-    now = timestamp(*ts_args) + '  ' if ts else ''
-    orig_stdout = sys.stdout
-    try:
-        with open(path, 'a') as file:
-            sys.stdout = file
-            print(f'{now}{msg}')
-    except Exception:
-        pass
-    finally:
-        sys.stdout = orig_stdout
+    makedirs(parent(path := getpath(path)))
+    with open(path, 'a') as file:
+        file.write(f'{timestamp(*ts_args) + "  " if bool(ts) else ""}{msg}\n')
 
 
 def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
@@ -696,18 +669,16 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     '''
     if type(dirs) not in (list, str, tuple):
         raise TypeError(f'input must be a string/list/tuple; invalid: {dirs}')
-    ignore_errors = bool(ignore_errors)
     errored = []
     for dir in unpack(dirs):
         if type(dir) is not str:
             errored.append(dir)
             continue
-        dir = getpath(dir)
-        if not os.path.exists(dir):
+        if not os.path.exists(dir := getpath(dir)):
             try:
                 os.makedirs(dir)
             except Exception:
-                if not ignore_errors:
+                if not bool(ignore_errors):
                     raise
                 errored.append(dir)
     return tuple(errored)
@@ -736,11 +707,9 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
     str
         - path to new file
     '''
-    path = getpath(path)
     if type(msg) is not str:
-        raise TypeError(f'input must be a string; invalid: {path}')
-    overwrite = bool(overwrite)
-    if os.path.exists(path) and overwrite:
+        raise TypeError(f'input must be a string; invalid: {msg}')
+    if os.path.exists(path := getpath(path)) and bool(overwrite):
         delete(path, force=True)
     if os.path.isfile(path):
         raise FileExistsError(f'destination file already exists: {path}')
@@ -775,8 +744,7 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
     str
         - path to moved file/folder
     '''
-    new_path = f'{dest}/{os.path.basename(path)}'
-    new_path_exists = os.path.exists(new_path)
+    new_path_exists = os.path.exists(new_path := f'{dest}/{os.path.basename(path)}')
     if os.path.isfile(path):  # moving file
         if new_path_exists:
             if not overwrite:
@@ -806,8 +774,7 @@ def parent(path: str) -> str:
     str
         - parent path
     '''
-    path = getpath(path)
-    if not path:
+    if not (path := getpath(path)):
         return ''
     if any([path == '/',  # Root
             checkwindrive(path),
@@ -834,13 +801,11 @@ def rename(path: str, name: str) -> str:
     str
         - new path to file/folder
     '''
-    path = getpath(path)
+    if not os.path.exists(path := getpath(path)):
+        raise FileNotFoundError(f'not found: {path}')
     if type(name) is not str:
         raise TypeError(f'input must be a string; invalid: {name}')
-    if not os.path.exists(path):
-        raise FileNotFoundError(f'not found: {path}')
-    newpath = f'{parent(path)}/{name}'
-    os.rename(path, newpath)
+    os.rename(path, (newpath := joinpath(parent(path), name)))
     return newpath
 
 
@@ -863,19 +828,17 @@ def rmdir(path: str, delroot: bool = True) -> int:
     int
         - number of deleted folders
     '''
-    path = getpath(path)
-    delroot = bool(delroot)
-    if not os.path.exists(path):
+    if not os.path.exists(path := getpath(path)):
         raise FileNotFoundError(f'not found: {path}')
     if not os.path.isdir(path):
-        raise ValueError(f'not a directory: {path}')
+        raise ValueError(f'not a folder: {path}')
     count = 0
     for item in listdir(path):
         if os.path.isdir(item):
             count += rmdir(item)
-    if not len(listdir(path)) and delroot:
+    if not len(listdir(path)) and bool(delroot):
         if path == getcwd():
-            cd()  # we're in the directory we're trying to delete, so go up
+            cd()  # we're in the folder we're trying to delete, so go up
         os.rmdir(path)
         count += 1
     return count
@@ -898,17 +861,14 @@ def splitpath(path: str) -> tuple:
     '''
     if not path:
         return '',
-    path = forslash(path)
-    win_net = False
-
-    if path in ('/', '/.', '/..'):  # special cases
+    if (path := forslash(path)) in ('/', '/.', '/..'):  # special cases
         return '/',
-    parts = path.split('/')
+    win_net = False
     if path == '.':  # current directory
         path = getcwd()
     elif path == '..':  # parent of current directory
         path = forslash(os.path.dirname(getcwd()))
-    elif parts[-1] == '.':  # path/. is just path
+    elif (parts := path.split('/'))[-1] == '.':  # folder/. is just folder
         path = path[:-2]
     elif parts[-1] == '..':  # parent of path
         if len(parts) == 2:  # 'folder/..'
@@ -920,15 +880,13 @@ def splitpath(path: str) -> tuple:
         if win_net:
             path = '//' + path
     parts = path.split('/')
-
     if not parts[0]:  # Unix root
         parts[0] = '/'
-    cwdrive = checkwindrive(parts[0])
-    if cwdrive:  # Windows drive root
+    if (cwdrive := checkwindrive(parts[0])):  # Windows drive root
         parts[0] = cwdrive
     if path.startswith('//'):  # Windows network location
         result = [f'//{parts[2]}']
-        return tuple(result + [a for a in parts[3:]]) if len(parts) > 2 else tuple(result)
+        return tuple(result + parts[3:]) if len(parts) > 2 else tuple(result)
     if len(parts) == 2:
         if parts[1] == '':
             return parts[0],
@@ -948,10 +906,9 @@ def unzip(path: str, remove: bool = False) -> None:
         - whether to delete archive after unzipping
         - default: False
     '''
-    path = getpath(path)
-    remove = bool(remove)
-    if not os.path.exists(path):
+    if not os.path.exists(path := getpath(path)):
         raise FileNotFoundError(f'not found: {path}')
+    remove = bool(remove)
     fparent = parent(path)
     if path.endswith('.7z'):
         unpack_7zarchive(path, fparent)
@@ -986,22 +943,18 @@ def unzipdir(path: str, ignore_errors: bool = True) -> int:
     int
         - number of unzipped archives
     '''
-    path = getpath(path)
-    ignore_errors = bool(ignore_errors)
-    if not os.path.exists(path):
+    if not os.path.exists(path := getpath(path)):
         raise FileNotFoundError(f'not found: {path}')
     unzipped = 0
     while True:
         unzipped_this_run = 0
         for file in listdir(path, dirs=False):
             try:
-                if not unzip(file, remove=True):
-                    unzipped += 1
-                    unzipped_this_run += 1
-            except ModuleNotFoundError:
-                raise
+                unzip(file, remove=True)
+                unzipped += 1
+                unzipped_this_run += 1
             except Exception:
-                if not ignore_errors:
+                if not bool(ignore_errors):
                     raise
         if not unzipped_this_run:
             break
