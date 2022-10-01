@@ -280,8 +280,7 @@ def cd(path: str = '..') -> str:
     str
         - path to new current working directory
     '''
-    path = getpath(path)
-    makedirs(path)
+    makedirs(path := getpath(path))
     os.chdir(path)
     return path
 
@@ -300,12 +299,11 @@ def checkwindrive(drive: str) -> str:
     str
         - normalized root path ( 'C:/' ) if valid, else an empty string
     '''
-    drive = forslash(drive).upper()
-    if len(drive) not in (2, 3):
+    if (len_drive := len(drive := forslash(drive).upper())) not in (2, 3):
         return ''
     if drive[0] not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' or drive[1] != ':':
         return ''
-    if len(drive) == 3:
+    if len_drive == 3:
         if drive[2] != '/':
             return ''
         return drive
@@ -316,6 +314,7 @@ def checkzip(path: str) -> bool:
     '''
     - checks if an archive file (.7z or .zip) exists and is valid
     - deletes file if invalid or incomplete
+    - does nothing to files with the wrong extension
 
     Parameters
     ----------
@@ -328,11 +327,14 @@ def checkzip(path: str) -> bool:
         - file exists and is valid
 
     False
-        - file doesn't exist, possibly because we deleted it due to corruption
+        - file doesn't exist, because either:
+            - we deleted it
+            - it didn't exist before
+            - it has the wrong extension
     '''
     path = getpath(path)
     try:
-        if path.endswith('.7z'):
+        if path.lower().endswith('.7z'):
             try:
                 with SevenZipFile(path, 'r'):
                     pass
@@ -340,7 +342,7 @@ def checkzip(path: str) -> bool:
             except exceptions.Bad7zFile:
                 delete(path)
                 return False
-        if path.endswith('.zip'):
+        if path.lower().endswith('.zip'):
             try:
                 with ZipFile(path):
                     pass
@@ -348,6 +350,7 @@ def checkzip(path: str) -> bool:
             except BadZipFile:
                 delete(path)
                 return False
+        return False  # wrong extension
     except FileNotFoundError:
         return False
 
