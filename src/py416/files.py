@@ -18,14 +18,14 @@ from datetime import datetime as dt
 from fnmatch import fnmatch, fnmatchcase
 from functools import wraps
 import os
-import shutil as sh
+from shutil import copy2, copytree, move as shmv, rmtree, unpack_archive
 import sys
 import time
 from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
 
-from .general import gettype, secmod_inverse, timestamp, unpack
+from .general import secmod_inverse, timestamp, unpack
 
 
 class File():
@@ -400,12 +400,12 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
     if os.path.isfile(path):  # copying file
         if new_path_exists and not overwrite:
             raise FileExistsError(f'destination file already exists: {new_path}')
-        return sh.copy2(path, new_path)
+        return copy2(path, new_path)
     if new_path_exists:  # copying folder
         if overwrite:
-            return sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
+            return copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
         raise FileExistsError(f'destination folder already exists: {new_path}')
-    return sh.copytree(path, new_path)  # dest folder doesn't exist, good
+    return copytree(path, new_path)  # dest folder doesn't exist, good
 
 
 def delete(path: str, force: bool = False) -> None:
@@ -427,7 +427,7 @@ def delete(path: str, force: bool = False) -> None:
         raise FileNotFoundError(f'not found: {path}')
     if os.path.isdir(path):
         if force:
-            sh.rmtree(path)
+            rmtree(path)
         else:
             rmdir(path)
     else:
@@ -449,7 +449,7 @@ def forslash(path: str) -> str:
     str
         - path with forward slashes
     '''
-    if gettype(path) != 'str':
+    if type(path) is not str:
         raise TypeError(f'input must be a string; invalid: {path}')
     return path.replace('\\', '/')
 
@@ -650,10 +650,10 @@ def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0
         - default return example: [2022-08-19 13:24:54 -06:00]
     '''
     path = getpath(path)
-    if gettype(msg) != 'str':
+    if type(msg) is not str:
         raise ValueError(f'input must be a string; invalid: {msg}')
     ts = bool(ts)
-    if gettype(ts_args) not in ('list', 'tuple'):
+    if type(ts_args) not in (list, tuple):
         raise ValueError(f'input must be a list/tuple; invalid: {ts_args}')
     makedirs(parent(path))
     now = timestamp(*ts_args) + '  ' if ts else ''
@@ -691,12 +691,12 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     tuple
         - folders we failed to create
     '''
-    if gettype(dirs) not in ('list', 'str', 'tuple'):
+    if type(dirs) not in (list, str, tuple):
         raise TypeError(f'input must be a string/list/tuple; invalid: {dirs}')
     ignore_errors = bool(ignore_errors)
     errored = []
     for dir in unpack(dirs):
-        if gettype(dir) != 'str':
+        if type(dir) is not str:
             errored.append(dir)
             continue
         dir = getpath(dir)
@@ -734,7 +734,7 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
         - path to new file
     '''
     path = getpath(path)
-    if gettype(msg) != 'str':
+    if type(msg) is not str:
         raise TypeError(f'input must be a string; invalid: {path}')
     overwrite = bool(overwrite)
     if os.path.exists(path) and overwrite:
@@ -779,14 +779,14 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
             if not overwrite:
                 raise FileExistsError(f'destination file already exists: {new_path}')
             delete(new_path)  # deleting dest file to overwrite it
-        return sh.move(path, dest)
+        return shmv(path, dest)
     if new_path_exists:  # moving folder
         if overwrite:
-            result = sh.copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
+            result = copytree(path, new_path, dirs_exist_ok=True)  # overwriting dest folder
             delete(path, force=True)  # deleting original (we're doing copy->delete manually)
             return result
         raise FileExistsError(f'destination folder already exists: {new_path}')
-    return sh.move(path, dest)  # dest folder doesn't exist, good
+    return shmv(path, dest)  # dest folder doesn't exist, good
 
 
 def parent(path: str) -> str:
@@ -832,7 +832,7 @@ def rename(path: str, name: str) -> str:
         - new path to file/folder
     '''
     path = getpath(path)
-    if gettype(name) != 'str':
+    if type(name) is not str:
         raise TypeError(f'input must be a string; invalid: {name}')
     if not os.path.exists(path):
         raise FileNotFoundError(f'not found: {path}')
@@ -955,7 +955,7 @@ def unzip(path: str, remove: bool = False) -> None:
         if remove:
             delete(path)
     elif path.endswith(('.gz', '.rar', '.tar', '.zip')):
-        sh.unpack_archive(path, fparent)
+        unpack_archive(path, fparent)
         if remove:
             delete(path)
     else:
