@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-09-30
+| Updated: 2022-10-01
 
 - Functions for filesystem and path string manipulation
 
@@ -20,7 +20,7 @@ from functools import wraps
 import os
 import shutil as sh
 import sys
-from time import time
+import time
 from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
@@ -532,7 +532,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=None) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0) -> tuple:
     '''
     - lists files/folders within a folder
     - allows for some filtering by filename and create/modify date
@@ -573,10 +573,11 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         - type: float | int
             - number of seconds
         - type: str
-            - must be formatted like the base output from :func::`secmod`, i.e. "3d16h5m47s"
+            - must be formatted like the base output from :func:`py416.secmod`, i.e. "3d16h5m47s"
             - can be missing parts, i.e. "3d47s"
             - capitalization is ignored
             - if multiple of the same type of value are passed in the string, i.e. "4h16h", only the first value is grabbed
+        - default: 0 (include everything)
 
     Returns
     -------
@@ -587,10 +588,11 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     dirs = bool(dirs)
     files = bool(files)
     recursive = bool(recursive)
-    if gettype(search) != 'str':
+    if type(search) is not str:
         raise TypeError(f'input must be a string; invalid: {search}')
     case = bool(case)
-    if gettype(recency) not in ('float', 'int', 'NoneType', 'str'):
+    recency_type = type(recency)
+    if recency_type not in (float, int, str):
         raise TypeError(f'input must be a number or string; invalid: {recency}')
     if not os.path.exists(path):
         return ()
@@ -605,30 +607,24 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         elif files:
             result.append(child)
     if search:
-        result2 = []
+        tmp = []
         for fpath in result:
             name = os.path.basename(fpath)
             if case:
                 if fnmatchcase(name, search):
-                    result2.append(fpath)
+                    tmp.append(fpath)
                 continue
             if fnmatch(name, search):
-                result2.append(fpath)
-        result = result2
+                tmp.append(fpath)
+        result = tmp
     if recency:
-        result2 = []
-        now = time()
-        if gettype(recency) == 'str':
-            recency = secmod_inverse(recency)
-        else:
-            recency = float(recency)
+        tmp = []
+        now = time.time()
+        recency = secmod_inverse(recency) if type(recency) is str else float(recency)
         for fpath in result:
-            if now - os.path.getctime(fpath) < recency:
-                result2.append(fpath)
-                continue
             if now - os.path.getmtime(fpath) < recency:
-                result2.append(fpath)
-        result = result2
+                tmp.append(fpath)
+        return tuple(tmp)
     return tuple(result)
 
 
