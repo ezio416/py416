@@ -208,12 +208,12 @@ def test_listdir_search(tmp_path):
         check.is_in(file, tree)
 
 def test_listdir_recency(tmp_path):
-    
+
     def zf(val, num: int) -> str:
         if (ch := num - len(v := str(val))) <= 0:
             return v
         return ('_' * ch) + v
-    
+
     str_path = str(tmp_path).replace('\\', '/')
     os.chdir(str_path)
     sp = str_path
@@ -225,7 +225,7 @@ def test_listdir_recency(tmp_path):
     for dir in dirs:
         os.makedirs(dir)
         files += [f'{dir}/f{num}' for num in nums]
-    print('start all')
+    print('start all_1 (unmodified)')
     for i, file in enumerate(files, 1):
         with open(file, 'a') as f:
             f.write(f'my name is {file}')
@@ -238,12 +238,16 @@ def test_listdir_recency(tmp_path):
             os.utime(file, (now - 1e9, now - 1e9))
         if 'd4' in file:  # an hour ago
             os.utime(file, (now - 3600, now - 3600))
-    print('end all')
+    print('end all_1 (expected 25)')
+
+    print('start all_2 (modified)')
+    [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(files, 1)]
+    print('end all_2 (expected 25)')
 
     tmp = p4f.listdir(dirs=False, recursive=True)  # all files
     check.equal(len(tmp), 25)
     (check.is_in(file, tmp) for file in files)
-    
+
     tmp = p4f.listdir(dirs=False, recursive=True, recency=1e3)  # files for which we didn't change the modify date
     check.equal(len(tmp), 4)
     print('start 1 (1000 seconds)')
@@ -251,7 +255,7 @@ def test_listdir_recency(tmp_path):
     print('end 1 (expected 4)')
     files_unmodified = [f'{sp}/d{a}/f{b}' for a in (3, 5) for b in (4, 5)]
     (check.is_in(file, tmp) for file in files_unmodified)
-    
+
     tmp = p4f.listdir(dirs=False, recursive=True, recency=4000)  # including an hour
     check.equal(len(tmp), 9)
     print('start 2 (hour)')
@@ -259,7 +263,7 @@ def test_listdir_recency(tmp_path):
     print('end 2 (expected 9)')
     files_hour = files_unmodified + [f'{sp}/d4/f{num}' for num in nums]
     (check.is_in(file, tmp) for file in files_hour)
-    
+
     tmp = p4f.listdir(dirs=False, recursive=True, recency='11575d')  # including a billion seconds
     check.equal(len(tmp), 13)
     print('start 3 (billion seconds)')
@@ -267,7 +271,7 @@ def test_listdir_recency(tmp_path):
     print('end 3 (expected 13)')
     files_2001 = files_hour + [f'{sp}/d{num}/f3' for num in (1, 2, 3, 5)]
     (check.is_in(file, tmp) for file in files_2001)
-    
+
     tmp = p4f.listdir(dirs=False, recursive=True, recency='15000d17h3m59s')  # including 40 years
     check.equal(len(tmp), 20)
     print('start 4 (40 years or 1,262,304,000 seconds)')
@@ -275,7 +279,7 @@ def test_listdir_recency(tmp_path):
     print('end 4 (expected 20)')
     files_40years = files_2001 + [f'{sp}/d2/f{b}' for b in (1, 2, 4, 5)] + [f'{sp}/d{a}/f2' for a in (1, 3, 5)]
     (check.is_in(file, tmp) for file in files_40years)
-    
+
     tmp = p4f.listdir(dirs=False, recursive=True, recency=2e9)  # including 1970 (should now be all)
     check.equal(len(tmp), 25)
     print('start 5 (1970)')
