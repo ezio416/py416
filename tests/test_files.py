@@ -40,7 +40,7 @@ def test_checkwindrive(i, o):
 #     os.chdir(str_path)
 
 def test_copy(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     dname = 'dir'
     dname2 = 'dir2'
     dpath = f'{str_path}/{dname}'
@@ -171,8 +171,7 @@ def test_listdir(tmp_path):
     check.is_in(f2, tmp)
 
 def test_listdir_search(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
-    os.chdir(str_path)
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     dirs = 'a', 'b/1', 'c/1/2', 'd/1/2/3', 'e/1/2/3/a', 'f/1/2/3/b', 'g/1/2/3/c'
     files = []
     files2 = []
@@ -214,8 +213,7 @@ def test_listdir_recency(tmp_path):
             return v
         return ('_' * ch) + v
 
-    str_path = str(tmp_path).replace('\\', '/')
-    os.chdir(str_path)
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     sp = str_path
     files = []
     nums = (1, 2, 3, 4, 5)
@@ -293,9 +291,8 @@ def test_listdir_recency(tmp_path):
 #     os.chdir(str_path)
 
 def test_makedirs(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     dirs = ['abc', 'def', ('ghi', ['jkl'])], ('mno', ('pqr')), [[['stu/sub'], ['vwx/sub/sub']], ('yz/a/b/c/d/e/f/g',)]
-    os.chdir(str_path)
     bad = p4f.makedirs(dirs)
     check.equal(bad, ())
     tmp = os.listdir()
@@ -331,8 +328,7 @@ def test_makefile(tmp_path):
     check.equal(tmp3, '')
 
 def test_move(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
-    os.chdir(str_path)
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     dname = 'dir'
     dname2 = 'dir2'
     fname = 'file.txt'
@@ -398,8 +394,7 @@ def test_parent(i, o):
     assert p4f.parent(i) == o
 
 def test_rename(tmp_path):
-    str_path = str(tmp_path).replace('\\', '/')
-    os.chdir(str_path)
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     dname = 'dir'
     dname2 = 'anotherdir'
     fname = 'file.txt'
