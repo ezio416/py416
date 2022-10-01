@@ -236,26 +236,41 @@ def test_listdir_recency(tmp_path):
     
     tmp = p4f.listdir(dirs=False, recursive=True, recency=1e3)  # files for which we didn't change the modify date
     check.equal(len(tmp), 4)
+    print('start 1')
+    [print(f'{str(int(os.path.getmtime(a))).zfill(10)} {a}        ') for a in tmp]
+    print('end 1')
     files_unmodified = [f'{sp}/d{a}/f{b}' for a in (3, 5) for b in (4, 5)]
     (check.is_in(file, tmp) for file in files_unmodified)
     
     tmp = p4f.listdir(dirs=False, recursive=True, recency=4000)  # including an hour
     check.equal(len(tmp), 9)
+    print('start 2')
+    [print(f'{str(int(os.path.getmtime(a))).zfill(10)} {a}        ') for a in tmp]
+    print('end 2')
     files_hour = files_unmodified + [f'{sp}/d4/f{num}' for num in nums]
     (check.is_in(file, tmp) for file in files_hour)
     
     tmp = p4f.listdir(dirs=False, recursive=True, recency='11575d')  # including a billion seconds
     check.equal(len(tmp), 13)
+    print('start 3')
+    [print(f'{str(int(os.path.getmtime(a))).zfill(10)} {a}        ') for a in tmp]
+    print('end 3')
     files_2001 = files_hour + [f'{sp}/d{num}/f3' for num in (1, 2, 3, 5)]
     (check.is_in(file, tmp) for file in files_2001)
     
     tmp = p4f.listdir(dirs=False, recursive=True, recency='15000d17h3m59s')  # including 40 years
     check.equal(len(tmp), 20)
+    print('start 4')
+    [print(f'{str(int(os.path.getmtime(a))).zfill(10)} {a}        ') for a in tmp]
+    print('end 4')
     files_40years = files_2001 + [f'{sp}/d2/f{b}' for b in (1, 2, 4, 5)] + [f'{sp}/d{a}/f2' for a in (1, 3, 5)]
     (check.is_in(file, tmp) for file in files_40years)
     
     tmp = p4f.listdir(dirs=False, recursive=True, recency=2e9)  # including 1970 (should now be all)
     check.equal(len(tmp), 25)
+    print('start 5')
+    [print(f'{str(int(os.path.getmtime(a))).zfill(10)} {a}        ') for a in tmp]
+    print('end 5')
     files_1970 = files_40years + [f'{sp}/d1/f{b}' for b in (1, 4, 5)] + [f'{sp}/d{a}/f1' for a in (3, 5)]
     (check.is_in(file, tmp) for file in files_1970)
 
