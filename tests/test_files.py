@@ -219,24 +219,24 @@ def test_listdir_recency(tmp_path):
     sp = str_path
     files = []
     nums = (1, 2, 3, 4, 5)
-    dirs = (f'{str_path}/d{num}' for num in nums)
+    dirs = (f'{str_path}/dir{num}' for num in nums)
     now = time.time()
     print(f'{int(now)} now')
     for dir in dirs:
         os.makedirs(dir)
-        files += [f'{dir}/f{num}' for num in nums]
+        files += [f'{dir}/file{num}' for num in nums]
     print('start all_1 (unmodified)')
     for i, file in enumerate(files, 1):
         with open(file, 'a') as f:
             f.write(f'my name is {file}')
         [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}')]
-        if 'd1' in file or 'f1' in file:  # 1970
+        if '/dir1/' in file or '/file1' in file:  # 1970
             os.utime(file, (1, 1))
-        if 'd2' in file or 'f2' in file:  # 40 years ago
+        if '/dir2/' in file or '/file2' in file:  # 40 years ago
             os.utime(file, tuple([now - 1_262_304_000] * 2))
-        if 'f3' in file:  # a billion seconds ago
+        if '/file3' in file:  # a billion seconds ago
             os.utime(file, (now - 1e9, now - 1e9))
-        if 'd4' in file:  # an hour ago
+        if '/dir4/' in file:  # an hour ago
             os.utime(file, (now - 3600, now - 3600))
     print('end all_1 (expected 25)')
 
@@ -253,7 +253,7 @@ def test_listdir_recency(tmp_path):
     print('start 1 (1000 seconds)')
     [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(tmp, 1)]
     print('end 1 (expected 4)')
-    files_unmodified = [f'{sp}/d{a}/f{b}' for a in (3, 5) for b in (4, 5)]
+    files_unmodified = [f'{sp}/dir{a}/file{b}' for a in (3, 5) for b in (4, 5)]
     (check.is_in(file, tmp) for file in files_unmodified)
 
     tmp = p4f.listdir(dirs=False, recursive=True, recency=4000)  # including an hour
@@ -261,7 +261,7 @@ def test_listdir_recency(tmp_path):
     print('start 2 (hour)')
     [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(tmp, 1)]
     print('end 2 (expected 9)')
-    files_hour = files_unmodified + [f'{sp}/d4/f{num}' for num in nums]
+    files_hour = files_unmodified + [f'{sp}/dir4/file{num}' for num in nums]
     (check.is_in(file, tmp) for file in files_hour)
 
     tmp = p4f.listdir(dirs=False, recursive=True, recency='11575d')  # including a billion seconds
@@ -269,7 +269,7 @@ def test_listdir_recency(tmp_path):
     print('start 3 (billion seconds)')
     [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(tmp, 1)]
     print('end 3 (expected 13)')
-    files_2001 = files_hour + [f'{sp}/d{num}/f3' for num in (1, 2, 3, 5)]
+    files_2001 = files_hour + [f'{sp}/dir{num}/file3' for num in (1, 2, 3, 5)]
     (check.is_in(file, tmp) for file in files_2001)
 
     tmp = p4f.listdir(dirs=False, recursive=True, recency='15000d17h3m59s')  # including 40 years
@@ -277,7 +277,7 @@ def test_listdir_recency(tmp_path):
     print('start 4 (40 years or 1,262,304,000 seconds)')
     [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(tmp, 1)]
     print('end 4 (expected 20)')
-    files_40years = files_2001 + [f'{sp}/d2/f{b}' for b in (1, 2, 4, 5)] + [f'{sp}/d{a}/f2' for a in (1, 3, 5)]
+    files_40years = files_2001 + [f'{sp}/dir2/file{b}' for b in (1, 2, 4, 5)] + [f'{sp}/dir{a}/file2' for a in (1, 3, 5)]
     (check.is_in(file, tmp) for file in files_40years)
 
     tmp = p4f.listdir(dirs=False, recursive=True, recency=2e9)  # including 1970 (should now be all)
@@ -285,7 +285,7 @@ def test_listdir_recency(tmp_path):
     print('start 5 (1970)')
     [print(f'{zf(i, 2)} {zf(int(mtime := os.path.getmtime(file)), 10)} {zf(int(now - mtime), 10)} {file}') for i, file in enumerate(tmp, 1)]
     print('end 5 (expected 25)')
-    files_1970 = files_40years + [f'{sp}/d1/f{b}' for b in (1, 4, 5)] + [f'{sp}/d{a}/f1' for a in (3, 5)]
+    files_1970 = files_40years + [f'{sp}/dir1/file{b}' for b in (1, 4, 5)] + [f'{sp}/dir{a}/file1' for a in (3, 5)]
     (check.is_in(file, tmp) for file in files_1970)
 
 # def test_log(tmp_path):
