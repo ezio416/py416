@@ -215,6 +215,7 @@ def test_listdir_recency(tmp_path):
     nums = (1, 2, 3, 4, 5)
     dirs = (f'{str_path}/d{num}' for num in nums)
     now = time.time()
+    print(f'{int(now)} now')
     for dir in dirs:
         os.makedirs(dir)
         files += [f'{dir}/f{num}' for num in nums]
