@@ -570,7 +570,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
             - capitalization is ignored
             - if multiple of the same type of value are passed in the string, i.e. "4h16h", only the first value is grabbed
         - default: 0 (include everything)
-    
+
     return_dict: bool
         - whether to return a dictionary instead of a tuple
         - dict contains details on each file with paths as keys and dicts of their details as values
@@ -585,7 +585,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
                 - how long ago the modify time was
                 - return is from :func:`py416.secmod`, i.e. '46d19h08m07s'
         - default: False
-    
+
     sort_dict: str
         - what to sort a returned dictionary by
         - accepted values: path, size, mtime, mage
@@ -655,7 +655,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     return tuple(result)
 
 
-def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0)) -> None:
+def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0), encoding: str = 'utf-8') -> None:
     '''
     - logs to file with current timestamp
     - creates file and its parent folder if nonexistent
@@ -675,13 +675,17 @@ def log(path: str, msg: str, ts: bool = True, ts_args: tuple = (1, 0, 1, 1, 1, 0
     ts_args: iterable
         - arguments to pass to :func:`py416.timestamp`
         - default return example: [2022-08-19 13:24:54 -06:00]
+
+    encoding: str
+        - character set
+        - default: utf-8
     '''
     if type(msg) is not str:
         raise ValueError(f'input must be a string; invalid: {msg}')
     if type(ts_args) not in (list, tuple):
         raise ValueError(f'input must be a list/tuple; invalid: {ts_args}')
     makedirs(parent(path := getpath(path)))
-    with open(path, 'a') as file:
+    with open(path, 'a', encoding=encoding) as file:
         file.write(f'{timestamp(*ts_args) + "  " if bool(ts) else ""}{msg}\n')
 
 
@@ -725,7 +729,7 @@ def makedirs(*dirs, ignore_errors: bool = True) -> tuple:
     return tuple(errored)
 
 
-def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
+def makefile(path: str, msg: str = '', overwrite: bool = False, encoding: str = 'utf-8') -> str:
     '''
     - creates a new file
     - wraps `open() <https://docs.python.org/3/library/functions.html#open>`_
@@ -743,6 +747,10 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
         - whether to overwrite a file if it already exists
         - default: False
 
+    encoding: str
+        - character set
+        - default: utf-8
+
     Returns
     -------
     str
@@ -757,7 +765,7 @@ def makefile(path: str, msg: str = '', overwrite: bool = False) -> str:
     if os.path.isdir(path):
         raise IsADirectoryError(f'destination already exists as a directory: {path}')
     makedirs(parent(path))
-    with open(path, 'a') as file:
+    with open(path, 'a', encoding=encoding) as file:
         file.write(msg)
     return path
 
