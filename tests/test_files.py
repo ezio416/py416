@@ -306,7 +306,7 @@ def test_makefile(tmp_path):
     fpath = f'{str_path}/{fname}'
     p4f.makefile(fpath, 'message')
     check.equal(os.listdir(str_path), [fname])
-    with open(fpath, 'r') as file:
+    with open(fpath, 'r', encoding='utf-8') as file:
         tmp = file.read()
     check.equal(tmp, 'message')
     try:
@@ -315,11 +315,11 @@ def test_makefile(tmp_path):
     except FileExistsError:
         pass
     p4f.makefile(fpath, 'message3', overwrite=True)
-    with open(fpath, 'r') as file:
+    with open(fpath, 'r', encoding='utf-8') as file:
         tmp3 = file.read()
     check.equal(tmp3, 'message3')
     p4f.makefile(fpath, overwrite=True)
-    with open(fpath, 'r') as file:
+    with open(fpath, 'r', encoding='utf-8') as file:
         tmp3 = file.read()
     check.equal(tmp3, '')
 
