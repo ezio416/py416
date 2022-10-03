@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-10-01
+| Updated: 2022-10-03
 
 - Functions for filesystem and path string manipulation
 
@@ -24,7 +24,7 @@ from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
 
-from .general import secmod_inverse, timestamp, unpack
+from .general import secmod, secmod_inverse, timestamp, unpack
 
 
 class File():
@@ -524,7 +524,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0) -> tuple:
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0, return_dict: bool = False):
     '''
     - lists files/folders within a folder
     - allows for some filtering by filename and modify date
@@ -570,11 +570,27 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
             - capitalization is ignored
             - if multiple of the same type of value are passed in the string, i.e. "4h16h", only the first value is grabbed
         - default: 0 (include everything)
+    
+    return_dict: bool
+        - whether to return a dictionary instead of a tuple
+        - dict contains details on each file with paths as keys and tuples of their details as values
+        - structured like so:
+            - {filepath: (size, modify_time, modify_age)}
+            - size: int
+                - bytes
+            - modify_time: int
+                - Unix timestamp
+            - modify_age: str
+                - how long ago the modify time was
+                - return is from :func:`py416.secmod`, i.e. '46d19h08m07s'
+        - default: False
 
     Returns
     -------
-    tuple[str]
-        - absolute paths
+        - dict[str: tuple[int, int, str]]
+            - absolute path, size, modify time, modify age
+        - tuple[str]
+            - absolute paths
     '''
     if not os.path.exists(path := getpath(path)):
         return ()
@@ -583,6 +599,7 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     if (recency_type := type(recency)) not in (float, int, str):
         raise TypeError(f'input must be a number or string; invalid: {recency}')
     result = []
+    now = time()
     for child in os.listdir(path):
         child = joinpath(path, child)
         if os.path.isdir(child):
@@ -606,11 +623,19 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     if recency:
         tmp = []
         recency = secmod_inverse(recency) if recency_type is str else float(recency)
-        now = time()
         for fpath in result:
             if now - os.path.getmtime(fpath) < recency:
                 tmp.append(fpath)
-        return tuple(tmp)
+        result = tmp
+    if bool(return_dict):
+        mydict = {}
+        for fpath in result:
+            stat = os.stat(fpath)
+            size = stat.st_size
+            modify_time = int(stat.st_mtime)
+            modify_age = secmod(now - modify_time)[0]
+            mydict[fpath] = size, modify_time, modify_age
+        return mydict
     return tuple(result)
 
 
