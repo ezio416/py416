@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 import sys
 import time
 
@@ -209,7 +210,7 @@ def test_listdir_search(tmp_path):
 def test_listdir_recency(tmp_path):
     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
     files = []
-    nums = (1, 2, 3, 4, 5)
+    nums = 1, 2, 3, 4, 5
     dirs = (f'{str_path}/dir{num}' for num in nums)
     now = time.time()
     for dir in dirs:
@@ -254,6 +255,32 @@ def test_listdir_recency(tmp_path):
     check.equal(len(tmp), 25)
     files_1970 = files_40years + [f'{str_path}/dir1/file{b}' for b in (1, 4, 5)] + [f'{str_path}/dir{a}/file1' for a in (3, 5)]
     (check.is_in(file, tmp) for file in files_1970)
+
+def test_listdir_dict(tmp_path):
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+    files = []
+    nums = 1, 2, 3, 4, 5
+    dirs = (f'{str_path}/dir{num}' for num in nums)
+    now = time.time()
+    for dir in dirs:
+        os.makedirs(dir)
+        files += [f'{dir}/file{num}' for num in nums]
+    for file in files:
+        with open(file, 'a') as f:
+            f.write(f'my name is {file}')
+        if '/dir1/' in file or '/file1' in file:  # 1970
+            os.utime(file, (1, 1))
+        if '/dir2/' in file or '/file2' in file:  # 40 years ago
+            os.utime(file, tuple([now - 1_262_304_000] * 2))
+        if '/file3' in file:  # a billion seconds ago
+            os.utime(file, (now - 1e9, now - 1e9))
+        if '/dir4/' in file:  # an hour ago
+            os.utime(file, (now - 3600, now - 3600))
+    
+    tmp = p4f.listdir(recursive=True, return_dict=True)
+    check.is_(type(tmp), dict)
+    check.equal(len(tmp), 30)
+    (check.is_in(file, tmp) for file in files)
 
 # def test_log(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
@@ -422,3 +449,6 @@ def test_splitpath(i, o):
 # def test_unzipdir(tmp_path):
 #     str_path = str(tmp_path).replace('\\', '/')
 #     os.chdir(str_path)
+
+
+# test_listdir_dict('D:/pytest-temp')
