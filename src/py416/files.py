@@ -524,7 +524,7 @@ def joinpath(*parts) -> str:
     return '/'.join(parts)
 
 
-def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0, return_dict: bool = False):
+def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: bool = False, search: str = '', case: bool = False, recency=0, return_dict: bool = False, sort_dict: str = 'path'):
     '''
     - lists files/folders within a folder
     - allows for some filtering by filename and modify date
@@ -573,21 +573,29 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
     
     return_dict: bool
         - whether to return a dictionary instead of a tuple
-        - dict contains details on each file with paths as keys and tuples of their details as values
+        - dict contains details on each file with paths as keys and dicts of their details as values
         - structured like so:
-            - {filepath: (size, modify_time, modify_age)}
+            - {path: {'size': int, 'mtime': int, 'mage': str}}
             - size: int
                 - bytes
-            - modify_time: int
+            - mtime: int
+                - modify time
                 - Unix timestamp
-            - modify_age: str
+            - mage: str
                 - how long ago the modify time was
                 - return is from :func:`py416.secmod`, i.e. '46d19h08m07s'
         - default: False
+    
+    sort_dict: str
+        - what to sort a returned dictionary by
+        - accepted values: path, size, mtime, mage
+        - always sorts in ascending order (small -> large)
+        - sorting by mage (modify age) is reverse to sorting by mtime (modify time)
+        - default: path
 
     Returns
     -------
-        - dict[str: tuple[int, int, str]]
+        - dict[str: dict[str: int, str: int, str: str]]
             - absolute path, size, modify time, modify age
         - tuple[str]
             - absolute paths
@@ -598,6 +606,8 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         raise TypeError(f'input must be a string; invalid: {search}')
     if (recency_type := type(recency)) not in (float, int, str):
         raise TypeError(f'input must be a number or string; invalid: {recency}')
+    if (sort_dict := str(sort_dict).lower()) not in ('path', 'size', 'mtime', 'mage'):
+        raise ValueError(f'invalid sort option: {sort_dict}')
     result = []
     now = time()
     for child in os.listdir(path):
@@ -629,12 +639,18 @@ def listdir(path: str = '.', dirs: bool = True, files: bool = True, recursive: b
         result = tmp
     if bool(return_dict):
         mydict = {}
+        tmp = []
         for fpath in result:
             stat = os.stat(fpath)
-            size = stat.st_size
-            modify_time = int(stat.st_mtime)
-            modify_age = secmod(now - modify_time)[0]
-            mydict[fpath] = size, modify_time, modify_age
+            tmp.append((fpath, stat.st_size, (mtime := stat.st_mtime), secmod(now - mtime)[0]))
+        if sort_dict == 'size':
+            tmp = sorted(tmp, key=lambda i: i[1])
+        elif sort_dict == 'mtime':
+            tmp = sorted(tmp, key=lambda i: i[2])
+        elif sort_dict == 'mage':
+            tmp = sorted(tmp, key=lambda i: i[2], reverse=True)
+        for file in tmp:
+            mydict[file[0]] = {'size': file[1], 'mtime': int(file[2]), 'mage': file[3]}
         return mydict
     return tuple(result)
 
