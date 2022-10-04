@@ -12,8 +12,7 @@ import src.py416.files as p4f
 import src.py416.variables as p4v
 
 # def test_File(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
 
 def test_cd(tmp_path):
     str_path = str(tmp_path).replace('\\', '/')
@@ -36,8 +35,7 @@ def test_checkwindrive(i, o):
     assert p4f.checkwindrive(i) == o
 
 # def test_checkzip(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
 
 def test_copy(tmp_path):
     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
@@ -70,9 +68,28 @@ def test_copy(tmp_path):
         tmp = file.read()
     check.equal(tmp, f'{msg}{msg2}')
 
-# def test_delete(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+def test_delete(tmp_path):
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+    nums = 1, 2, 3, 4, 5
+    dirs = [f'{str_path}/dir{a}/subdir{b}' for a in nums for b in nums]
+    for dir in dirs:
+        os.makedirs(dir)
+        if '/dir3/' in dir:
+            with open(file := f'{dir}/file', 'a') as f:
+                f.write(f'I am {file}')
+    [p4f.delete(dir) for dir in os.listdir()]
+    check.equal(os.listdir(), ['dir3'])
+    [p4f.delete(dir, force=True) for dir in os.listdir()]
+    check.equal(os.listdir(), [])
+    for dir in dirs:
+        os.makedirs(dir)
+        if '/dir3/' in dir:
+            with open(file := f'{dir}/file', 'a') as f:
+                f.write(f'I am {file}')
+    with open('file', 'a') as f:
+        f.write(f'base file')
+    [p4f.delete(item) for item in os.listdir()]
+    check.equal(os.listdir(), ['dir3'])
 
 @pytest.mark.parametrize('i,o', [
     ('', ''),
@@ -282,8 +299,7 @@ def test_listdir_dict(tmp_path):
     (check.is_in(file, tmp) for file in files)
 
 # def test_log(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
 
 def test_makedirs(tmp_path):
     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
@@ -456,15 +472,13 @@ def test_splitpath(i, o):
     assert p4f.splitpath(i) == o
 
 # def test_unzip(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
 
 # def test_unzipdir(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
 
 
 # from datetime import datetime as dt
 # now = str(dt.now()).split('.')[0].replace(' ', '__').replace(':', '-')
 # p4f.makedirs(dir := f'D:/pytest-temp/{now}')
-# test_rmdir(dir)
+# test_delete(dir)
