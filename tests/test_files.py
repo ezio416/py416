@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 import sys
 import time
 
@@ -276,7 +275,7 @@ def test_listdir_dict(tmp_path):
             os.utime(file, (now - 1e9, now - 1e9))
         if '/dir4/' in file:  # an hour ago
             os.utime(file, (now - 3600, now - 3600))
-    
+
     tmp = p4f.listdir(recursive=True, return_dict=True)
     check.is_(type(tmp), dict)
     check.equal(len(tmp), 30)
@@ -412,9 +411,23 @@ def test_rename(tmp_path):
     check.is_in(fname2, tmp)
     check.is_not_in(fname, tmp)
 
-# def test_rmdir(tmp_path):
-#     str_path = str(tmp_path).replace('\\', '/')
-#     os.chdir(str_path)
+def test_rmdir(tmp_path):
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+    nums = 1, 2, 3, 4, 5
+    [os.makedirs(f'dir{a}/subdir{b}') for a in nums for b in nums]
+    for file in (f'dir{a}/file{b}' for a in (1, 3) for b in (1, 2, 3)):
+        with open(file, 'a') as f:
+            f.write(f'i am {file}')
+    for file in (f'dir{a}/subdir{b}/subfile{c}' for a in (2, 4) for b in (1, 4, 5) for c in (1, 2, 3, 4, 5)):
+        with open(file, 'a') as f:
+            f.write(f'i am {file}')
+    check.equal(p4f.rmdir('dir1'), 5)
+    check.equal(p4f.rmdir('dir2'), 2)
+    check.equal(p4f.rmdir('dir3'), 5)
+    check.equal(p4f.rmdir('dir4'), 2)
+    check.equal(p4f.rmdir('dir5', delroot=True), 6)
+    [os.makedirs(dir) for a in nums for b in nums if not os.path.exists(dir := f'dir{a}/subdir{b}')]
+    check.equal(p4f.rmdir('.', delroot=True), 20)
 
 @pytest.mark.parametrize('i,o', [
     # Unix
@@ -451,4 +464,7 @@ def test_splitpath(i, o):
 #     os.chdir(str_path)
 
 
-# test_listdir_dict('D:/pytest-temp')
+# from datetime import datetime as dt
+# now = str(dt.now()).split('.')[0].replace(' ', '__').replace(':', '-')
+# p4f.makedirs(dir := f'D:/pytest-temp/{now}')
+# test_rmdir(dir)
