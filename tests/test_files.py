@@ -91,6 +91,18 @@ def test_delete(tmp_path):
     [p4f.delete(item) for item in os.listdir()]
     check.equal(os.listdir(), ['dir3'])
 
+def test_delete_trash(tmp_path):
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+    nums = 1, 2, 3, 4, 5
+    dirs = [f'{str_path}/dir{a}/subdir{b}' for a in nums for b in nums]
+    for dir in dirs:
+        os.makedirs(dir)
+        if '/dir3/' in dir:
+            with open(file := f'{dir}/file', 'a') as f:
+                f.write(f'I am {file}')
+    [p4f.delete(dir, trash=True) for dir in os.listdir()]
+    check.equal(os.listdir(), [])
+
 @pytest.mark.parametrize('i,o', [
     ('', ''),
     ('/', '/'),
@@ -481,4 +493,4 @@ def test_splitpath(i, o):
 # from datetime import datetime as dt
 # now = str(dt.now()).split('.')[0].replace(' ', '__').replace(':', '-')
 # p4f.makedirs(dir := f'D:/pytest-temp/{now}')
-# test_delete(dir)
+# test_delete_trash(dir)

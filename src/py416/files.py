@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-10-03
+| Updated: 2022-10-04
 
 - Functions for filesystem and path string manipulation
 
@@ -23,6 +23,7 @@ from time import time
 from zipfile import BadZipFile, ZipFile
 
 from py7zr import exceptions, SevenZipFile, unpack_7zarchive
+from send2trash import send2trash
 
 from .general import secmod, secmod_inverse, timestamp, unpack
 
@@ -406,7 +407,7 @@ def copy(path: str, dest: str, overwrite: bool = False) -> str:
     return copytree(path, new_path)  # dest folder doesn't exist, good
 
 
-def delete(path: str, force: bool = False) -> None:
+def delete(path: str, force: bool = False, trash: bool = False) -> None:
     '''
     - deletes file/folder
 
@@ -418,9 +419,19 @@ def delete(path: str, force: bool = False) -> None:
     force: bool
         - whether to try `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_ to delete a folder and its contents
         - default: False
+    
+    trash: bool
+        - whether to try moving item to trash/recycle bin (if enabled for that drive)
+        - uses `Send2Trash <https://github.com/arsenetar/send2trash>`_
+        - UNSAFE - deletes file if trash/recycle bin disabled
+        - default: False
     '''
     if not os.path.exists(path := getpath(path)):
         return
+    if bool(trash):
+        if os.name == 'nt':
+            path = path.replace('/', '\\')
+        return send2trash(path)
     if os.path.isdir(path):
         if bool(force):
             rmtree(path)
@@ -481,7 +492,7 @@ def getpath(path: str) -> str:
     if (parts := list(splitpath(path))) == ['']:  # special case
         return ''
     path = joinpath(parts)
-    if (root := parts[0]).startswith('//') or root == '/':  # Windows network location or Unix root
+    if (root := parts[0]).startswith('//') or root == '/':  # UNC or Unix root
         return path
     if (cwdrive := checkwindrive(root)):  # Windows root
         parts[0] = cwdrive
@@ -516,7 +527,7 @@ def joinpath(*parts) -> str:
     if parts[0] == '/':
         return '/' + '/'.join(parts[1:])  # Unix root, preceding
     if parts[0].startswith('//'):
-        return '/'.join(parts)  # Windows network location
+        return '/'.join(parts)  # UNC
     if (cwdrive := checkwindrive(parts[0])):
         if len(parts) == 1:
             return cwdrive  # Windows drive root, alone
@@ -922,7 +933,7 @@ def splitpath(path: str) -> tuple:
     elif parts[-1] == '..':  # parent of path
         if len(parts) == 2:  # 'folder/..'
             return '',
-        if path.startswith('//'):  # Windows network location
+        if path.startswith('//'):  # UNC
             path = path.lstrip('/')
             win_net = True
         path = os.path.dirname(os.path.dirname(path))
@@ -933,7 +944,7 @@ def splitpath(path: str) -> tuple:
         parts[0] = '/'
     if (cwdrive := checkwindrive(parts[0])):  # Windows drive root
         parts[0] = cwdrive
-    if path.startswith('//'):  # Windows network location
+    if path.startswith('//'):  # UNC
         result = [f'//{parts[2]}']
         return tuple(result + parts[3:]) if len(parts) > 2 else tuple(result)
     if len(parts) == 2:
