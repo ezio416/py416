@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-10-04
+| Updated: 2022-10-05
 
 - Functions for filesystem and path string manipulation
 
@@ -219,7 +219,7 @@ class File():
         copy(self.path, dest, overwrite=overwrite)
         return self
 
-    def delete(self, force: bool = False) -> object:
+    def delete(self, force: bool = False, trash: bool = False) -> object:
         '''
         - deletes file/folder, attempting to recursively delete empty subfolders
         - in-place operation
@@ -229,8 +229,14 @@ class File():
         force: bool
             - whether to force deletion with `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_
             - default: False
+
+        trash: bool
+            - whether to try moving item to trash/recycle bin (if enabled for that drive)
+            - uses `Send2Trash <https://github.com/arsenetar/send2trash>`_
+            - UNSAFE - deletes file if trash/recycle bin disabled
+            - default: False
         '''
-        delete(self.path, force=force)
+        delete(self.path, force=force, trash=trash)
         return self
 
     def move(self, dest: str, overwrite: bool = False) -> object:
@@ -419,7 +425,7 @@ def delete(path: str, force: bool = False, trash: bool = False) -> None:
     force: bool
         - whether to try `shutil.rmtree() <https://docs.python.org/3/library/shutil.html#shutil.rmtree>`_ to delete a folder and its contents
         - default: False
-    
+
     trash: bool
         - whether to try moving item to trash/recycle bin (if enabled for that drive)
         - uses `Send2Trash <https://github.com/arsenetar/send2trash>`_
