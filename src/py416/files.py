@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-10-05
+| Updated: 2022-10-06
 
 - Functions for filesystem and path string manipulation
 
@@ -847,6 +847,31 @@ def parent(path: str) -> str:
             path.startswith('//') and len(splitpath(path)) == 1]):
         return path
     return getpath(f'{path}/..')
+
+
+def readfile(path: str, encoding: str = 'utf-8') -> str:
+    '''
+    - reads text from a file
+    
+    Parameters
+    ----------
+    path: str
+        - path to file
+
+    encoding: str
+        - character set
+        - default: utf-8
+
+    Returns
+    -------
+    str
+        - all text from the file
+    '''
+    if not os.path.exists(path := getpath(path)):
+        raise FileNotFoundError(f'not found: {path}')
+    with open(path, 'r', encoding=encoding) as file:
+        result = file.read()
+    return result
 
 
 def rename(path: str, name: str) -> str:
