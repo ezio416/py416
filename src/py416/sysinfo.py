@@ -255,7 +255,7 @@ def users(now: float = 0, json: bool = False) -> Union[dict, str]:
                 - number of seconds since login (i.e. 11636.991024971008)
             - login_uptime_nice: str
                 - human-readable login uptime (i.e. '03h13m56s')
-            
+
     '''
     if not now:
         now = time()
