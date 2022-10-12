@@ -5,4 +5,5 @@
 
    files
    general
+   sysinfo
    variables
