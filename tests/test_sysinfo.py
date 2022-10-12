@@ -16,7 +16,7 @@ import src.py416.sysinfo as p4s
 # pprint(p4s.ram(), width=1)
 # pprint(p4s.system(), width=100)
 # pprint(p4s.users(), width=100)
-pprint(p4s.full(), width=1)
+# pprint(p4s.full(), width=1)
 
 # print(p4s.cpu(json=True))
 # print(p4s.disks(json=True))
