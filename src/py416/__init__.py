@@ -2,11 +2,11 @@
 Name:    py416
 Author:  Ezio416
 Created: 2022-08-15
-Updated: 2022-10-05
-Version: 0.51
+Updated: 2022-10-12
+Version: 0.52
 
-A collection of my custom-built functions
+A collection of various functions
 '''
 from .general import *
-__version__ = 0, 51
+__version__ = 0, 52
 v = __version__

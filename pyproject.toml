@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py416"
-version = "0.51"
+version = "0.52"
 authors = [
   { name="Ezio416", email="ezezio416@gmail.com" },
 ]
@@ -19,6 +19,7 @@ classifiers = [
 ]
 dependencies = [
   "py7zr >= 0.20.0",
+  "py-cpuinfo >= 8.0.0",
   "send2trash >= 1.8.0"
 ]
 
