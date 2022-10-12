@@ -852,7 +852,7 @@ def parent(path: str) -> str:
 def readfile(path: str, encoding: str = 'utf-8') -> str:
     '''
     - reads text from a file
-    
+
     Parameters
     ----------
     path: str
