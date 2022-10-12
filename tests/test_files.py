@@ -416,8 +416,14 @@ def test_move(tmp_path):
 def test_parent(i, o):
     assert p4f.parent(i) == o
 
-# def test_readfile(tmp_path):
-#     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+def test_readfile(tmp_path):
+    os.chdir(str_path := str(tmp_path).replace('\\', '/'))
+    file = 'file.txt'
+    msg = 'some text\nin here'
+    with open(file, 'a') as f:
+        f.write(msg)
+    read = p4f.readfile(file)
+    check.equal(read, msg)
 
 def test_rename(tmp_path):
     os.chdir(str_path := str(tmp_path).replace('\\', '/'))
