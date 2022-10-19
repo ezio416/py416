@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-10-01
+| Updated: 2022-10-19
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
@@ -55,6 +55,46 @@ def month2num(month_word: str) -> str:
         return mydict[month_word.lower()]
     except KeyError:
         return ''
+
+
+def pprint(iterable: object, do_print: bool = True, level: int = 0) -> str:
+    '''
+    - pretty print an iterable object without splitting strings
+
+    Parameters
+    ----------
+    iterable: object
+        - thing to pretty print
+
+    do_print: bool
+        - whether to print the output
+        - default: True
+
+    level: int
+        - recursion level
+        - not meant to be changed (not useful to the user anyway)
+
+    Returns
+    -------
+    str
+        - output
+    '''
+    output = ' ' * level
+    if (typ := type(iterable)) not in (list, set, tuple):
+        return output + (f"'{iterable}'" if typ is str else str(iterable))
+    if typ is list:
+        open, close = '[', ']'
+    elif typ is set:
+        open, close = '{', '}'
+    elif typ is tuple:
+        open, close = '(', ')'
+    output += open
+    for i, item in enumerate(iterable):
+        output += pprint(item, do_print=False, level=(level + 1 if i else 0)) + ',\n'
+    output = output.rstrip(',\n') + close
+    if do_print:
+        print(output)
+    return output
 
 
 def secmod(seconds: float, sep: str = '') -> tuple:
