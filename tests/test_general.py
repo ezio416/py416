@@ -109,6 +109,9 @@ def test_gettype_Path():
 def test_month2num(i, o):
     assert g.month2num(i) == o
 
+def test_pprint():
+    pass
+
 @pytest.mark.parametrize('i,a,o', [
     (3, '', ('03s', 3, 0, 0, 0)),
     (505, ' ', ('08m 25s', 25, 8, 0, 0)),
