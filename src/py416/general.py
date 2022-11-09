@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-10-19
+| Updated: 2022-11-09
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
@@ -60,6 +60,7 @@ def month2num(month_word: str) -> str:
 def pprint(iterable: object, do_print: bool = True, level: int = 0) -> str:
     '''
     - pretty print an iterable object without splitting strings
+    - not yet working for dictionaries or special iterable types
 
     Parameters
     ----------
