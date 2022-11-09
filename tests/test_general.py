@@ -110,7 +110,43 @@ def test_month2num(i, o):
     assert g.month2num(i) == o
 
 def test_pprint():
-    pass
+    mydict = {
+        'a': 1,
+        'b': 2_000_000_000,
+        'c': 'a happy cat',
+        # 'deez nuts': 3.14159_26535_89793_23846_26433,
+        34: {1: 'ayy', 2: 'bee'},
+        # 'list': [1, 2, 3],
+    }
+    mylist = [
+        'alpha',
+        'bravo charlie',
+        1234567890,
+        2.7,
+        [1, 2],
+        [4, 5, [6, 7, [8, 9, 10]]],
+    ]
+    myset = {
+        'alpha',
+        'bravo charlie',
+        1234567890,
+        2.7,
+        frozenset({1, 2}),
+    }
+    mytuple = (
+        'alpha',
+        'bravo charlie',
+        1234567890,
+        2.7,
+        (1, 2),
+        (4, 5, (6, 7, (8, 9, 10))),
+    )
+    mylisttuple = [
+        'a',
+        ('b',),
+        ['c', 'd'],
+        ([([('eeeee',)],)],),
+    ]
 
 @pytest.mark.parametrize('i,a,o', [
     (3, '', ('03s', 3, 0, 0, 0)),
