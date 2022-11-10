@@ -9,6 +9,39 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import src.py416.general as g
 from src.py416.files import File
 
+
+@pytest.mark.parametrize('i,o', [
+    (0, '0B'),
+    (1500, '1.46KiB'),
+    (123_456_789, '117.74MiB'),
+    (65_487_894_231, '60.99GiB'),
+    (875_467_423_467_423, '796.23TiB'),
+    (98_700_798_765_465_465, '87.66PiB'),
+    (4_317_897_564_234_897_842, '3.75EiB'),
+    (12_345_678_901_234_567_890_123, '10.46ZiB'),
+    (987_654_321_987_654_321_987_654_321, '816.97YiB'),
+    (10**28, '8271.81YiB'),
+])
+def test_bytesize(i, o):
+    assert g.bytesize(i) == o
+
+
+@pytest.mark.parametrize('i,o', [
+    (0, '0B'),
+    (1500, '1.50KB'),
+    (123_456_789, '123.46MB'),
+    (65_487_894_231, '65.49GB'),
+    (875_467_423_467_423, '875.47TB'),
+    (98_700_798_765_465_465, '98.70PB'),
+    (4_317_897_564_234_897_842, '4.32EB'),
+    (12_345_678_901_234_567_890_123, '12.35ZB'),
+    (987_654_321_987_654_321_987_654_321, '987.65YB'),
+    (10**28, '10000.00YB'),
+])
+def test_bytesize_si(i, o):
+    assert g.bytesize(i, si=True) == o
+
+
 @pytest.mark.parametrize('i,o', [
     (bool(), 'bool'),
     (True, 'bool'),
@@ -77,12 +110,14 @@ from src.py416.files import File
 def test_gettype(i, o):
     assert g.gettype(i) == o
 
+
 def test_gettype_Path():
     p = Path()
     if os.name == 'nt':
         assert g.gettype(p) == 'pathlib.WindowsPath'
     elif os.name == 'posix':
         assert g.gettype(p) == 'pathlib.PosixPath'
+
 
 @pytest.mark.parametrize('i,o', [
     ('january', '01'),
@@ -108,6 +143,7 @@ def test_gettype_Path():
 ])
 def test_month2num(i, o):
     assert g.month2num(i) == o
+
 
 def test_pprint():
     mydict = {
@@ -148,6 +184,7 @@ def test_pprint():
         ([([('eeeee',)],)],),
     ]
 
+
 @pytest.mark.parametrize('i,a,o', [
     (3, '', ('03s', 3, 0, 0, 0)),
     (505, ' ', ('08m 25s', 25, 8, 0, 0)),
@@ -157,6 +194,7 @@ def test_pprint():
 ])
 def test_secmod(i, a, o):
     assert g.secmod(i, sep=a) == o
+
 
 @pytest.mark.parametrize('i,o', [
     ('3d16h42m7s', 319327),
@@ -181,8 +219,10 @@ def test_secmod(i, a, o):
 def test_secmod_inverse(i, o):
     assert g.secmod_inverse(i) == o
 
+
 def test_timestamp():
     pass
+
 
 @pytest.mark.parametrize('i,o', [
     ('', ('')),
