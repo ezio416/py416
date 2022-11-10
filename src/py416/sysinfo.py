@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-10-11
-| Updated: 2022-10-12
+| Updated: 2022-11-10
 
 - Functions for getting basic system information
 '''
@@ -21,7 +21,7 @@ from .variables import BYTE_G
 
 def cpu(json: bool = False) -> Union[dict, str]:
     '''
-    gets info on the CPU
+    - gets info on the CPU
 
     Parameters
     ----------
@@ -108,7 +108,7 @@ def disks(json: bool = False) -> Union[dict, str]:
 
 def full(now: float = 0, json: bool = False) -> Union[dict, str]:
     '''
-    gets all system info programmed into this module
+    - gets all system info programmed into this module
 
     Parameters
     ----------
@@ -145,8 +145,8 @@ def full(now: float = 0, json: bool = False) -> Union[dict, str]:
 
 def ram(json: bool = False) -> Union[dict, str]:
     '''
-    gets the RAM usage data
-    all byte values are in GiB (1024^3 bytes)
+    - gets the RAM usage data
+    - all byte values are in GiB (1024^3 bytes)
 
     Parameters
     ----------
@@ -182,7 +182,7 @@ def ram(json: bool = False) -> Union[dict, str]:
 
 def system(now: float = 0, json: bool = False) -> Union[dict, str]:
     '''
-    gets various system info such as boot time
+    - gets various system info such as boot time
 
     Parameters
     ----------
@@ -230,7 +230,7 @@ def system(now: float = 0, json: bool = False) -> Union[dict, str]:
 
 def users(now: float = 0, json: bool = False) -> Union[dict, str]:
     '''
-    Gets a list of users currently logged in
+    - gets a list of users currently logged in
 
     Parameters
     ----------

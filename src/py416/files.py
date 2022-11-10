@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-10-06
+| Updated: 2022-11-10
 
 - Functions for filesystem and path string manipulation
 
@@ -852,6 +852,7 @@ def parent(path: str) -> str:
 def readfile(path: str, encoding: str = 'utf-8') -> str:
     '''
     - reads text from a file
+    - wraps `open() <https://docs.python.org/3/library/functions.html#open>`_
 
     Parameters
     ----------
