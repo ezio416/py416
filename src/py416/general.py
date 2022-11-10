@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-11-09
+| Updated: 2022-11-10
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
@@ -10,6 +10,45 @@ from datetime import datetime as dt
 from re import findall
 
 from .variables import SEC_D, SEC_H, SEC_M
+
+
+def bytesize(byte: int, si: bool = False) -> str:
+    '''
+    - scales a number of bytes to a prefixed format
+
+    Parameters
+    ----------
+    byte: int
+        - number of bytes to scale
+
+    si: bool
+        - whether to use SI units (1000^x bytes: KB, MB, GB)
+        - default: False (1024^x bytes: KiB, MiB, GiB)
+
+    Returns
+    -------
+    str
+        - bytes in prefixed format, rounded to 2 decimal places
+        - i.e.:
+            - 1200000 => '1.20MB'
+            - 1253656678 => '1.17GiB'
+    '''
+    byte = int(byte)
+    if byte < 0:
+        raise ValueError(f'bytes can\'t be negative; invalid: {byte}')
+    if si:
+        factor = 1000
+        units = ('', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
+    else:
+        factor = 1024
+        units = ('', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi')
+    if byte < factor:  # less than 1000 or 1024 bytes
+        return f'{byte}B'
+    for unit in units:
+        if byte < factor:
+            return f'{byte:.2f}{unit}B'
+        byte /= factor
+    return f'{byte*factor:.2f}{unit}B'  # user passed in stupidly large number
 
 
 def gettype(thing) -> str:
