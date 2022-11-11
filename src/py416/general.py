@@ -1,13 +1,16 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-11-10
+| Updated: 2022-11-11
 
 - Functions for various things
-- These are all imported to py416 directly, so just call them like: :func:`py416.timestamp`
+- These are all imported to py416 directly, so just call them like so: :func:`py416.timestamp`
 '''
 from datetime import datetime as dt
+from email.message import EmailMessage
 from re import findall
+from smtplib import SMTP_SSL
+from ssl import create_default_context
 
 from .variables import SEC_D, SEC_H, SEC_M
 
@@ -49,6 +52,60 @@ def bytesize(byte: int, si: bool = False) -> str:
             return f'{byte:.2f}{unit}B'
         byte /= factor
     return f'{byte*factor:.2f}{unit}B'  # user passed in stupidly large number
+
+
+def emailsmtp(sender_email: str, recipient: str, subject: str, body: str, smtp_server: str, smtp_port: int, password: str, sender_name: str = '') -> bool:
+    '''
+    - sends an email via SMTP
+
+    Parameters
+    ----------
+    sender_email: str
+        - email address to send from
+
+    recipient: str
+        - email address to send to
+
+    subject: str
+        - text to put in the email subject
+
+    body: str
+        - test to put in the email body
+
+    smtp_server: str
+        - host name for SMTP server
+
+    smtp_port: int
+        - port for SMTP server
+
+    password: str
+        - password for sender email
+
+    sender_name: str
+        - name to show in the 'from' field
+        - default: none
+
+    Returns
+    -------
+    bool
+        - whether send was successful
+    '''
+    msg = EmailMessage()
+    if sender_name:
+        msg['From'] = f'{sender_name} <{sender_email}>'
+    else:
+        msg['From'] = sender_email
+    msg['To'] = recipient
+    msg['Subject'] = subject
+    msg.set_content(body)
+
+    try:
+        with SMTP_SSL(host=smtp_server, port=smtp_port, context=create_default_context()) as server:
+            server.login(sender_email, password)
+            server.send_message(msg)
+        return True
+    except Exception:
+        return False
 
 
 def gettype(thing) -> str:
