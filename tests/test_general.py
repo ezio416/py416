@@ -42,6 +42,10 @@ def test_bytesize_si(i, o):
     assert g.bytesize(i, si=True) == o
 
 
+def test_emailsmtp():
+    pass
+
+
 @pytest.mark.parametrize('i,o', [
     (bool(), 'bool'),
     (True, 'bool'),
