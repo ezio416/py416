@@ -123,6 +123,10 @@ def test_gettype_Path():
         assert g.gettype(p) == 'pathlib.PosixPath'
 
 
+def test_lineno():
+    assert g.lineno() == 127
+
+
 @pytest.mark.parametrize('i,o', [
     ('january', '01'),
     ('February', '02'),

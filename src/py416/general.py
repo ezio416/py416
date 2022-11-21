@@ -1,13 +1,14 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-18
-| Updated: 2022-11-11
+| Updated: 2022-11-21
 
 - Functions for various things
 - These are all imported to py416 directly, so just call them like so: :func:`py416.timestamp`
 '''
 from datetime import datetime as dt
 from email.message import EmailMessage
+from inspect import currentframe
 from re import findall
 from smtplib import SMTP_SSL
 from ssl import create_default_context
@@ -124,6 +125,18 @@ def gettype(thing) -> str:
         - type of object
     '''
     return str(type(thing)).split("'")[1]
+
+
+def lineno() -> int:
+    '''
+    - gets the line number in the file where the function was called from
+
+    Returns
+    -------
+    int
+        - line number in Python script
+    '''
+    return currentframe().f_back.f_lineno
 
 
 def month2num(month_word: str) -> str:
