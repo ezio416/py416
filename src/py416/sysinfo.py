@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-10-11
-| Updated: 2022-11-10
+| Updated: 2022-11-23
 
 - Functions for getting basic system information
 '''
@@ -19,7 +19,7 @@ from .general import secmod
 from .variables import BYTE_G
 
 
-def cpu(json: bool = False) -> Union[dict, str]:
+def cpu(json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets info on the CPU
 
@@ -28,6 +28,10 @@ def cpu(json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -55,11 +59,11 @@ def cpu(json: bool = False) -> Union[dict, str]:
     cpu_info['threads'] = ps.cpu_count()
     cpu_info['used_percent'] = ps.cpu_percent(interval=0)
     if json:
-        return dumps(cpu_info)
+        return dumps(cpu_info, indent=json_indent)
     return cpu_info
 
 
-def disks(json: bool = False) -> Union[dict, str]:
+def disks(json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets disk usage on mapped drives on Windows (drives with a letter like C:)
     - all byte values are in GiB (1024^3 bytes)
@@ -70,6 +74,10 @@ def disks(json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -102,11 +110,11 @@ def disks(json: bool = False) -> Union[dict, str]:
             except Exception:
                 pass
     if json:
-        return dumps(disks)
+        return dumps(disks, indent=json_indent)
     return disks
 
 
-def full(now: float = 0, json: bool = False) -> Union[dict, str]:
+def full(now: float = 0, json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets all system info programmed into this module
 
@@ -121,6 +129,10 @@ def full(now: float = 0, json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -139,11 +151,11 @@ def full(now: float = 0, json: bool = False) -> Union[dict, str]:
     mydict['system'] = system(now)
     mydict['users'] = users(now)
     if json:
-        return dumps(mydict)
+        return dumps(mydict, indent=json_indent)
     return mydict
 
 
-def ram(json: bool = False) -> Union[dict, str]:
+def ram(json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets the RAM usage data
     - all byte values are in GiB (1024^3 bytes)
@@ -153,6 +165,10 @@ def ram(json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -176,11 +192,11 @@ def ram(json: bool = False) -> Union[dict, str]:
     ram_info['used'] = round((psvm[3] / BYTE_G), 2)
     ram_info['used_percent'] = psvm[2]
     if json:
-        return dumps(ram_info)
+        return dumps(ram_info, indent=json_indent)
     return ram_info
 
 
-def system(now: float = 0, json: bool = False) -> Union[dict, str]:
+def system(now: float = 0, json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets various system info such as boot time
 
@@ -193,6 +209,10 @@ def system(now: float = 0, json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -224,11 +244,11 @@ def system(now: float = 0, json: bool = False) -> Union[dict, str]:
     system_info['boot_uptime'] = now - system_info['boot_time']
     system_info['boot_uptime_nice'] = secmod(system_info['boot_uptime'])[0]
     if json:
-        return dumps(system_info)
+        return dumps(system_info, indent=json_indent)
     return system_info
 
 
-def users(now: float = 0, json: bool = False) -> Union[dict, str]:
+def users(now: float = 0, json: bool = False, json_indent: int = 4) -> Union[dict, str]:
     '''
     - gets a list of users currently logged in
 
@@ -241,6 +261,10 @@ def users(now: float = 0, json: bool = False) -> Union[dict, str]:
     json: bool
         - whether to return the output as a JSON string
         - default: false
+
+    json_indent: int
+        - indentation level for JSON output
+        - default: 4
 
     Returns
     -------
@@ -270,5 +294,5 @@ def users(now: float = 0, json: bool = False) -> Union[dict, str]:
         user_info['login_uptime_nice'] = secmod(user_info['login_uptime'])[0]
         users[user_list[i][0]] = user_info
     if json:
-        return dumps(users)
+        return dumps(users, indent=json_indent)
     return users
