@@ -4,8 +4,6 @@ import time
 
 import pytest
 import pytest_check as check
-from rich.traceback import install
-install()
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import src.py416.files as p4f

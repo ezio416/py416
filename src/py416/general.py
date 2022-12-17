@@ -355,11 +355,11 @@ def unpack(iterable) -> tuple:
     -------
     tuple
         - all retrieved items
-    `iterable` itself if not a list or tuple
+        - if `iterable` is not actually iterable, returns a tuple with just the item
     '''
     iterables = (list, tuple)
     if type(iterable) not in iterables:
-        return iterable
+        return iterable,
     values = []
     for item in iterable:
         if type(item) not in iterables:
