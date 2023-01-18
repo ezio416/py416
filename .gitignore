@@ -1,4 +1,10 @@
-# Directories
+# Files
+upload_copy_pypi.py
+
+# Extensions
+*.log
+
+# Folders
 __pycache__/
 _build/
 .pytest_cache/
@@ -7,8 +13,4 @@ dist/
 env*/
 py416.egg-info/
 
-# Extensions
-*.log
-
-# Files
-upload_copy_pypi.py
+# Various
