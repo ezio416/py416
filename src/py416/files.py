@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2022-11-10
+| Updated: 2023-02-22
 
 - Functions for filesystem and path string manipulation
 
@@ -826,7 +826,7 @@ def move(path: str, dest: str, overwrite: bool = False) -> str:
     return shmv(path, dest)  # dest folder doesn't exist, good
 
 
-def parent(path: str) -> str:
+def parent(path: str = '.') -> str:
     '''
     - gets the folder containing something
 
@@ -834,6 +834,7 @@ def parent(path: str) -> str:
     ----------
     path: str
         - path to find the parent of
+        - default: current working directory
 
     Returns
     -------
@@ -1014,7 +1015,7 @@ def unzip(path: str, remove: bool = False) -> None:
         raise NotImplementedError(f'unsupported archive format: {path.split(".")[-1]}')
 
 
-def unzipdir(path: str, ignore_errors: bool = True) -> int:
+def unzipdir(path: str = '.', ignore_errors: bool = True) -> int:
     '''
     - unzips all archives in a folder (only 1st level) until it is unable to continue
     - deletes all archives as it unzips
@@ -1024,6 +1025,7 @@ def unzipdir(path: str, ignore_errors: bool = True) -> int:
     ----------
     path: str
         - folder containing archive files
+        - default: current working directory
 
     ignore_errors: bool
         - whether to catch all Exceptions in unzipping
