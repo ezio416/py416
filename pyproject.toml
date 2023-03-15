@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py416"
-version = "0.59"
+version = "0.60"
 authors = [
   { name="Ezio416", email="ezezio416@gmail.com" },
 ]
@@ -26,3 +26,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/ezio416/py416"
 "Bug Tracker" = "https://github.com/ezio416/py416/issues"
+
+[project.scripts]
+rmd = "py416.scripts:rmd"
+uzd = "py416.scripts:uzd"

@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2023-02-22
+| Updated: 2023-03-14
 
 - Functions for filesystem and path string manipulation
 
@@ -1017,9 +1017,10 @@ def unzip(path: str, remove: bool = False) -> None:
 
 def unzipdir(path: str = '.', ignore_errors: bool = True) -> int:
     '''
-    - unzips all archives in a folder (only 1st level) until it is unable to continue
-    - deletes all archives as it unzips
-    - supports archives of type: (.7z, .gz, .rar, .tar, .zip)
+    - unzips all archive files in a folder until it is unable to continue
+    - recursive on archive files, but not folders
+    - deletes all archive files as it unzips
+    - supports archive files of type: (.7z, .gz, .rar, .tar, .zip)
 
     Parameters
     ----------
@@ -1043,13 +1044,15 @@ def unzipdir(path: str = '.', ignore_errors: bool = True) -> int:
     while True:
         unzipped_this_run = 0
         for file in listdir(path, dirs=False):
+            if not file.endswith(('.7z', '.gz', '.rar', '.tar', '.zip')):
+                continue
             try:
                 unzip(file, remove=True)
                 unzipped += 1
                 unzipped_this_run += 1
-            except Exception:
+            except Exception as e:
                 if not bool(ignore_errors):
-                    raise
+                    raise Exception(f'unzipped {unzipped} archive file(s) before failing: {e}')
         if not unzipped_this_run:
             break
     return unzipped

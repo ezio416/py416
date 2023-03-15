@@ -1,4 +1,4 @@
 clear_dist.py
-py -m build ..
+build_pkg
 twine upload ../dist/*
 pause
