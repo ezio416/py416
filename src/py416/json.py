@@ -48,10 +48,10 @@ def pretty(path: str = '.', indent: int = 4, sort_keys: bool = True, overwrite: 
             if os.path.isdir(path):
                 files: tuple[str] = tuple(getpath(file) for file in listdir(path, dirs=False))
             elif os.path.isfile(path):
-                files: tuple[str] = tuple(getpath(path))
+                files: tuple[str] = getpath(path),
         else:
             print(f'invalid path given: {path}')
-            return
+            return 0
 
     total: int = 0
 
