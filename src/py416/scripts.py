@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2023-03-14
-| Updated: 2023-03-14
+| Updated: 2024-01-31
 
 - Functions behind console scripts
 - Call these functions directly by name from the command line
@@ -9,6 +9,33 @@
 import sys
 
 from .files import rmdir, unzipdir
+from .json import pretty
+
+
+# def jsp():
+#     '''
+#     - takes one or more .json files and makes them human-readable
+#     - will only work on files ending with .json, all other files are ignored
+
+#     Flags
+#     ---------
+#     - -p, --path (str): path to file/folder (default current working directory)
+#         - if a file, will only do that file
+#         - if a folder, will do every file in that folder
+#     - -i, --indent (int): number of spaces to indent by (default 4)
+#     - -b, --sort_keys (bool): whether to sort keys (default True)
+#     '''
+#     if len(sys.argv) > 1:
+#         args: list = sys.argv
+#         args_default: list = ['', 4, True]
+
+#         if args in ('-p', '--path'):
+#             if len(args)
+
+#         print(f'formatted {pretty(*args_default)} .json files')
+#         return
+
+#     print(f'formatted {pretty()} .json files')
 
 
 def rmd():

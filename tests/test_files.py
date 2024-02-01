@@ -123,7 +123,7 @@ def test_getcwd():
     ('/gfsyt/trw', '/gfsyt/trw'),
     ('/dir1/dir2/.', '/dir1/dir2'),
     ('/dir1/dir2/..', '/dir1'),
-    #Windows
+    # Windows
     ('D:', 'D:/'),
     ('D:/', 'D:/'),
     ('D:/test/party/time/baby', 'D:/test/party/time/baby'),
@@ -134,7 +134,7 @@ def test_getcwd():
     ('\\\\bdi-az-data01\\Projects', '//bdi-az-data01/Projects'),
     ('//bdi-az-data01/Projects/.', '//bdi-az-data01/Projects'),
     ('//bdi-az-data01/Projects/..', '//bdi-az-data01'),
-    # None
+    # Any
     ('', ''),
     ('folder/..', ''),
 ])
@@ -165,7 +165,7 @@ def test_getpath(i, o):
     ('//', '//'),
     ('//bdi', '//bdi'),
     (('//bdi', 'drive'), '//bdi/drive'),
-    # None
+    # Any
     ('', ''),
     (('', ''), ''),
     ('J', 'J'),
@@ -407,7 +407,7 @@ def test_move(tmp_path):
     ('\\\\bdi-az-data01\\Projects', '//bdi-az-data01'),
     ('//bdi-az-data01/Projects/.', '//bdi-az-data01'),
     ('//bdi-az-data01/Projects/..', '//bdi-az-data01'),
-    # None
+    # Any
     ('', ''),
     ('folder/..', ''),
 ])
@@ -487,7 +487,7 @@ def test_rmdir(tmp_path):
     ('\\\\bdi-az-data01\\Projects', ('//bdi-az-data01', 'Projects')),
     ('//bdi-az-data01/Projects/.', ('//bdi-az-data01', 'Projects')),
     ('//bdi-az-data01/Projects/..', ('//bdi-az-data01',)),
-    # None
+    # Any
     ('', ('',)),
     ('folder/..', ('',))
 ])
