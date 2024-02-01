@@ -33,7 +33,7 @@ def pretty(path: str = '.', indent: int = 4, sort_keys: bool = True, overwrite: 
         - whether to sort keys
         - default: True
     overwrite: bool
-        - whether to overwrite a '_pretty.json' if it already exists
+        - whether to overwrite a '_pretty.json' file if it already exists
         - default: True
 
     Returns

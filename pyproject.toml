@@ -28,5 +28,6 @@ dependencies = [
 "Bug Tracker" = "https://github.com/ezio416/py416/issues"
 
 [project.scripts]
+jsp = "py416.scripts:jsp"
 rmd = "py416.scripts:rmd"
 uzd = "py416.scripts:uzd"
