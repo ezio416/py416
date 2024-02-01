@@ -5,5 +5,6 @@
 
    files
    general
+   json
    sysinfo
    variables

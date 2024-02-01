@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath('..'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'py416'
-copyright = '2022, Ezio416'
+copyright = '2024, Ezio416'
 author = 'Ezio416'
 
 # -- General configuration ---------------------------------------------------

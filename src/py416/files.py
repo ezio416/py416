@@ -1,7 +1,7 @@
 '''
 | Author:  Ezio416
 | Created: 2022-08-16
-| Updated: 2023-03-14
+| Updated: 2024-01-31
 
 - Functions for filesystem and path string manipulation
 
@@ -961,6 +961,8 @@ def splitpath(path: str) -> tuple:
         path = getcwd()
     elif path == '..':  # parent of current directory
         path = forslash(os.path.dirname(getcwd()))
+    elif path == '.' * len(path):  # >2 dots - current directory
+        path = getcwd()
     elif (parts := path.split('/'))[-1] == '.':  # folder/. is just folder
         path = path[:-2]
     elif parts[-1] == '..':  # parent of path
